@@ -4,9 +4,16 @@ import { Link } from 'react-router-dom';
 
 export default (): JSX.Element => {
 	return (
-		<Navbar bg='primary' className='bg-primary custom-navbar' expand='lg'>
+		<Navbar
+			bg='primary'
+			className='bg-primary custom-navbar'
+			expand='lg'
+			style={{ marginBottom: 20 }}
+		>
 			<Container>
-				<Navbar.Brand href='#home'>ChainReactor</Navbar.Brand>
+				<Link to='/' className='navbar-brand'>
+					ChainReactor
+				</Link>
 				<Navbar.Toggle aria-controls='basic-navbar-nav' />
 				<Navbar.Collapse id='basic-navbar-nav'>
 					<Nav className='me-auto'>

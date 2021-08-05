@@ -7,9 +7,12 @@ export default (): JSX.Element => {
 		<Jumbotron style={{ marginBottom: 0, marginTop: 300 }}>
 			<Container>
 				<Row>
-					<Col lg={8} md={6} sm={12} style={{ textAlign: 'right' }}>
+					<Col lg={8} md={6} sm={12}>
 						<p>
 							<Link to={'/'}>Home</Link>
+						</p>
+						<p>
+							<Link to={'/orders'}>Orders</Link>
 						</p>
 					</Col>
 				</Row>

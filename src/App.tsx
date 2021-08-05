@@ -2,8 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import Navbar from './components/navbar';
-import Footer from './components/footer';
 import ScrollToTop from './utils/ScrollToTop';
+import HomePage from './pages/home';
+import OrdersPage from './pages/orders';
+import OrderPage from './pages/order';
 
 function App(): JSX.Element {
 	return (
@@ -13,15 +15,19 @@ function App(): JSX.Element {
 				<ScrollToTop />
 				<Switch>
 					<Route exact path='/'>
-						<div />
+						<HomePage />
 					</Route>
 
-					<Route path='/order'>
-						<div />
+					<Route path='/orders'>
+						<OrdersPage />
+					</Route>
+
+					<Route path='/order/:orderId'>
+						<OrderPage />
 					</Route>
 				</Switch>
 
-				<Footer />
+				{/* <Footer /> */}
 			</div>
 		</Router>
 	);
