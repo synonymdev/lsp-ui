@@ -91,7 +91,7 @@ function OrderPage(): JSX.Element {
 				</Col>
 			</Row>
 
-			<br/>
+			<br />
 
 			<Row>
 				<Col>
