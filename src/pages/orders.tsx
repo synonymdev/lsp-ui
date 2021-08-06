@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Table } from 'react-bootstrap';
+import { Container, Table, Form, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import { refreshOrder, selectOrders, selectOrdersState } from '../store/cr';
@@ -10,9 +10,37 @@ function OrdersPage(): JSX.Element {
 	const ordersState = useAppSelector(selectOrdersState);
 	const dispatch = useAppDispatch();
 
+	const [search, setSearch] = useState('');
+
 	return (
 		<Container>
 			<h1>Orders</h1>
+
+			<Form>
+				<Form.Group as={Row}>
+					<Col>
+						<Form.Control
+							value={search}
+							onChange={(e) => setSearch(e.target.value)}
+							placeholder='Order ID'
+						/>
+					</Col>
+					<Col>
+						<Button
+							variant='primary'
+							onClick={async () => {
+								try {
+									await dispatch(refreshOrder(search));
+								} catch (e) {
+									alert(e);
+								}
+							}}
+						>
+							Find
+						</Button>
+					</Col>
+				</Form.Group>
+			</Form>
 
 			<Table striped bordered hover size='sm'>
 				<thead>

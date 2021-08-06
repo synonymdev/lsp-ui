@@ -46,9 +46,7 @@ class ChainReactor {
 	}
 
 	async call(path: string, method: 'GET' | 'POST', request?: any): Promise<any> {
-		const tempCorsProxy = '';
-		// const tempCorsProxy = 'http://localhost:8080/';
-		const url = `${tempCorsProxy}${this.host}${path}`;
+		const url = `${this.host}${path}`;
 
 		const fetchRes = await fetch(url, {
 			method,
@@ -102,10 +100,8 @@ class ChainReactor {
 	async getOrder(orderId: string): Promise<IGetOrderResponse> {
 		const res: IGetOrderResponse = await this.call(`channel/order?order_id=${orderId}`, 'GET');
 
-		// res.lnurl_channel =
-		// 	'lnurl1dp68gup69uhnxdfwxgenxt35xuhrydfj8g6rgve0vd5xz6twwfjkzcm5daez7a339akxuatjdshkx6rpdehx2mpldaexgetjta5kg0fkxycxxvfnxsmxyefc893nsdrz8pnxzcnzxqunzwt2awq';
+		res.amount_received = res.amount_received ? Number(res.amount_received) : 0;
 
-		res.amount_received = Number(res.amount_received);
 		res.onchain_payments.forEach((payment, index) => {
 			res.onchain_payments[index] = {
 				...payment,
