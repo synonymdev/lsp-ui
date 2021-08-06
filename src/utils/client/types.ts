@@ -45,15 +45,35 @@ export type IBuyChannelResponse = {
 	lnurl_channel: string;
 };
 
+type IOnchainPayment = {
+	height: number;
+	hash: string;
+	to: string;
+	amount_base: number;
+	fee_base: number;
+	confirmed: true;
+};
+
+type ILnurl = {
+	uri: string;
+	callback: string;
+	k1: string;
+	tag: string;
+};
+
 export type IGetOrderResponse = {
 	_id: string;
 	local_balance: number;
 	remote_balance: number;
 	channel_expiry: number;
 	channel_expiry_ts: number;
+	order_expiry: number;
 	price: number;
 	created_at: number;
 	state: number;
+	stateMessage: string; // Debug message derived from state value
 	purchase_invoice: string;
-	lnurl_channel: string;
+	amount_received: number;
+	onchain_payments: IOnchainPayment[];
+	lnurl: ILnurl;
 };

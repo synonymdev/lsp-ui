@@ -5,11 +5,11 @@ import {
 	IGetOrderResponse
 } from './types';
 
-class Index {
+class ChainReactor {
 	private host = '';
 
 	constructor() {
-		this.setNetwork('regtest');
+		this.setNetwork('testnet');
 	}
 
 	setNetwork(network: 'mainnet' | 'testnet' | 'regtest'): void {
@@ -19,11 +19,11 @@ class Index {
 				break;
 			}
 			case 'testnet': {
-				this.host = '';
+				this.host = 'http://35.233.47.252:443/chainreactor/v1/';
 				break;
 			}
 			case 'regtest': {
-				this.host = 'http://35.233.47.252:443/chainreactor/v1/';
+				this.host = '';
 			}
 		}
 	}
@@ -46,16 +46,14 @@ class Index {
 	}
 
 	async call(path: string, method: 'GET' | 'POST', request?: any): Promise<any> {
-		const tempCorsProxy = 'http://localhost:8080/';
+		const tempCorsProxy = '';
+		// const tempCorsProxy = 'http://localhost:8080/';
 		const url = `${tempCorsProxy}${this.host}${path}`;
-
-		// console.log(`${this.host}${path}`);
 
 		const fetchRes = await fetch(url, {
 			method,
 			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
+				Accept: 'application/json'
 			},
 			body: request ? JSON.stringify(request) : undefined
 		});
@@ -104,13 +102,24 @@ class Index {
 	async getOrder(orderId: string): Promise<IGetOrderResponse> {
 		const res: IGetOrderResponse = await this.call(`channel/order?order_id=${orderId}`, 'GET');
 
-		res.lnurl_channel =
-			'lnurl1dp68gup69uhnxdfwxgenxt35xuhrydfj8g6rgve0vd5xz6twwfjkzcm5daez7a339akxuatjdshkx6rpdehx2mpldaexgetjta5kg0fkxycxxvfnxsmxyefc893nsdrz8pnxzcnzxqunzwt2awq';
+		// res.lnurl_channel =
+		// 	'lnurl1dp68gup69uhnxdfwxgenxt35xuhrydfj8g6rgve0vd5xz6twwfjkzcm5daez7a339akxuatjdshkx6rpdehx2mpldaexgetjta5kg0fkxycxxvfnxsmxyefc893nsdrz8pnxzcnzxqunzwt2awq';
+
+		res.amount_received = Number(res.amount_received);
+		res.onchain_payments.forEach((payment, index) => {
+			res.onchain_payments[index] = {
+				...payment,
+				amount_base: Number(payment.amount_base),
+				fee_base: Number(payment.fee_base)
+			};
+		});
+
+		res.stateMessage = ChainReactor.getStateMessage(res.state);
 
 		return res;
 	}
 }
 
-const cr = new Index();
+const cr = new ChainReactor();
 
 export default cr;

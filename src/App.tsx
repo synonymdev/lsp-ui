@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Container } from 'react-bootstrap';
 
 import Navbar from './components/navbar';
 import ScrollToTop from './utils/ScrollToTop';
@@ -10,9 +11,9 @@ import OrderPage from './pages/order';
 function App(): JSX.Element {
 	return (
 		<Router>
-			<div id={'home'}>
-				<Navbar />
-				<ScrollToTop />
+			<Navbar />
+			<ScrollToTop />
+			<Container>
 				<Switch>
 					<Route exact path='/'>
 						<HomePage />
@@ -28,7 +29,7 @@ function App(): JSX.Element {
 				</Switch>
 
 				{/* <Footer /> */}
-			</div>
+			</Container>
 		</Router>
 	);
 }

@@ -36,7 +36,8 @@
     "@typescript-eslint/space-before-function-paren": ["warn", "never"],
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/strict-boolean-expressions": "off",
-    "@typescript-eslint/naming-convention": "off"
+    "@typescript-eslint/naming-convention": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
   },
   "settings": {
     "import/resolver": {

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, Card, Col, Container, Row } from 'react-bootstrap';
+import { Button, Card, Col, Row } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { refreshInfo, selectInfo, selectInfoState } from '../store/cr';
 
@@ -9,11 +9,11 @@ function HomePage(): JSX.Element {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		dispatch(refreshInfo()).catch((e) => console.error(e));
+		dispatch(refreshInfo()).catch((e) => alert(e));
 	}, []);
 
 	return (
-		<Container>
+		<div>
 			<h1>Home</h1>
 
 			<Button onClick={() => dispatch(refreshInfo())} disabled={state === 'loading'}>
@@ -78,7 +78,7 @@ function HomePage(): JSX.Element {
 					</Row>
 				);
 			})}
-		</Container>
+		</div>
 	);
 }
 
