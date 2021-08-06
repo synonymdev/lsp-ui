@@ -45,7 +45,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
+    "deploy": "yarn build && cp build/index.html build/200.html && surge ./build http://cr-98375983893.surge.sh"
   },
   "eslintConfig": {
     "extends": [
