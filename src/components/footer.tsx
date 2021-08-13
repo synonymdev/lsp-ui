@@ -1,4 +1,4 @@
-import { Button, Col, Container, Image, Jumbotron, Row } from 'react-bootstrap';
+import { Col, Container, Image, Jumbotron, Row } from 'react-bootstrap';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
