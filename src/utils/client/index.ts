@@ -30,16 +30,18 @@ class ChainReactor {
 
 	static getStateMessage(code: number): string {
 		switch (code) {
+			case 450:
+				return 'CLOSED';
 			case 0:
 				return 'CREATED';
-			case 100:
-				return 'PAID';
-			case 200:
-				return 'URI_SET';
-			case 300:
-				return 'OPENED';
 			case 400:
 				return 'GIVE_UP';
+			case 500:
+				return 'OPEN';
+			case 300:
+				return 'OPENING';
+			case 100:
+				return 'PAID';
 		}
 
 		return `Unknown code: ${code}`;
@@ -74,16 +76,6 @@ class ChainReactor {
 
 	async getInfo(): Promise<IGetInfoResponse> {
 		const res: IGetInfoResponse = await this.call('node/info', 'GET');
-
-		// Adds a product name for display
-		res.services.forEach((s) => {
-			s.product_name = `Product ${s.product_id}`;
-			switch (s.product_id) {
-				case '60eed21d3db8ba8ac85c7322': {
-					s.product_name = 'Lightning Channel';
-				}
-			}
-		});
 
 		return res;
 	}

@@ -1,17 +1,19 @@
 export type IService = {
 	available: boolean;
 	product_id: string;
-	product_name: string;
+	description: string;
 	min_channel_size: number;
 	max_channel_size: number;
 	min_chan_expiry: number;
 	max_chan_expiry: number;
 	order_states: {
+		CLOSED: number;
 		CREATED: number;
+		GIVE_UP: number;
+		OPEN: number;
+		OPENING: number;
 		PAID: number;
 		URI_SET: number;
-		OPENED: number;
-		GIVE_UP: number;
 	};
 };
 
@@ -61,14 +63,22 @@ type ILnurl = {
 	tag: string;
 };
 
+type IChannelOpenTx = {
+	transaction_id: string;
+	transaction_vout: number;
+};
+
 export type IGetOrderResponse = {
 	_id: string;
 	local_balance: number;
 	remote_balance: number;
 	channel_expiry: number;
+	channel_open_tx?: IChannelOpenTx;
 	channel_expiry_ts: number;
 	order_expiry: number;
 	price: number;
+	total_amount: number;
+	btc_address: string;
 	created_at: number;
 	state: number;
 	stateMessage: string; // Debug message derived from state value
@@ -76,4 +86,6 @@ export type IGetOrderResponse = {
 	amount_received: number;
 	onchain_payments: IOnchainPayment[];
 	lnurl: ILnurl;
+	remote_node_uri: string;
+	remote_node_src: string;
 };

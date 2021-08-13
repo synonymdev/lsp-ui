@@ -50,7 +50,7 @@ function HomePage(): JSX.Element {
 			{services.map((service) => {
 				const {
 					product_id,
-					product_name,
+					description,
 					min_chan_expiry,
 					max_chan_expiry,
 					max_channel_size,
@@ -65,7 +65,7 @@ function HomePage(): JSX.Element {
 							<Card>
 								<Card.Body>
 									<Card.Title>
-										{product_name} {available}
+										{description} ({available ? 'Available' : 'Unavailable'})
 									</Card.Title>
 									<Card.Text>Max channel size: {max_channel_size}</Card.Text>
 									<Card.Text>Min channel size: {min_channel_size}</Card.Text>

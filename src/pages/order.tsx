@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Col, Container, Row } from 'react-bootstrap';
+import { Card, Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { refreshOrder, selectOrders, selectOrdersState } from '../store/cr';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { IGetOrderResponse } from '../utils/client/types';
+import { addressLink, txLink, nodePubKeyLink } from '../utils/links';
 
 function OrderPage(): JSX.Element {
 	const { orderId } = useParams();
@@ -46,7 +47,13 @@ function OrderPage(): JSX.Element {
 		remote_balance,
 		price,
 		purchase_invoice,
-		stateMessage
+		stateMessage,
+		btc_address,
+		remote_node_src,
+		channel_expiry,
+		channel_open_tx,
+		remote_node_uri,
+		total_amount
 	} = order;
 
 	return (
@@ -71,21 +78,40 @@ function OrderPage(): JSX.Element {
 					<Card>
 						<Card.Body>
 							<Card.Title>Payment</Card.Title>
-							<Card.Text>Total amount received: {amount_received}</Card.Text>
+							<Card.Text>
+								Total amount received: {amount_received} of {total_amount}
+							</Card.Text>
+
+							<Card.Text>BTC address: {addressLink(btc_address)}</Card.Text>
 
 							{onchain_payments
 								? onchain_payments.map((payment) => (
 									<Card.Text key={payment.hash}>
-											&bull; {payment.amount_base} (fee {payment.fee_base}){' '}
-										<a
-											target={'_blank'}
-											href={`https://mempool.space/testnet/tx/${payment.hash.toString()}`}
-										>
-											{payment.hash}
-										</a>
+											&bull; {payment.amount_base} (fee {payment.fee_base}) {txLink(payment.hash)}
 									</Card.Text>
 								  ))
 								: null}
+						</Card.Body>
+					</Card>
+				</Col>
+			</Row>
+
+			<br />
+
+			<Row>
+				<Col>
+					<Card>
+						<Card.Body>
+							<Card.Title>Channel</Card.Title>
+							<Card.Text>Remote node source: {remote_node_src}</Card.Text>
+							<Card.Text>Remote node URI: {nodePubKeyLink(remote_node_uri)}</Card.Text>
+							<Card.Text>Channel expiry: {channel_expiry}</Card.Text>
+							{channel_open_tx ? (
+								<Card.Text>
+									Channel open tx: {txLink(channel_open_tx.transaction_id)}:
+									{channel_open_tx.transaction_vout}
+								</Card.Text>
+							) : null}
 						</Card.Body>
 					</Card>
 				</Col>
