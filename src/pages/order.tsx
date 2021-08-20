@@ -5,6 +5,7 @@ import { refreshOrder, selectOrders, selectOrdersState } from '../store/cr';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { IGetOrderResponse } from '../utils/client/types';
 import { addressLink, txLink, nodePubKeyLink } from '../utils/links';
+import Payment from '../components/payment';
 
 function OrderPage(): JSX.Element {
 	const { orderId } = useParams();
@@ -74,6 +75,7 @@ function OrderPage(): JSX.Element {
 						</Card.Body>
 					</Card>
 				</Col>
+
 				<Col>
 					<Card>
 						<Card.Body>
@@ -93,6 +95,14 @@ function OrderPage(): JSX.Element {
 								: null}
 						</Card.Body>
 					</Card>
+				</Col>
+			</Row>
+
+			<br />
+
+			<Row>
+				<Col>
+					<Payment order={order} />
 				</Col>
 			</Row>
 
