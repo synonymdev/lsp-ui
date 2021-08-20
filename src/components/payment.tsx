@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import QRCode from 'react-qr-code';
 import { IGetOrderResponse } from '../utils/client/types';
 
-function Payment({ order }: { order: IGetOrderResponse }): JSX.Element {
+function PaymentCard({ order }: { order: IGetOrderResponse }): JSX.Element {
 	const { btc_address, purchase_invoice, total_amount, _id } = order;
 
 	const btc = total_amount / 100000000;
@@ -13,8 +13,13 @@ function Payment({ order }: { order: IGetOrderResponse }): JSX.Element {
 	return (
 		<Card>
 			<Card.Body>
-				<Row style={{ textAlign: 'center' }}>
+				<Row>
 					<Col lg={6}>
+						<p>{btc_address}</p>
+						<p>{purchase_invoice}</p>
+					</Col>
+
+					<Col lg={6} style={{ textAlign: 'center' }}>
 						<p>
 							<QRCode value={uri} />
 						</p>
@@ -22,14 +27,10 @@ function Payment({ order }: { order: IGetOrderResponse }): JSX.Element {
 							Open in wallet
 						</a>
 					</Col>
-					<Col lg={6}>
-						<p>{btc_address}</p>
-						<p>{purchase_invoice}</p>
-					</Col>
 				</Row>
 			</Card.Body>
 		</Card>
 	);
 }
 
-export default Payment;
+export default PaymentCard;
