@@ -7,6 +7,7 @@ import ScrollToTop from './utils/ScrollToTop';
 import HomePage from './pages/home';
 import OrdersPage from './pages/orders';
 import OrderPage from './pages/order';
+import BuyPage from './pages/buy';
 
 function App(): JSX.Element {
 	return (
@@ -19,8 +20,8 @@ function App(): JSX.Element {
 						<HomePage />
 					</Route>
 
-					<Route path='/orders'>
-						<OrdersPage />
+					<Route path='/buy/:productId'>
+						<BuyPage />
 					</Route>
 
 					<Route path='/order/:orderId'>

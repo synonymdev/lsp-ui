@@ -102,6 +102,7 @@ class ChainReactor {
 			};
 		});
 
+		res.total_amount = Number(res.total_amount);
 		res.stateMessage = ChainReactor.getStateMessage(res.state);
 
 		return res;
