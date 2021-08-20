@@ -56,7 +56,7 @@ type IOnchainPayment = {
 	confirmed: true;
 };
 
-type ILnurl = {
+export type ILnurl = {
 	uri: string;
 	callback: string;
 	k1: string;

@@ -5,6 +5,8 @@ import { refreshOrder, selectOrders, selectOrdersState } from '../store/cr';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { IGetOrderResponse } from '../utils/client/types';
 import { addressLink, txLink, nodePubKeyLink } from '../utils/links';
+import PaymentCard from '../components/payment';
+import LnurlCard from '../components/lnurl';
 
 function OrderPage(): JSX.Element {
 	const { orderId } = useParams();
@@ -74,6 +76,7 @@ function OrderPage(): JSX.Element {
 						</Card.Body>
 					</Card>
 				</Col>
+
 				<Col>
 					<Card>
 						<Card.Body>
@@ -93,6 +96,14 @@ function OrderPage(): JSX.Element {
 								: null}
 						</Card.Body>
 					</Card>
+				</Col>
+			</Row>
+
+			<br />
+
+			<Row>
+				<Col>
+					<PaymentCard order={order} />
 				</Col>
 			</Row>
 
@@ -121,15 +132,7 @@ function OrderPage(): JSX.Element {
 
 			<Row>
 				<Col>
-					<Card>
-						<Card.Body>
-							<Card.Title>LNURL</Card.Title>
-							<Card.Text>Callback: {lnurl.callback}</Card.Text>
-							<Card.Text>URI: {lnurl.uri}</Card.Text>
-							<Card.Text>K1: {lnurl.k1}</Card.Text>
-							<Card.Text>Tag: {lnurl.tag}</Card.Text>
-						</Card.Body>
-					</Card>
+					<LnurlCard lnurl={lnurl} />
 				</Col>
 			</Row>
 		</div>
