@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './';
-import { IGetInfoResponse, IGetOrderResponse } from '../utils/client/types';
-import crClient from '../utils/client';
+import bt, { IGetInfoResponse, IGetOrderResponse } from '@synonymdev/blocktank-client';
 
 type RequestState = 'idle' | 'loading' | 'error';
 
@@ -32,13 +31,13 @@ const initialState: CRState = {
 };
 
 export const refreshInfo = createAsyncThunk('cr/refreshInfo', async() => {
-	const response = await crClient.getInfo();
+	const response = await bt.getInfo();
 	// The value we return becomes the `fulfilled` action payload
 	return response;
 });
 
 export const refreshOrder = createAsyncThunk('cr/refreshOrder', async(orderId: string) => {
-	const response = await crClient.getOrder(orderId);
+	const response = await bt.getOrder(orderId);
 	// The value we return becomes the `fulfilled` action payload
 	return response;
 });

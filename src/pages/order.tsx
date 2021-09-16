@@ -3,7 +3,7 @@ import { Card, Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { refreshOrder, selectOrders, selectOrdersState } from '../store/cr';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { IGetOrderResponse } from '../utils/client/types';
+import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import { addressLink, txLink, nodePubKeyLink } from '../utils/links';
 import PaymentCard from '../components/payment';
 import LnurlCard from '../components/lnurl';

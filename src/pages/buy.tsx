@@ -3,8 +3,7 @@ import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useParams, useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { refreshInfo, selectInfo, selectInfoState } from '../store/cr';
-import { IBuyChannelRequest, IService } from '../utils/client/types';
-import cr from '../utils/client';
+import bt, { IBuyChannelRequest, IService } from '@synonymdev/blocktank-client';
 
 function BuyPage(): JSX.Element {
 	const { productId } = useParams();
@@ -48,7 +47,7 @@ function BuyPage(): JSX.Element {
 		};
 
 		try {
-			const buyRes = await cr.buyChannel(req);
+			const buyRes = await bt.buyChannel(req);
 			const { order_id } = buyRes;
 
 			history.push(`/order/${order_id}`);
