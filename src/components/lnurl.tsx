@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import QRCode from 'react-qr-code';
-import { ILnurl } from '../utils/client/types';
+import { ILnurl } from '@synonymdev/blocktank-client';
 
 function LnurlCard({ lnurl }: { lnurl: ILnurl }): JSX.Element {
 	const { uri, k1, tag, callback } = lnurl;

@@ -3,7 +3,7 @@ import { Card, Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { refreshOrder, selectOrders, selectOrdersState } from '../store/cr';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { IGetOrderResponse } from '../utils/client/types';
+import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import { addressLink, txLink, nodePubKeyLink } from '../utils/links';
 import PaymentCard from '../components/payment';
 import LnurlCard from '../components/lnurl';
@@ -55,7 +55,8 @@ function OrderPage(): JSX.Element {
 		channel_expiry,
 		channel_open_tx,
 		remote_node_uri,
-		total_amount
+		total_amount,
+		zero_conf_satvbyte
 	} = order;
 
 	return (
@@ -84,6 +85,12 @@ function OrderPage(): JSX.Element {
 							<Card.Text>
 								Total amount received: {amount_received} of {total_amount}
 							</Card.Text>
+
+							{zero_conf_satvbyte ? (
+								<Card.Text>
+									Zero conf payment min fee: {zero_conf_satvbyte} sat/vbyte
+								</Card.Text>
+							) : null}
 
 							<Card.Text>BTC address: {addressLink(btc_address)}</Card.Text>
 

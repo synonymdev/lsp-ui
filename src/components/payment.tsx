@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import QRCode from 'react-qr-code';
-import { IGetOrderResponse } from '../utils/client/types';
+import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 
 function PaymentCard({ order }: { order: IGetOrderResponse }): JSX.Element {
 	const { btc_address, purchase_invoice, total_amount, _id } = order;
