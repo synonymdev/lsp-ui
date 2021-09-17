@@ -55,7 +55,8 @@ function OrderPage(): JSX.Element {
 		channel_expiry,
 		channel_open_tx,
 		remote_node_uri,
-		total_amount
+		total_amount,
+		zero_conf_satvbyte
 	} = order;
 
 	return (
@@ -84,6 +85,12 @@ function OrderPage(): JSX.Element {
 							<Card.Text>
 								Total amount received: {amount_received} of {total_amount}
 							</Card.Text>
+
+							{zero_conf_satvbyte ? (
+								<Card.Text>
+									Zero conf payment min fee: {zero_conf_satvbyte} sat/vbyte
+								</Card.Text>
+							) : null}
 
 							<Card.Text>BTC address: {addressLink(btc_address)}</Card.Text>
 
