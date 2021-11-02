@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Container, Table, Form, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import { refreshOrder, selectOrders, selectOrdersState } from '../store/cr';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { refreshOrder, selectOrders, selectOrdersState } from '../../store/cr';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 function OrdersPage(): JSX.Element {
 	const orders = useAppSelector(selectOrders);
