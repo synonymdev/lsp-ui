@@ -1,12 +1,13 @@
-import { Switch, Route, useRouteMatch } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import OrderPage from '../admin/order';
 import React from 'react';
 import BuyPage from './buy';
+import './index.scss';
 
 function PublicPages(): JSX.Element {
 	return (
-		<Container>
+		<Container className={'container'}>
 			<Switch>
 				<Route exact path={'/'}>
 					<BuyPage />

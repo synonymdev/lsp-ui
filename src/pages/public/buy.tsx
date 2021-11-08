@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { refreshInfo, selectInfo, selectInfoState } from '../../store/cr';
 import bt, { IBuyChannelRequest, IService } from '@synonymdev/blocktank-client';
+import FormCard from '../../components/form-card';
 import './buy.scss';
 
 function BuyPage(): JSX.Element {
@@ -84,8 +85,45 @@ function BuyPage(): JSX.Element {
 		description
 	} = product;
 
-	if (!available) {
-		return (
+	let content = <></>;
+	if (available) {
+		content = (
+			<Form>
+				<h4>Create Channel</h4>
+				<Form.Group>
+					<Form.Label>Local balance</Form.Label>
+					<Form.Control
+						type='number'
+						value={localBalance}
+						onChange={(e) => setLocalBalance(e.target.value)}
+					/>
+				</Form.Group>
+				<Form.Group>
+					<Form.Label>Remote balance</Form.Label>
+					<Form.Control
+						type='number'
+						value={remoteBalance}
+						onChange={(e) => setRemoteBalance(e.target.value)}
+					/>
+				</Form.Group>
+				<Form.Group>
+					<Form.Label>Channel expiry (Weeks)</Form.Label>
+					<Form.Control
+						type='number'
+						value={channelExpiry}
+						onChange={(e) => setChannelExpiry(e.target.value)}
+					/>
+				</Form.Group>
+
+				<div style={{ display: 'flex', justifyContent: 'center' }}>
+					<Button className={'form-button'} onClick={onBuy} type='submit'>
+						Pay now
+					</Button>
+				</div>
+			</Form>
+		);
+	} else {
+		content = (
 			<div>
 				<h1>{description} not available</h1>
 				{refreshButton}
@@ -95,7 +133,7 @@ function BuyPage(): JSX.Element {
 
 	return (
 		<Row className={'buy-container'}>
-			<Col lg={6} sm={12} className={'infoCol'}>
+			<Col xl={8} lg={7} md={5} sm={12} className={'infoCol'}>
 				<h1>Lightning Network Services</h1>
 				<br />
 				<p>
@@ -105,41 +143,8 @@ function BuyPage(): JSX.Element {
 				</p>
 			</Col>
 
-			<Col lg={6} sm={12}>
-				<Card>
-					<Card.Body>
-						<Form>
-							<Form.Group>
-								<Form.Label>Local balance</Form.Label>
-								<Form.Control
-									type='number'
-									value={localBalance}
-									onChange={(e) => setLocalBalance(e.target.value)}
-								/>
-							</Form.Group>
-							<Form.Group>
-								<Form.Label>Remote balance</Form.Label>
-								<Form.Control
-									type='number'
-									value={remoteBalance}
-									onChange={(e) => setRemoteBalance(e.target.value)}
-								/>
-							</Form.Group>
-							<Form.Group>
-								<Form.Label>Channel expiry (Weeks)</Form.Label>
-								<Form.Control
-									type='number'
-									value={channelExpiry}
-									onChange={(e) => setChannelExpiry(e.target.value)}
-								/>
-							</Form.Group>
-
-							<Button onClick={onBuy} variant='primary' type='submit'>
-								Buy
-							</Button>
-						</Form>
-					</Card.Body>
-				</Card>
+			<Col xl={4} lg={5} md={7} sm={12}>
+				<FormCard>{content}</FormCard>
 			</Col>
 		</Row>
 	);

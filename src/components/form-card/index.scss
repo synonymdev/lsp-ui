@@ -1,0 +1,56 @@
+.form-card {
+  border-radius: 15px;
+  background-color: transparent;
+  background-clip: content-box;
+  overflow: hidden;
+  padding-left: 36px;
+  padding-right: 36px;
+  padding-top: 19px;
+  padding-bottom: 19px;
+
+  h4 {
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 75px;
+  }
+
+  .ellipse89 {
+    position: absolute;
+    width: 257.55px;
+    height: 252.83px;
+    left: 70%;
+    top: 70%;
+
+    background: rgba(87, 165, 252, 0.41);
+    opacity: 0.8;
+    filter: blur(120px);
+    transform: rotate(45deg);
+  }
+
+  .ellipse90 {
+    position: absolute;
+    width: 257.55px;
+    height: 252.83px;
+    left: -40%;
+    top: 70%;
+
+    background: rgba(250, 159, 97, 0.41);
+    opacity: 0.8;
+    filter: blur(120px);
+    transform: rotate(45deg);
+  }
+
+  .ellipse91 {
+    position: absolute;
+    width: 257.55px;
+    height: 252.83px;
+    left: -40%;
+    top: -40%;
+
+    background: rgba(243, 125, 192, 0.6);
+    opacity: 0.8;
+    filter: blur(120px);
+    transform: rotate(45deg);
+  }
+
+}
