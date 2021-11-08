@@ -43,8 +43,8 @@ $min-contrast-ratio:   1.6 !default;
 
 // Body
 
-$body-bg:                   #0f2537 !default;
-$body-color:                $gray-100 !default;
+$body-bg:                   #0F0E13 !default;
+$body-color:                $white !default;
 
 // Components
 
@@ -55,7 +55,8 @@ $border-radius-sm:            0 !default;
 // Fonts
 
 // stylelint-disable-next-line value-keyword-case
-$font-family-sans-serif:      Lato, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+//$font-family-sans-serif:      Lato, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+$font-family-sans-serif:      Neue Haas Grotesk Display Pro !default;
 
 $text-muted:                  rgba(255, 255, 255, .4) !default;
 
