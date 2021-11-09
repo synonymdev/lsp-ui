@@ -9,11 +9,12 @@ function App(): JSX.Element {
 		<Router>
 			<ScrollToTop />
 			<Switch>
-				<Route exact path='/'>
-					<PublicPages />
-				</Route>
 				<Route path='/admin'>
 					<AdminPages />
+				</Route>
+
+				<Route exact path='/*'>
+					<PublicPages />
 				</Route>
 			</Switch>
 		</Router>

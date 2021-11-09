@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { refreshInfo, selectInfo, selectInfoState } from '../../store/cr';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { refreshInfo, selectInfo, selectInfoState } from '../../../store/cr';
 import bt, { IBuyChannelRequest, IService } from '@synonymdev/blocktank-client';
-import FormCard from '../../components/form-card';
-import './buy.scss';
+import FormCard from '../../../components/form-card';
+import './index.scss';
 
 function BuyPage(): JSX.Element {
 	const { services } = useAppSelector(selectInfo);
@@ -85,45 +85,8 @@ function BuyPage(): JSX.Element {
 		description
 	} = product;
 
-	let content = <></>;
-	if (available) {
-		content = (
-			<Form>
-				<h4>Create Channel</h4>
-				<Form.Group>
-					<Form.Label>Local balance</Form.Label>
-					<Form.Control
-						type='number'
-						value={localBalance}
-						onChange={(e) => setLocalBalance(e.target.value)}
-					/>
-				</Form.Group>
-				<Form.Group>
-					<Form.Label>Remote balance</Form.Label>
-					<Form.Control
-						type='number'
-						value={remoteBalance}
-						onChange={(e) => setRemoteBalance(e.target.value)}
-					/>
-				</Form.Group>
-				<Form.Group>
-					<Form.Label>Channel expiry (Weeks)</Form.Label>
-					<Form.Control
-						type='number'
-						value={channelExpiry}
-						onChange={(e) => setChannelExpiry(e.target.value)}
-					/>
-				</Form.Group>
-
-				<div style={{ display: 'flex', justifyContent: 'center' }}>
-					<Button className={'form-button'} onClick={onBuy} type='submit'>
-						Pay now
-					</Button>
-				</div>
-			</Form>
-		);
-	} else {
-		content = (
+	if (!available) {
+		return (
 			<div>
 				<h1>{description} not available</h1>
 				{refreshButton}
@@ -132,21 +95,39 @@ function BuyPage(): JSX.Element {
 	}
 
 	return (
-		<Row className={'buy-container'}>
-			<Col xl={8} lg={7} md={5} sm={12} className={'infoCol'}>
-				<h1>Lightning Network Services</h1>
-				<br />
-				<p>
-					Open a connection to the Lightning Network and receive or send bitcoin instantly. Choose
-					your custom capacity and BTC for your new channel, or paste a Lightning invoice to refill
-					an existing channel.
-				</p>
-			</Col>
+		<Form>
+			<h4>Create Channel</h4>
+			<Form.Group>
+				<Form.Label>Local balance</Form.Label>
+				<Form.Control
+					type='number'
+					value={localBalance}
+					onChange={(e) => setLocalBalance(e.target.value)}
+				/>
+			</Form.Group>
+			<Form.Group>
+				<Form.Label>Remote balance</Form.Label>
+				<Form.Control
+					type='number'
+					value={remoteBalance}
+					onChange={(e) => setRemoteBalance(e.target.value)}
+				/>
+			</Form.Group>
+			<Form.Group>
+				<Form.Label>Channel expiry (Weeks)</Form.Label>
+				<Form.Control
+					type='number'
+					value={channelExpiry}
+					onChange={(e) => setChannelExpiry(e.target.value)}
+				/>
+			</Form.Group>
 
-			<Col xl={4} lg={5} md={7} sm={12}>
-				<FormCard>{content}</FormCard>
-			</Col>
-		</Row>
+			<div style={{ display: 'flex', justifyContent: 'center' }}>
+				<Button className={'form-button'} onClick={onBuy} type='submit'>
+					Pay Now
+				</Button>
+			</div>
+		</Form>
 	);
 }
 

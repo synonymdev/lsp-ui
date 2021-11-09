@@ -1,0 +1,25 @@
+.line-item {
+  display: flex;
+  align-items: center;
+  border-style: solid;
+  border-color: #3A3A3C;
+  border-width: 0px 0px 1px 0px;
+  padding-bottom: 12px;
+  padding-top: 12px;
+
+  .label {
+    color: #F75C1A;
+    flex: 2;
+    text-align: left;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .value {
+    color: white;
+    flex: 3;
+    text-align: right;
+    font-size: 17px;
+    font-weight: 500;
+  }
+}

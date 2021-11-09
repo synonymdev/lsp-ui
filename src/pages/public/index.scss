@@ -9,6 +9,19 @@ p {
   font-weight: 400;
 }
 
+.page-container {
+    height: 100vh;
+
+    display: flex;
+    align-content: center;
+
+    .infoCol {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+    }
+}
 
 
 .form-button {
