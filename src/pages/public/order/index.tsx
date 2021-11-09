@@ -69,7 +69,7 @@ function OrderPage(): JSX.Element {
 	return (
 		<div>
 			<h4>Payment</h4>
-			<LineItem label={'Order status'} value={stateMessage} />
+			<LineItem label={'Order status'} value={"Awaiting payment"} />
 			<LineItem label={'Order expiry'} value={new Date(order_expiry).toLocaleString()} />
 			<LineItem label={'Local balance'} value={local_balance} />
 			<LineItem label={'Remote balance'} value={remote_balance} />
@@ -77,7 +77,7 @@ function OrderPage(): JSX.Element {
 
 			<br />
 			<div style={{ textAlign: 'center' }}>
-				<Tabs defaultActiveKey='onchain' className='mb-3'>
+				<Tabs defaultActiveKey='onchain' className='mb-3' style={{ justifyContent: 'center' }}>
 					<Tab eventKey='onchain' title='On chain payment'>
 						<QRCode value={btc_address} />
 						<br />

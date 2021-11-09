@@ -19,30 +19,38 @@ const PageContainer = ({ children }): ReactElement => (
 		</Col>
 
 		<Col xl={4} lg={5} md={7} sm={12}>
-			<FormCard>{children}</FormCard>
+			{children}
 		</Col>
 	</Row>
 );
 
 function PublicPages(): JSX.Element {
+	const card = (
+		<FormCard>
+			<Switch>
+				<Route exact path={'/'}>
+					<BuyPage />
+				</Route>
+
+				<Route path={`/order/:orderId`}>
+					<OrderPage />
+				</Route>
+
+				<Route path='*'>
+					<h4>404</h4>
+					<p style={{ textAlign: 'center' }}>Page not found</p>
+				</Route>
+			</Switch>
+		</FormCard>
+	);
+
+	if (new URLSearchParams(window.location.search).get('embed') === 'true') {
+		return card;
+	}
+
 	return (
 		<Container className={'container'}>
-			<PageContainer>
-				<Switch>
-					<Route exact path={'/'}>
-						<BuyPage />
-					</Route>
-
-					<Route path={`/order/:orderId`}>
-						<OrderPage />
-					</Route>
-
-					<Route path='*'>
-						<h4>404</h4>
-						<p style={{ textAlign: 'center' }}>Page not found</p>
-					</Route>
-				</Switch>
-			</PageContainer>
+			<PageContainer>{card}</PageContainer>
 		</Container>
 	);
 }
