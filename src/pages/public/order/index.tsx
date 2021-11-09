@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { Button, Card, Col, Form, Row, Tab, Tabs } from 'react-bootstrap';
 import { useHistory, useParams } from 'react-router-dom';
 import QRCode from 'react-qr-code';
+import bip21 from 'bip21';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
 	refreshInfo,
@@ -13,6 +14,38 @@ import {
 } from '../../../store/cr';
 import bt, { IBuyChannelRequest, IGetOrderResponse, IService } from '@synonymdev/blocktank-client';
 import LineItem from '../../../components/line-item';
+import './index.scss';
+
+const PaymentTabs = ({ order }: { order: IGetOrderResponse }): ReactElement => {
+	const { _id, total_amount, btc_address, zero_conf_satvbyte, purchase_invoice } = order;
+
+	const onChainPaymentReq = bip21.encode(btc_address, {
+		amount: total_amount / 100000000,
+		label: `Blocktank #${_id}`
+	});
+
+	return (
+		<div style={{ textAlign: 'center' }}>
+			<Tabs defaultActiveKey='onchain' className='mb-3 payment-tabs'>
+				<Tab eventKey='onchain' title='On chain payment'>
+					<QRCode value={onChainPaymentReq} />
+					<br />
+					<br />
+					<p className={'pay-request'}>{btc_address}</p>
+					<p>
+						Set fee to more than <b>{zero_conf_satvbyte} sats/byte</b> to receive channel instantly
+					</p>
+				</Tab>
+				<Tab eventKey='lightning' title='Lightning invoice'>
+					<QRCode value={purchase_invoice} />
+					<br />
+					<br />
+					<p className={'pay-request'}>{purchase_invoice}</p>
+				</Tab>
+			</Tabs>
+		</div>
+	);
+};
 
 function OrderPage(): JSX.Element {
 	const { orderId } = useParams();
@@ -63,39 +96,43 @@ function OrderPage(): JSX.Element {
 		remote_node_uri,
 		total_amount,
 		zero_conf_satvbyte,
-		...rest
+		zero_conf_satvbyte_expiry,
+		renewals
 	} = order;
+
+	let content = <></>;
+	switch (state) {
+		case 0:
+			content = <PaymentTabs order={order} />;
+			break;
+		// case 400:
+		// 	return 'Given up';
+		// case 500:
+		// 	return 'Channel open';
+		// case 300:
+		// 	return 'Channel opening';
+		case 100: {
+			// TODO lnurl QR
+			break;
+		}
+		// case 450:
+		// return 'Channel closed';
+	}
 
 	return (
 		<div>
 			<h4>Payment</h4>
-			<LineItem label={'Order status'} value={"Awaiting payment"} />
+			<LineItem label={'Order status'} value={stateMessage} />
 			<LineItem label={'Order expiry'} value={new Date(order_expiry).toLocaleString()} />
-			<LineItem label={'Local balance'} value={local_balance} />
-			<LineItem label={'Remote balance'} value={remote_balance} />
-			<LineItem label={'Channel expiry'} value={channel_expiry} />
+			<LineItem label={'Local balance'} value={`${local_balance} sats`} />
+			<LineItem label={'Remote balance'} value={`${remote_balance} sats`} />
+			<LineItem label={'Channel expiry'} value={`${channel_expiry} weeks`} />
+
+			{/* <pre>{JSON.stringify(onchain_payments)}</pre> */}
 
 			<br />
-			<div style={{ textAlign: 'center' }}>
-				<Tabs defaultActiveKey='onchain' className='mb-3' style={{ justifyContent: 'center' }}>
-					<Tab eventKey='onchain' title='On chain payment'>
-						<QRCode value={btc_address} />
-						<br />
-						<br />
-						<p>{btc_address}</p>
-						<p>
-							Set fee to more than <b>{zero_conf_satvbyte} sats/byte</b> to receive channel
-							instantly
-						</p>
-					</Tab>
-					<Tab eventKey='lightning' title='Lightning invoice'>
-						<QRCode value={purchase_invoice} />
-						<br />
-						<br />
-						<p>{purchase_invoice}</p>
-					</Tab>
-				</Tabs>
-			</div>
+
+			{content}
 		</div>
 	);
 }
