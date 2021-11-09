@@ -67,12 +67,7 @@ function BuyPage(): JSX.Element {
 	);
 
 	if (!product) {
-		return (
-			<div>
-				<h1>Service unavailable</h1>
-				{refreshButton}
-			</div>
-		);
+		return <div />;
 	}
 
 	const {
