@@ -11,6 +11,7 @@ function BuyPage(): JSX.Element {
 	const infoState = useAppSelector(selectInfoState);
 	const history = useHistory();
 
+	const [isLoading, setIsLoading] = useState(true);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [product, setProduct] = useState<IService | undefined>(undefined);
 	const [channelExpiry, setChannelExpiry] = useState<string>('1');
@@ -22,6 +23,7 @@ function BuyPage(): JSX.Element {
 			const service = services[0];
 
 			setProduct(service);
+			setIsLoading(false);
 
 			if (remoteBalance === '0') {
 				setRemoteBalance(`${service.min_channel_size}`);
@@ -40,7 +42,9 @@ function BuyPage(): JSX.Element {
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		dispatch(refreshInfo()).catch((e) => alert(e));
+		dispatch(refreshInfo())
+			.catch((e) => alert(e))
+			.finally(() => setIsLoading(false));
 	}, []);
 
 	const onBuy = async(e): Promise<void> => {
@@ -106,6 +110,10 @@ function BuyPage(): JSX.Element {
 			{infoState === 'loading' ? 'Loading...' : 'Try again'}
 		</Button>
 	);
+
+	if (isLoading) {
+		return <h4>Loading...</h4>;
+	}
 
 	if (!product) {
 		return <div />;

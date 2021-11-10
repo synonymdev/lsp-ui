@@ -1743,10 +1743,10 @@
     "@svgr/plugin-svgo" "^5.5.0"
     loader-utils "^2.0.0"
 
-"@synonymdev/blocktank-client@^0.0.14":
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/@synonymdev/blocktank-client/-/blocktank-client-0.0.14.tgz#a55a46b7c2297cf32ef086974c8d7d7cb6fb8d81"
-  integrity sha512-dDzFca0gQ3SFrXw2D+gfEDOb9TIvMU9Weh0aAN1lA7lS37RjAZWRsXxsqeAqT7wZqpQog6Cx86LoL6rttUZgUA==
+"@synonymdev/blocktank-client@^0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@synonymdev/blocktank-client/-/blocktank-client-0.0.15.tgz#9b555bfd5cc9ab327f36c39b66262ae1c67d3420"
+  integrity sha512-JfAGMktM0YTQDVz8MCuMnid+nXPOm1lmo0hFFvhLicymna+gBysNnaGVP0cNUycmDs+81heiMbdmoCHAeqJdng==
   dependencies:
     cross-fetch "^3.1.4"
 

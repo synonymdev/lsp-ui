@@ -1,28 +1,32 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import { Button, Card, Col, Form, Row, Tab, Tabs } from 'react-bootstrap';
-import { useHistory, useParams } from 'react-router-dom';
+import { Tab, Tabs } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 import QRCode from 'react-qr-code';
 import bip21 from 'bip21';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import {
-	refreshInfo,
-	refreshOrder,
-	selectInfo,
-	selectInfoState,
-	selectOrders,
-	selectOrdersState
-} from '../../../store/cr';
-import bt, { IBuyChannelRequest, IGetOrderResponse, IService } from '@synonymdev/blocktank-client';
+import { refreshOrder, selectOrders, selectOrdersState } from '../../../store/cr';
+import { IGetOrderResponse, IService } from '@synonymdev/blocktank-client';
 import LineItem from '../../../components/line-item';
 import './index.scss';
 
-const PaymentTabs = ({ order }: { order: IGetOrderResponse }): ReactElement => {
-	const { _id, total_amount, btc_address, zero_conf_satvbyte, purchase_invoice } = order;
+const Payment = ({ order }: { order: IGetOrderResponse }): ReactElement => {
+	const {
+		_id,
+		total_amount,
+		btc_address,
+		zero_conf_satvbyte,
+		purchase_invoice,
+		amount_received,
+		price
+	} = order;
 
 	const onChainPaymentReq = bip21.encode(btc_address, {
 		amount: total_amount / 100000000,
 		label: `Blocktank #${_id}`
 	});
+
+	// TODO if incoming payment show that instead
+	//			<p>{JSON.stringify(onchain_payments)}</p>
 
 	return (
 		<div style={{ textAlign: 'center' }}>
@@ -47,11 +51,26 @@ const PaymentTabs = ({ order }: { order: IGetOrderResponse }): ReactElement => {
 	);
 };
 
+const ClaimChannel = ({ order }: { order: IGetOrderResponse }): ReactElement => {
+	const { _id, lnurl_string } = order;
+
+	return (
+		<div style={{ textAlign: 'center' }}>
+			<QRCode value={lnurl_string} />
+			<br />
+			<br />
+			<p>Scan QR to claim your channel</p>
+
+			<p className={'pay-request'}>{lnurl_string}</p>
+		</div>
+	);
+};
+
 function OrderPage(): JSX.Element {
 	const { orderId } = useParams();
 
+	const [isLoading, setIsLoading] = useState(true);
 	const [order, setOrder] = useState<IGetOrderResponse | undefined>(undefined);
-
 	const orders = useAppSelector(selectOrders);
 	const ordersState = useAppSelector(selectOrdersState);
 	const dispatch = useAppDispatch();
@@ -60,15 +79,18 @@ function OrderPage(): JSX.Element {
 		const newOrder = orders.find((o) => o._id === orderId);
 		if (newOrder) {
 			setOrder(newOrder);
+			setIsLoading(false);
 		}
 	}, [orders]);
 
 	useEffect(() => {
-		dispatch(refreshOrder(orderId)).catch((e) => alert(e));
+		dispatch(refreshOrder(orderId))
+			.catch((e) => alert(e))
+			.finally(() => setIsLoading(false));
 	}, []);
 
 	if (!order) {
-		if (ordersState === 'loading') {
+		if (ordersState === 'loading' || isLoading) {
 			return <h4>Loading...</h4>;
 		}
 
@@ -103,7 +125,7 @@ function OrderPage(): JSX.Element {
 	let content = <></>;
 	switch (state) {
 		case 0:
-			content = <PaymentTabs order={order} />;
+			content = <Payment order={order} />;
 			break;
 		// case 400:
 		// 	return 'Given up';
@@ -112,7 +134,7 @@ function OrderPage(): JSX.Element {
 		// case 300:
 		// 	return 'Channel opening';
 		case 100: {
-			// TODO lnurl QR
+			content = <ClaimChannel order={order} />;
 			break;
 		}
 		// case 450:
@@ -121,14 +143,12 @@ function OrderPage(): JSX.Element {
 
 	return (
 		<div>
-			<h4>Payment</h4>
+			<h4>Order</h4>
 			<LineItem label={'Order status'} value={stateMessage} />
 			<LineItem label={'Order expiry'} value={new Date(order_expiry).toLocaleString()} />
 			<LineItem label={'Remote balance'} value={`${local_balance} sats`} />
 			<LineItem label={'Local balance'} value={`${remote_balance} sats`} />
 			<LineItem label={'Channel expiry'} value={`${channel_expiry} weeks`} />
-
-			{/* <pre>{JSON.stringify(onchain_payments)}</pre> */}
 
 			<br />
 
