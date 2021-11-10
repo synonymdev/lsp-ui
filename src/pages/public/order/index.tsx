@@ -17,7 +17,8 @@ const Payment = ({ order }: { order: IGetOrderResponse }): ReactElement => {
 		zero_conf_satvbyte,
 		purchase_invoice,
 		amount_received,
-		price
+		price,
+		onchain_payments
 	} = order;
 
 	const onChainPaymentReq = bip21.encode(btc_address, {
@@ -30,6 +31,7 @@ const Payment = ({ order }: { order: IGetOrderResponse }): ReactElement => {
 
 	return (
 		<div style={{ textAlign: 'center' }}>
+			{/* <p>{JSON.stringify(onchain_payments)}</p> */}
 			<Tabs defaultActiveKey='onchain' className='mb-3 payment-tabs'>
 				<Tab eventKey='onchain' title='On chain payment'>
 					<QRCode value={onChainPaymentReq} />
@@ -89,6 +91,15 @@ function OrderPage(): JSX.Element {
 			.finally(() => setIsLoading(false));
 	}, []);
 
+	useEffect(() => {
+		const intervalId = setInterval(() => {
+			dispatch(refreshOrder(orderId)).catch((e) => alert(e));
+			console.log('Refresh');
+		}, 5000);
+
+		return () => clearInterval(intervalId);
+	}, []);
+
 	if (!order) {
 		if (ordersState === 'loading' || isLoading) {
 			return <h4>Loading...</h4>;
@@ -145,6 +156,9 @@ function OrderPage(): JSX.Element {
 		<div>
 			<h4>Order</h4>
 			<LineItem label={'Order status'} value={stateMessage} />
+			{state === 0 ? (
+				<LineItem label={'Received'} value={`${amount_received}/${price} sats`} />
+			) : null}
 			<LineItem label={'Order expiry'} value={new Date(order_expiry).toLocaleString()} />
 			<LineItem label={'Remote balance'} value={`${local_balance} sats`} />
 			<LineItem label={'Local balance'} value={`${remote_balance} sats`} />
