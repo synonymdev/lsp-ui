@@ -3,10 +3,12 @@ import { Tab, Tabs } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import QRCode from 'react-qr-code';
 import bip21 from 'bip21';
+
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { refreshOrder, selectOrders, selectOrdersState } from '../../../store/cr';
 import { IGetOrderResponse, IService } from '@synonymdev/blocktank-client';
 import LineItem from '../../../components/line-item';
+import CopyText from '../../../components/copy-text';
 import './index.scss';
 
 const Payment = ({ order }: { order: IGetOrderResponse }): ReactElement => {
@@ -37,7 +39,8 @@ const Payment = ({ order }: { order: IGetOrderResponse }): ReactElement => {
 					<QRCode value={onChainPaymentReq} />
 					<br />
 					<br />
-					<p className={'pay-request'}>{btc_address}</p>
+					<CopyText>{btc_address}</CopyText>
+					<br />
 					<p>
 						Set fee to more than <b>{zero_conf_satvbyte} sats/byte</b> to receive channel instantly
 					</p>
@@ -46,7 +49,7 @@ const Payment = ({ order }: { order: IGetOrderResponse }): ReactElement => {
 					<QRCode value={purchase_invoice} />
 					<br />
 					<br />
-					<p className={'pay-request'}>{purchase_invoice}</p>
+					<CopyText>{purchase_invoice}</CopyText>
 				</Tab>
 			</Tabs>
 		</div>
@@ -63,7 +66,7 @@ const ClaimChannel = ({ order }: { order: IGetOrderResponse }): ReactElement => 
 			<br />
 			<p>Scan QR to claim your channel</p>
 
-			<p className={'pay-request'}>{lnurl_string}</p>
+			<CopyText>{lnurl_string}</CopyText>
 		</div>
 	);
 };
@@ -157,7 +160,7 @@ function OrderPage(): JSX.Element {
 			<h4>Order</h4>
 			<LineItem label={'Order status'} value={stateMessage} />
 			{state === 0 ? (
-				<LineItem label={'Received'} value={`${amount_received}/${price} sats`} />
+				<LineItem label={'Received'} value={`${amount_received}/${total_amount} sats`} />
 			) : null}
 			<LineItem label={'Order expiry'} value={new Date(order_expiry).toLocaleString()} />
 			<LineItem label={'Remote balance'} value={`${local_balance} sats`} />
