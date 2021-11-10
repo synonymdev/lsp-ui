@@ -124,8 +124,8 @@ function OrderPage(): JSX.Element {
 			<h4>Payment</h4>
 			<LineItem label={'Order status'} value={stateMessage} />
 			<LineItem label={'Order expiry'} value={new Date(order_expiry).toLocaleString()} />
-			<LineItem label={'Local balance'} value={`${local_balance} sats`} />
-			<LineItem label={'Remote balance'} value={`${remote_balance} sats`} />
+			<LineItem label={'Remote balance'} value={`${local_balance} sats`} />
+			<LineItem label={'Local balance'} value={`${remote_balance} sats`} />
 			<LineItem label={'Channel expiry'} value={`${channel_expiry} weeks`} />
 
 			{/* <pre>{JSON.stringify(onchain_payments)}</pre> */}

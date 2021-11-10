@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { refreshInfo, selectInfo, selectInfoState } from '../../../store/cr';
 import bt, { IBuyChannelRequest, IService } from '@synonymdev/blocktank-client';
-import FormCard from '../../../components/form-card';
 import './index.scss';
 
 function BuyPage(): JSX.Element {
@@ -12,6 +11,7 @@ function BuyPage(): JSX.Element {
 	const infoState = useAppSelector(selectInfoState);
 	const history = useHistory();
 
+	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [product, setProduct] = useState<IService | undefined>(undefined);
 	const [channelExpiry, setChannelExpiry] = useState<string>('1');
 	const [localBalance, setLocalBalance] = useState<string>('0');
@@ -23,8 +23,12 @@ function BuyPage(): JSX.Element {
 
 			setProduct(service);
 
+			if (remoteBalance === '0') {
+				setRemoteBalance(`${service.min_channel_size}`);
+			}
+
 			if (localBalance === '0') {
-				setLocalBalance(`${service.min_channel_size}`);
+				// setLocalBalance(`${service.min_channel_size}`);
 			}
 
 			if (channelExpiry === '1') {
@@ -41,14 +45,27 @@ function BuyPage(): JSX.Element {
 
 	const onBuy = async(e): Promise<void> => {
 		e.preventDefault();
-		const req: IBuyChannelRequest = {
-			product_id: product!.product_id,
-			channel_expiry: Number(channelExpiry),
-			local_balance: Number(localBalance),
-			remote_balance: Number(remoteBalance)
-		};
 
-		console.log(req);
+		if (!product) {
+			return;
+		}
+
+		// TODO check channel balance
+		// TODO check channel expiry
+
+		if (Number(localBalance) !== 0 && Number(localBalance) < product.min_channel_size) {
+			alert(`Local balance needs to be bigger than ${product.min_channel_size}`);
+			return;
+		}
+
+		setIsSubmitting(true);
+
+		const req: IBuyChannelRequest = {
+			product_id: product.product_id,
+			channel_expiry: Number(channelExpiry),
+			local_balance: Number(remoteBalance), // Switched around for context
+			remote_balance: Number(localBalance)
+		};
 
 		try {
 			const buyRes = await bt.buyChannel(req);
@@ -56,8 +73,32 @@ function BuyPage(): JSX.Element {
 
 			history.push(`/order/${order_id}`);
 		} catch (error) {
+			setIsSubmitting(false);
 			alert(error);
 		}
+	};
+
+	// Updates the remoteBalance with a valid input if localBalance is updated
+	useEffect(() => {
+		if (!product) {
+			return;
+		}
+
+		const rBalance = Number(remoteBalance);
+		const lBalance = Number(localBalance);
+
+		if (rBalance < lBalance + product.min_channel_size) {
+			setRemoteBalance(`${lBalance + product.min_channel_size}`);
+		}
+	}, [localBalance]);
+
+	const onSetInput = (e: React.ChangeEvent<any>, set: Function): void => {
+		// Block negative numbers
+		if (e.target.value && Number(e.target.value) < 0) {
+			return;
+		}
+
+		set(e.target.value);
 	};
 
 	const refreshButton = (
@@ -93,19 +134,19 @@ function BuyPage(): JSX.Element {
 		<Form>
 			<h4>Create Channel</h4>
 			<Form.Group>
-				<Form.Label>Local balance</Form.Label>
-				<Form.Control
-					type='number'
-					value={localBalance}
-					onChange={(e) => setLocalBalance(e.target.value)}
-				/>
-			</Form.Group>
-			<Form.Group>
 				<Form.Label>Remote balance</Form.Label>
 				<Form.Control
 					type='number'
 					value={remoteBalance}
-					onChange={(e) => setRemoteBalance(e.target.value)}
+					onChange={(e) => onSetInput(e, setRemoteBalance)}
+				/>
+			</Form.Group>
+			<Form.Group>
+				<Form.Label>Local balance</Form.Label>
+				<Form.Control
+					type='number'
+					value={localBalance}
+					onChange={(e) => onSetInput(e, setLocalBalance)}
 				/>
 			</Form.Group>
 			<Form.Group>
@@ -113,12 +154,12 @@ function BuyPage(): JSX.Element {
 				<Form.Control
 					type='number'
 					value={channelExpiry}
-					onChange={(e) => setChannelExpiry(e.target.value)}
+					onChange={(e) => onSetInput(e, setChannelExpiry)}
 				/>
 			</Form.Group>
 
 			<div style={{ display: 'flex', justifyContent: 'center' }}>
-				<Button className={'form-button'} onClick={onBuy} type='submit'>
+				<Button className={'form-button'} onClick={onBuy} type='submit' disabled={isSubmitting}>
 					Pay Now
 				</Button>
 			</div>

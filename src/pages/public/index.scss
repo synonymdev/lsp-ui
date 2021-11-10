@@ -20,6 +20,10 @@ p {
         flex-direction: column;
         align-content: center;
         justify-content: center;
+
+        p {
+            max-width: 500px;
+        }
     }
 }
 
