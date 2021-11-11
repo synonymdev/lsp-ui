@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Col, Form, Row } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
+import bt, { IBuyChannelRequest, IService } from '@synonymdev/blocktank-client';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { refreshInfo, selectInfo, selectInfoState } from '../../../store/cr';
-import bt, { IBuyChannelRequest, IService } from '@synonymdev/blocktank-client';
+import Spinner from '../../../components/spinner';
+import FormCard from '../../../components/form-card';
 import './index.scss';
 
 function BuyPage(): JSX.Element {
@@ -112,7 +114,7 @@ function BuyPage(): JSX.Element {
 	);
 
 	if (isLoading) {
-		return <h4>Loading...</h4>;
+		return <Spinner style={{ fontSize: 8 }} />;
 	}
 
 	if (!product) {
@@ -139,39 +141,41 @@ function BuyPage(): JSX.Element {
 	}
 
 	return (
-		<Form>
-			<h4>Create Channel</h4>
-			<Form.Group>
-				<Form.Label>Remote balance</Form.Label>
-				<Form.Control
-					type='number'
-					value={remoteBalance}
-					onChange={(e) => onSetInput(e, setRemoteBalance)}
-				/>
-			</Form.Group>
-			<Form.Group>
-				<Form.Label>Local balance</Form.Label>
-				<Form.Control
-					type='number'
-					value={localBalance}
-					onChange={(e) => onSetInput(e, setLocalBalance)}
-				/>
-			</Form.Group>
-			<Form.Group>
-				<Form.Label>Channel expiry (Weeks)</Form.Label>
-				<Form.Control
-					type='number'
-					value={channelExpiry}
-					onChange={(e) => onSetInput(e, setChannelExpiry)}
-				/>
-			</Form.Group>
+		<FormCard>
+			<Form>
+				<h4>Create Channel</h4>
+				<Form.Group>
+					<Form.Label>Remote balance</Form.Label>
+					<Form.Control
+						type='number'
+						value={remoteBalance}
+						onChange={(e) => onSetInput(e, setRemoteBalance)}
+					/>
+				</Form.Group>
+				<Form.Group>
+					<Form.Label>Local balance</Form.Label>
+					<Form.Control
+						type='number'
+						value={localBalance}
+						onChange={(e) => onSetInput(e, setLocalBalance)}
+					/>
+				</Form.Group>
+				<Form.Group>
+					<Form.Label>Channel expiry (Weeks)</Form.Label>
+					<Form.Control
+						type='number'
+						value={channelExpiry}
+						onChange={(e) => onSetInput(e, setChannelExpiry)}
+					/>
+				</Form.Group>
 
-			<div style={{ display: 'flex', justifyContent: 'center' }}>
-				<Button className={'form-button'} onClick={onBuy} type='submit' disabled={isSubmitting}>
-					Pay Now
-				</Button>
-			</div>
-		</Form>
+				<div style={{ display: 'flex', justifyContent: 'center' }}>
+					<Button className={'form-button'} onClick={onBuy} type='submit' disabled={isSubmitting}>
+						Pay Now
+					</Button>
+				</div>
+			</Form>
+		</FormCard>
 	);
 }
 

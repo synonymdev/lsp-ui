@@ -26,22 +26,20 @@ const PageContainer = ({ children }): ReactElement => (
 
 function PublicPages(): JSX.Element {
 	const card = (
-		<FormCard>
-			<Switch>
-				<Route exact path={'/'}>
-					<BuyPage />
-				</Route>
+		<Switch>
+			<Route exact path={'/'}>
+				<BuyPage />
+			</Route>
 
-				<Route path={`/order/:orderId`}>
-					<OrderPage />
-				</Route>
+			<Route path={`/order/:orderId`}>
+				<OrderPage />
+			</Route>
 
-				<Route path='*'>
-					<h4>404</h4>
-					<p style={{ textAlign: 'center' }}>Page not found</p>
-				</Route>
-			</Switch>
-		</FormCard>
+			<Route path='*'>
+				<h4>404</h4>
+				<p style={{ textAlign: 'center' }}>Page not found</p>
+			</Route>
+		</Switch>
 	);
 
 	if (new URLSearchParams(window.location.search).get('embed') === 'true') {

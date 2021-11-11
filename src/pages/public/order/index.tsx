@@ -9,7 +9,9 @@ import { refreshOrder, selectOrders, selectOrdersState } from '../../../store/cr
 import { IGetOrderResponse, IService } from '@synonymdev/blocktank-client';
 import LineItem from '../../../components/line-item';
 import CopyText from '../../../components/copy-text';
+import FormCard from '../../../components/form-card';
 import './index.scss';
+import Spinner from '../../../components/spinner';
 
 const Payment = ({ order }: { order: IGetOrderResponse }): ReactElement => {
 	const {
@@ -105,7 +107,7 @@ function OrderPage(): JSX.Element {
 
 	if (!order) {
 		if (ordersState === 'loading' || isLoading) {
-			return <h4>Loading...</h4>;
+			return <Spinner style={{ fontSize: 8 }} />;
 		}
 
 		return <h4>Order not found</h4>;
@@ -156,9 +158,9 @@ function OrderPage(): JSX.Element {
 	}
 
 	return (
-		<div>
+		<FormCard>
 			<h4>Order</h4>
-			<LineItem label={'Order status'} value={stateMessage} />
+			<LineItem label={'Order status'} value={stateMessage} spinner={state === 0} />
 			{state === 0 ? (
 				<LineItem label={'Received'} value={`${amount_received}/${total_amount} sats`} />
 			) : null}
@@ -170,7 +172,7 @@ function OrderPage(): JSX.Element {
 			<br />
 
 			{content}
-		</div>
+		</FormCard>
 	);
 }
 
