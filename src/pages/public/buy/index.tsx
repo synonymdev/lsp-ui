@@ -57,7 +57,10 @@ function BuyPage(): JSX.Element {
 		}
 
 		// TODO check channel balance
-		// TODO check channel expiry
+
+		if (Number(channelExpiry) < 1) {
+			alert(`Minimum channel expiry is 1 week`);
+		}
 
 		if (Number(localBalance) !== 0 && Number(localBalance) < product.min_channel_size) {
 			alert(`Local balance needs to be bigger than ${product.min_channel_size}`);

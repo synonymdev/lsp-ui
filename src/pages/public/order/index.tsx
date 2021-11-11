@@ -98,6 +98,11 @@ function OrderPage(): JSX.Element {
 
 	useEffect(() => {
 		const intervalId = setInterval(() => {
+			if (order?.state === 500) {
+				// Once channel is open stop trying
+				return;
+			}
+
 			dispatch(refreshOrder(orderId)).catch((e) => alert(e));
 			console.log('Refresh');
 		}, 5000);
