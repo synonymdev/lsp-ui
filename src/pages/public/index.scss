@@ -1,0 +1,52 @@
+.container {
+}
+
+h1 {
+ font-weight: 600;
+}
+
+p {
+  font-weight: 400;
+}
+
+.page-container {
+    height: 100vh;
+
+    display: flex;
+    align-content: center;
+
+    .infoCol {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+
+        p {
+            max-width: 500px;
+        }
+    }
+}
+
+
+.form-button {
+    box-shadow: 0px 8px 40px 0px #0000001A;
+    box-shadow: 0px 20px 48px 0px #0000004D;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    //padding: 18px 28px;
+    color: #4BC400;
+    font-weight: 500;
+
+    width: 185px;
+    height: 56px;
+
+    background: rgba(255, 255, 255, 0.06);
+    box-shadow: 0px 20px 48px rgba(0, 0, 0, 0.3), 0px 8px 40px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    /* Note: backdrop-filter has minimal browser support */
+
+    border-radius: 64px;
+    border-style: none;
+}

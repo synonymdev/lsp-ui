@@ -1,0 +1,34 @@
+.copy-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  .copy-text-container {
+    border-color: #F75C1A;
+    border-style: solid;
+    border-radius: 10px;
+    border-width: 0.5px;
+    padding: 4px 8px;
+    //max-height: 40px;
+    width: 100%;
+
+    .copy-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      font-size: 14px;
+      font-style: italic;
+      text-align: center;
+      margin: 0;
+    }
+  }
+
+  .copy-icon {
+    margin-left: 4px;
+    height: 16px;
+    width: 16px;
+  }
+}
+
+
