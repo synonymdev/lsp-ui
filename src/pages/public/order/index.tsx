@@ -12,6 +12,7 @@ import CopyText from '../../../components/copy-text';
 import FormCard from '../../../components/form-card';
 import './index.scss';
 import Spinner from '../../../components/spinner';
+import SupportLink from '../../../components/support-link';
 
 const Payment = ({ order }: { order: IGetOrderResponse }): ReactElement => {
 	const {
@@ -44,7 +45,9 @@ const Payment = ({ order }: { order: IGetOrderResponse }): ReactElement => {
 					<CopyText>{btc_address}</CopyText>
 					<br />
 					<p>
-						Set fee to more than <b>{zero_conf_satvbyte} sats/byte</b> to receive channel instantly
+						Set fee to more than{' '}
+						<span style={{ fontWeight: 600 }}>{zero_conf_satvbyte} sats/byte</span> to receive
+						channel instantly
 					</p>
 				</Tab>
 				<Tab eventKey='lightning' title='Lightning invoice'>
@@ -231,6 +234,8 @@ function OrderPage(): JSX.Element {
 			<br />
 
 			{content}
+
+			<SupportLink orderId={_id} />
 		</FormCard>
 	);
 }

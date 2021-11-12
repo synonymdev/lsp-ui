@@ -2,11 +2,14 @@
 }
 
 h1 {
- font-weight: 600;
+    font-weight: 600;
+    font-size: 72px;
+    line-height: 80px;
+    letter-spacing: -0.5px;
 }
 
 p {
-  font-weight: 400;
+    font-weight: 400;
 }
 
 .page-container {
@@ -23,10 +26,13 @@ p {
 
         p {
             max-width: 500px;
+            font-weight: 400;
+
+            font-size: 24px;
+            line-height: 30px;
         }
     }
 }
-
 
 .form-button {
     box-shadow: 0px 8px 40px 0px #0000001A;
@@ -37,7 +43,7 @@ p {
     align-items: center;
     //padding: 18px 28px;
     color: #4BC400;
-    font-weight: 500;
+    font-weight: 600;
 
     width: 185px;
     height: 56px;
@@ -49,4 +55,39 @@ p {
 
     border-radius: 64px;
     border-style: none;
+}
+
+.glowy-main1 {
+    position: absolute;
+    width: 30%;
+    height: 40%;
+    left: 5%;
+    top: 20%;
+
+    background: rgba(243, 125, 192, 0.36);
+    filter: blur(135px);
+    transform: rotate(77.82deg);
+}
+
+.glowy-main2 {
+    position: absolute;
+    width: 30%;
+    height: 50%;
+    left: 15%;
+    top: 15%;
+
+    background: rgba(38, 88, 90, 0.4);
+    filter: blur(135px);
+    transform: rotate(77.82deg);
+}
+
+.glowy-main3 {
+    position: absolute;
+    width: 35%;
+    height: 60%;
+    left: -25%;
+    top: 20%;
+
+    background: conic-gradient(from 141.28deg at 50% 50%, #E46735 0deg, #C93250 187.5deg, #CA488C 360deg);
+    filter: blur(174px);
 }

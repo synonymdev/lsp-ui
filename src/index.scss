@@ -3,29 +3,17 @@
 @font-face {
   font-family: 'Neue Haas Grotesk Display Pro';
   font-style: normal;
-  font-weight: 700;
-  src: url('/style/fonts/Neue Haas Grotesk Display Pro 75 Bold.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Neue Haas Grotesk Display Pro';
-  font-style: normal;
-  font-weight: 600;
-  src: url('/style/fonts/NeueHaasDisplay-Medium.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Neue Haas Grotesk Display Pro';
-  font-style: normal;
-  font-weight: 500;
+  font-display: swap;
+  font-weight: 400;
   src: url('/style/fonts/NeueHaasDisplay-Roman.woff2') format('woff2');
 }
 
 @font-face {
   font-family: 'Neue Haas Grotesk Display Pro';
   font-style: normal;
-  font-weight: 400;
-  src: url('/style/fonts/NeueHaasDisplay-XThin.woff2') format('woff2');
+  font-display: swap;
+  font-weight: 600;
+  src: url('/style/fonts/NeueHaasDisplay-Medium.woff2') format('woff2');
 }
 
 @import './style/variables';
