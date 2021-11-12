@@ -3,9 +3,9 @@
 
 h1 {
     font-weight: 600;
-    font-size: 72px;
     line-height: 80px;
     letter-spacing: -0.5px;
+    font-size: 60px;
 }
 
 p {
@@ -13,7 +13,7 @@ p {
 }
 
 .page-container {
-    height: 100vh;
+    min-height: 100vh;
 
     display: flex;
     align-content: center;
