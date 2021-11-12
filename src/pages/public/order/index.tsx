@@ -3,16 +3,17 @@ import { Button, Form, Tab, Tabs } from 'react-bootstrap';
 import { useParams, Link } from 'react-router-dom';
 import QRCode from 'react-qr-code';
 import bip21 from 'bip21';
-
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { refreshOrder, selectOrders, selectOrdersState } from '../../../store/cr';
 import bt, { IGetOrderResponse, IService } from '@synonymdev/blocktank-client';
 import LineItem from '../../../components/line-item';
 import CopyText from '../../../components/copy-text';
 import FormCard from '../../../components/form-card';
-import './index.scss';
 import Spinner from '../../../components/spinner';
 import SupportLink from '../../../components/support-link';
+import './index.scss';
+
+const qrSize = 220;
 
 const Payment = ({ order }: { order: IGetOrderResponse }): ReactElement => {
 	const {
@@ -39,7 +40,7 @@ const Payment = ({ order }: { order: IGetOrderResponse }): ReactElement => {
 			{/* <p>{JSON.stringify(onchain_payments)}</p> */}
 			<Tabs defaultActiveKey='onchain' className='mb-3 payment-tabs'>
 				<Tab eventKey='onchain' title='On chain payment'>
-					<QRCode value={onChainPaymentReq} />
+					<QRCode value={onChainPaymentReq} size={qrSize} />
 					<br />
 					<br />
 					<CopyText>{btc_address}</CopyText>
@@ -51,7 +52,7 @@ const Payment = ({ order }: { order: IGetOrderResponse }): ReactElement => {
 					</p>
 				</Tab>
 				<Tab eventKey='lightning' title='Lightning invoice'>
-					<QRCode value={purchase_invoice} />
+					<QRCode value={purchase_invoice} size={qrSize} />
 					<br />
 					<br />
 					<CopyText>{purchase_invoice}</CopyText>
@@ -113,7 +114,7 @@ const ClaimChannel = ({ order }: { order: IGetOrderResponse }): ReactElement => 
 				</>
 			) : (
 				<>
-					<QRCode value={lnurl_string} />
+					<QRCode value={lnurl_string} size={qrSize} />
 					<br />
 					<br />
 					<p>Scan QR to claim your channel</p>
@@ -221,7 +222,6 @@ function OrderPage(): JSX.Element {
 
 	return (
 		<FormCard>
-			<h4>Order</h4>
 			<LineItem label={'Order status'} value={stateMessage} spinner={state === 0} />
 			{state === 0 ? (
 				<LineItem label={'Received'} value={`${amount_received}/${total_amount} sats`} />

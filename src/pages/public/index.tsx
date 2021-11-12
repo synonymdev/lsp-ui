@@ -4,7 +4,6 @@ import React, { ReactElement } from 'react';
 import BuyPage from './buy';
 import OrderPage from './order';
 import './index.scss';
-import FormCard from '../../components/form-card';
 
 const PageContainer = ({ children }): ReactElement => (
 	<>
@@ -13,7 +12,7 @@ const PageContainer = ({ children }): ReactElement => (
 		<div className={'glowy-main3'} />
 
 		<Row className={'page-container'}>
-			<Col xl={8} lg={7} md={5} sm={12} className={'infoCol'}>
+			<Col xl={7} lg={6} md={5} sm={12} className={'infoCol'}>
 				<h1>Lightning Network Services</h1>
 				<br />
 				<p>
@@ -23,7 +22,7 @@ const PageContainer = ({ children }): ReactElement => (
 				</p>
 			</Col>
 
-			<Col xl={4} lg={5} md={7} sm={12}>
+			<Col xl={5} lg={6} md={7} sm={12}>
 				{children}
 			</Col>
 		</Row>
@@ -48,7 +47,10 @@ function PublicPages(): JSX.Element {
 		</Switch>
 	);
 
-	if (new URLSearchParams(window.location.search).get('embed') === 'true') {
+	if (
+		new URLSearchParams(window.location.search).get('embed') === 'true' ||
+		(window as any).embedwidget === true
+	) {
 		return card;
 	}
 
