@@ -1,12 +1,12 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import { Tab, Tabs } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { Button, Form, Tab, Tabs } from 'react-bootstrap';
+import { useParams, Link } from 'react-router-dom';
 import QRCode from 'react-qr-code';
 import bip21 from 'bip21';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { refreshOrder, selectOrders, selectOrdersState } from '../../../store/cr';
-import { IGetOrderResponse, IService } from '@synonymdev/blocktank-client';
+import bt, { IGetOrderResponse, IService } from '@synonymdev/blocktank-client';
 import LineItem from '../../../components/line-item';
 import CopyText from '../../../components/copy-text';
 import FormCard from '../../../components/form-card';
@@ -60,15 +60,70 @@ const Payment = ({ order }: { order: IGetOrderResponse }): ReactElement => {
 
 const ClaimChannel = ({ order }: { order: IGetOrderResponse }): ReactElement => {
 	const { _id, lnurl_string } = order;
+	const dispatch = useAppDispatch();
+	const [showManual, setShowManual] = useState(false);
+	const [nodeUri, setNodeUri] = useState('');
+	const [isSubmitting, setIsSubmitting] = useState(false);
+
+	const claimChannel = async (): Promise<void> => {
+		setIsSubmitting(true);
+		try {
+			await bt.finalizeChannel({
+				order_id: _id,
+				node_uri: nodeUri
+			});
+
+			await dispatch(refreshOrder(_id));
+		} catch (e) {
+			alert(e);
+		} finally {
+			setIsSubmitting(false);
+		}
+	};
 
 	return (
 		<div style={{ textAlign: 'center' }}>
-			<QRCode value={lnurl_string} />
-			<br />
-			<br />
-			<p>Scan QR to claim your channel</p>
+			{showManual ? (
+				<>
+					<Form>
+						<Form.Group>
+							<Form.Label>Node URI</Form.Label>
+							<Form.Control
+								type='text'
+								placeholder={'nodeid@ip:port'}
+								value={nodeUri}
+								onChange={(e) => setNodeUri(e.target.value)}
+							/>
+						</Form.Group>
 
-			<CopyText>{lnurl_string}</CopyText>
+						<div style={{ display: 'flex', justifyContent: 'center' }}>
+							<Button
+								className={'form-button'}
+								onClick={claimChannel}
+								type='submit'
+								disabled={isSubmitting}
+							>
+								Open channel
+							</Button>
+						</div>
+					</Form>
+				</>
+			) : (
+				<>
+					<QRCode value={lnurl_string} />
+					<br />
+					<br />
+					<p>Scan QR to claim your channel</p>
+
+					<CopyText>{lnurl_string}</CopyText>
+				</>
+			)}
+
+			<br />
+
+			<span className={'link'} onClick={() => setShowManual(!showManual)}>
+				{showManual ? 'Automatic claim' : 'Manual channel claim'}
+			</span>
 		</div>
 	);
 };
@@ -104,7 +159,6 @@ function OrderPage(): JSX.Element {
 			}
 
 			dispatch(refreshOrder(orderId)).catch((e) => alert(e));
-			console.log('Refresh');
 		}, 5000);
 
 		return () => clearInterval(intervalId);
