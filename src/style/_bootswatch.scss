@@ -60,7 +60,7 @@ label,
 .checkbox label,
 .help-block {
   font-size: $font-size-sm;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .form-floating {
@@ -77,6 +77,9 @@ label,
   .nav-link:hover {
     color: $body-color;
   }
+
+  font-size: 14px;
+  font-weight: 400;
 
   .nav-link.disabled {
     color: $nav-link-disabled-color;

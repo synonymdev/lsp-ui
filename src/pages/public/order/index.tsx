@@ -45,7 +45,9 @@ const Payment = ({ order }: { order: IGetOrderResponse }): ReactElement => {
 					<CopyText>{btc_address}</CopyText>
 					<br />
 					<p>
-						Set fee to more than <b>{zero_conf_satvbyte} sats/byte</b> to receive channel instantly
+						Set fee to more than{' '}
+						<span style={{ fontWeight: 600 }}>{zero_conf_satvbyte} sats/byte</span> to receive
+						channel instantly
 					</p>
 				</Tab>
 				<Tab eventKey='lightning' title='Lightning invoice'>
