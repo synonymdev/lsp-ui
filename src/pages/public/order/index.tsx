@@ -12,6 +12,7 @@ import CopyText from '../../../components/copy-text';
 import FormCard from '../../../components/form-card';
 import './index.scss';
 import Spinner from '../../../components/spinner';
+import SupportLink from '../../../components/support-link';
 
 const Payment = ({ order }: { order: IGetOrderResponse }): ReactElement => {
 	const {
@@ -231,6 +232,8 @@ function OrderPage(): JSX.Element {
 			<br />
 
 			{content}
+
+			<SupportLink orderId={_id} />
 		</FormCard>
 	);
 }
