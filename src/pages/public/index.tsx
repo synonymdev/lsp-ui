@@ -7,21 +7,27 @@ import './index.scss';
 import FormCard from '../../components/form-card';
 
 const PageContainer = ({ children }): ReactElement => (
-	<Row className={'page-container'}>
-		<Col xl={8} lg={7} md={5} sm={12} className={'infoCol'}>
-			<h1>Lightning Network Services</h1>
-			<br />
-			<p>
-				Open a connection to the Lightning Network and receive or send bitcoin instantly. Choose
-				your custom capacity and BTC for your new channel, or paste a Lightning invoice to refill an
-				existing channel.
-			</p>
-		</Col>
+	<>
+		<div className={'glowy-main1'} />
+		<div className={'glowy-main2'} />
+		<div className={'glowy-main3'} />
 
-		<Col xl={4} lg={5} md={7} sm={12}>
-			{children}
-		</Col>
-	</Row>
+		<Row className={'page-container'}>
+			<Col xl={8} lg={7} md={5} sm={12} className={'infoCol'}>
+				<h1>Lightning Network Services</h1>
+				<br />
+				<p>
+					Open a connection to the Lightning Network and receive or send bitcoin instantly. Choose
+					your custom capacity and BTC for your new channel, or paste a Lightning invoice to refill
+					an existing channel.
+				</p>
+			</Col>
+
+			<Col xl={4} lg={5} md={7} sm={12}>
+				{children}
+			</Col>
+		</Row>
+	</>
 );
 
 function PublicPages(): JSX.Element {
