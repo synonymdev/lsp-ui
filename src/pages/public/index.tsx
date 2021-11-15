@@ -32,11 +32,11 @@ const PageContainer = ({ children }): ReactElement => (
 function PublicPages(): JSX.Element {
 	const card = (
 		<Switch>
-			<Route exact path={'/'}>
+			<Route exact path={['/', '/blocktank']}>
 				<BuyPage />
 			</Route>
 
-			<Route path={`/order/:orderId`}>
+			<Route path={['/order/:orderId', '/blocktank/order/:orderId']}>
 				<OrderPage />
 			</Route>
 
