@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import bt, { IBuyChannelRequest, IService } from '@synonymdev/blocktank-client';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { refreshInfo, selectInfo, selectInfoState } from '../../../store/cr';
@@ -12,6 +12,7 @@ function BuyPage(): JSX.Element {
 	const { services } = useAppSelector(selectInfo);
 	const infoState = useAppSelector(selectInfoState);
 	const history = useHistory();
+	const route = useRouteMatch();
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -80,7 +81,7 @@ function BuyPage(): JSX.Element {
 			const buyRes = await bt.buyChannel(req);
 			const { order_id } = buyRes;
 
-			history.push(`/order/${order_id}`);
+			history.push(`${route.url}order/${order_id}`);
 		} catch (error) {
 			setIsSubmitting(false);
 			alert(error);
@@ -110,12 +111,6 @@ function BuyPage(): JSX.Element {
 		set(e.target.value);
 	};
 
-	const refreshButton = (
-		<Button onClick={() => dispatch(refreshInfo())} disabled={infoState === 'loading'}>
-			{infoState === 'loading' ? 'Loading...' : 'Try again'}
-		</Button>
-	);
-
 	if (isLoading) {
 		return <Spinner style={{ fontSize: 8 }} />;
 	}
@@ -136,10 +131,18 @@ function BuyPage(): JSX.Element {
 
 	if (!available) {
 		return (
-			<div>
-				<h1>{description} not available</h1>
-				{refreshButton}
-			</div>
+			<FormCard>
+				<h4>{description} not available</h4>
+				<div className={'button-container'}>
+					<Button
+						className={'form-button'}
+						onClick={() => dispatch(refreshInfo())}
+						disabled={infoState === 'loading'}
+					>
+						Retry
+					</Button>
+				</div>
+			</FormCard>
 		);
 	}
 
@@ -172,7 +175,7 @@ function BuyPage(): JSX.Element {
 					/>
 				</Form.Group>
 
-				<div style={{ display: 'flex', justifyContent: 'center' }}>
+				<div className={'button-container'}>
 					<Button className={'form-button'} onClick={onBuy} type='submit' disabled={isSubmitting}>
 						Pay Now
 					</Button>
