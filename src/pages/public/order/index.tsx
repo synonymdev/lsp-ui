@@ -170,7 +170,11 @@ function OrderPage(): JSX.Element {
 
 	if (!order) {
 		if (ordersState === 'loading' || isLoading) {
-			return <Spinner style={{ fontSize: 8 }} />;
+			return (
+				<FormCard>
+					<Spinner style={{ fontSize: 8 }} />
+				</FormCard>
+			);
 		}
 
 		return (
