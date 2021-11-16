@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './';
 import bt, { IGetInfoResponse, IGetOrderResponse } from '@synonymdev/blocktank-client';
 
-type RequestState = 'idle' | 'loading' | 'error';
+type RequestState = 'idle' | 'loading' | 'error' | 'geoblocked';
 
 export type CRState = {
 	info: {
@@ -65,8 +65,13 @@ export const cr = createSlice({
 			.addCase(refreshInfo.pending, (state) => {
 				state.info.state = 'loading';
 			})
-			.addCase(refreshInfo.rejected, (state) => {
-				state.info.state = 'error';
+			.addCase(refreshInfo.rejected, (state, action) => {
+				if (action.error.message === 'Network request failed') {
+					// TODO check specifically for 403
+					state.info.state = 'geoblocked';
+				} else {
+					state.info.state = 'error';
+				}
 			})
 			.addCase(refreshInfo.fulfilled, (state, action) => {
 				state.info.state = 'idle';

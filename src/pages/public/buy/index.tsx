@@ -115,6 +115,14 @@ function BuyPage(): JSX.Element {
 		return <Spinner style={{ fontSize: 8 }} />;
 	}
 
+	if (infoState === 'geoblocked') {
+		return (
+			<FormCard>
+				<h4>Unfortunately this feature is not available in your country</h4>
+			</FormCard>
+		);
+	}
+
 	if (!product) {
 		return <div />;
 	}
