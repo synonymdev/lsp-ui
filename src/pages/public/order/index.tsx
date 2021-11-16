@@ -1,7 +1,6 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { Button, Form, Tab, Tabs } from 'react-bootstrap';
 import { useParams, Link } from 'react-router-dom';
-import QRCode from 'react-qr-code';
 import bip21 from 'bip21';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { refreshOrder, selectOrders, selectOrdersState } from '../../../store/cr';
@@ -11,6 +10,7 @@ import CopyText from '../../../components/copy-text';
 import FormCard from '../../../components/form-card';
 import Spinner from '../../../components/spinner';
 import SupportLink from '../../../components/support-link';
+import QRCode from '../../../components/qr';
 import './index.scss';
 
 const qrSize = 220;
