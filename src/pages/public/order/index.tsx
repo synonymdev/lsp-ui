@@ -157,7 +157,7 @@ function OrderPage(): JSX.Element {
 
 	useEffect(() => {
 		const intervalId = setInterval(() => {
-			if (!order || order?.state === 500) {
+			if (order?.state === 500) {
 				// Once channel is open stop trying
 				return;
 			}
@@ -189,25 +189,12 @@ function OrderPage(): JSX.Element {
 		_id,
 		state,
 		amount_received,
-		onchain_payments,
-		channel_expiry_ts,
-		created_at,
 		order_expiry,
-		lnurl,
 		local_balance,
 		remote_balance,
-		price,
-		purchase_invoice,
 		stateMessage,
-		btc_address,
-		remote_node_src,
 		channel_expiry,
-		channel_open_tx,
-		remote_node_uri,
 		total_amount,
-		zero_conf_satvbyte,
-		zero_conf_satvbyte_expiry,
-		renewals
 	} = order;
 
 	let content = <></>;
