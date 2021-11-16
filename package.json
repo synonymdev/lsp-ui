@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.1",
-    "@synonymdev/blocktank-client": "^0.0.19",
+    "@synonymdev/blocktank-client": "^0.0.21",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -46,11 +46,12 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && cp build/index.html build/200.html",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
-    "deploy": "yarn build && cp build/index.html build/200.html && surge ./build http://cr-98375983893.surge.sh"
+    "deploy:testnet": "REACT_APP_MAINNET=false yarn build && surge ./build http://cr-98375983893.surge.sh",
+    "deploy:mainnet": "REACT_APP_MAINNET=true yarn build && surge ./build http://bt-mainnet.surge.sh"
   },
   "eslintConfig": {
     "extends": [

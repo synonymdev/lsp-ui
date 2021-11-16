@@ -54,21 +54,7 @@ function OrdersPage(): JSX.Element {
 				</thead>
 				<tbody>
 					{orders.map((order) => {
-						const {
-							_id,
-							state,
-							amount_received,
-							onchain_payments,
-							channel_expiry_ts,
-							created_at,
-							order_expiry,
-							lnurl,
-							local_balance,
-							remote_balance,
-							price,
-							purchase_invoice,
-							stateMessage
-						} = order;
+						const { _id, amount_received, created_at, price, stateMessage } = order;
 
 						return (
 							<tr key={_id}>

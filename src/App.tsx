@@ -13,7 +13,7 @@ function App(): JSX.Element {
 					<AdminPages />
 				</Route>
 
-				<Route exact path='/*'>
+				<Route exact path={['/*', '/blocktank/*']}>
 					<PublicPages />
 				</Route>
 			</Switch>

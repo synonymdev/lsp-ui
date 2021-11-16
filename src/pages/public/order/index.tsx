@@ -5,7 +5,7 @@ import QRCode from 'react-qr-code';
 import bip21 from 'bip21';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { refreshOrder, selectOrders, selectOrdersState } from '../../../store/cr';
-import bt, { IGetOrderResponse, IService } from '@synonymdev/blocktank-client';
+import bt, { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import LineItem from '../../../components/line-item';
 import CopyText from '../../../components/copy-text';
 import FormCard from '../../../components/form-card';
@@ -173,32 +173,28 @@ function OrderPage(): JSX.Element {
 			return <Spinner style={{ fontSize: 8 }} />;
 		}
 
-		return <h4>Order not found</h4>;
+		return (
+			<FormCard>
+				<h4>Order not found</h4>
+				<div className={'button-container'}>
+					<Link>
+						<Button className={'form-button'}>Home</Button>
+					</Link>
+				</div>
+			</FormCard>
+		);
 	}
 
 	const {
 		_id,
 		state,
 		amount_received,
-		onchain_payments,
-		channel_expiry_ts,
-		created_at,
 		order_expiry,
-		lnurl,
 		local_balance,
 		remote_balance,
-		price,
-		purchase_invoice,
 		stateMessage,
-		btc_address,
-		remote_node_src,
 		channel_expiry,
-		channel_open_tx,
-		remote_node_uri,
 		total_amount,
-		zero_conf_satvbyte,
-		zero_conf_satvbyte_expiry,
-		renewals
 	} = order;
 
 	let content = <></>;

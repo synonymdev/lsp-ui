@@ -1,10 +1,16 @@
 import React from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import QRCode from 'react-qr-code';
-import { ILnurl } from '@synonymdev/blocktank-client';
+import { ILnurlDecoded } from '@synonymdev/blocktank-client';
 
-function LnurlCard({ lnurl }: { lnurl: ILnurl }): JSX.Element {
-	const { uri, k1, tag, callback } = lnurl;
+function LnurlCard({
+	lnurl_string,
+	lnurl_decoded
+}: {
+	lnurl_string: string;
+	lnurl_decoded: ILnurlDecoded;
+}): JSX.Element {
+	const { uri, k1, tag, callback } = lnurl_decoded;
 
 	// TODO get lnurl for QR
 
@@ -21,9 +27,9 @@ function LnurlCard({ lnurl }: { lnurl: ILnurl }): JSX.Element {
 					</Col>
 					<Col lg={6} style={{ textAlign: 'center' }}>
 						<p>
-							<QRCode value={uri} />
+							<QRCode value={lnurl_string} />
 						</p>
-						<a target={'_blank'} href={uri}>
+						<a target={'_blank'} href={`lightning:${lnurl_string}`}>
 							Open in wallet
 						</a>
 					</Col>

@@ -37,18 +37,14 @@ function OrderPage(): JSX.Element {
 	}
 
 	const {
-		_id,
 		state,
 		amount_received,
 		onchain_payments,
-		channel_expiry_ts,
 		created_at,
 		order_expiry,
-		lnurl,
 		local_balance,
 		remote_balance,
 		price,
-		purchase_invoice,
 		stateMessage,
 		btc_address,
 		remote_node_src,
@@ -87,9 +83,7 @@ function OrderPage(): JSX.Element {
 							</Card.Text>
 
 							{zero_conf_satvbyte ? (
-								<Card.Text>
-									Zero conf payment min fee: {zero_conf_satvbyte} sat/vbyte
-								</Card.Text>
+								<Card.Text>Zero conf payment min fee: {zero_conf_satvbyte} sat/vbyte</Card.Text>
 							) : null}
 
 							<Card.Text>BTC address: {addressLink(btc_address)}</Card.Text>
@@ -139,7 +133,7 @@ function OrderPage(): JSX.Element {
 
 			<Row>
 				<Col>
-					<LnurlCard lnurl={lnurl} />
+					<LnurlCard {...order} />
 				</Col>
 			</Row>
 		</div>
