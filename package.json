@@ -50,8 +50,10 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint . --fix --ext .js,.jsx,.ts,.tsx",
-    "deploy:testnet": "REACT_APP_MAINNET=false yarn build && surge ./build http://cr-98375983893.surge.sh",
-    "deploy:mainnet": "REACT_APP_MAINNET=true yarn build && surge ./build http://bt-mainnet.surge.sh"
+    "build:testnet": "REACT_APP_MAINNET=false yarn build",
+    "build:mainnet": "REACT_APP_MAINNET=true yarn build",
+    "deploy:testnet": "yarn build:testnet && surge ./build http://cr-98375983893.surge.sh",
+    "deploy:mainnet": "yarn build:mainnet && surge ./build http://bt-mainnet.surge.sh"
   },
   "eslintConfig": {
     "extends": [

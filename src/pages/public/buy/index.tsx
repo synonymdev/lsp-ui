@@ -115,6 +115,14 @@ function BuyPage(): JSX.Element {
 		return <Spinner style={{ fontSize: 8 }} />;
 	}
 
+	if (infoState === 'geoblocked') {
+		return (
+			<FormCard>
+				<h4>Unfortunately this feature is not available in your country</h4>
+			</FormCard>
+		);
+	}
+
 	if (!product) {
 		return <div />;
 	}
@@ -148,33 +156,34 @@ function BuyPage(): JSX.Element {
 
 	return (
 		<FormCard>
-			<Form>
-				<h4>Create Channel</h4>
-				<Form.Group>
-					<Form.Label>Remote balance</Form.Label>
-					<Form.Control
-						type='number'
-						value={remoteBalance}
-						onChange={(e) => onSetInput(e, setRemoteBalance)}
-					/>
-				</Form.Group>
-				<Form.Group>
-					<Form.Label>Local balance</Form.Label>
-					<Form.Control
-						type='number'
-						value={localBalance}
-						onChange={(e) => onSetInput(e, setLocalBalance)}
-					/>
-				</Form.Group>
-				<Form.Group>
-					<Form.Label>Channel expiry (Weeks)</Form.Label>
-					<Form.Control
-						type='number'
-						value={channelExpiry}
-						onChange={(e) => onSetInput(e, setChannelExpiry)}
-					/>
-				</Form.Group>
-
+			<Form className={'form-content'}>
+				<div>
+					<h4>Create Channel</h4>
+					<Form.Group>
+						<Form.Label>Remote balance</Form.Label>
+						<Form.Control
+							type='number'
+							value={remoteBalance}
+							onChange={(e) => onSetInput(e, setRemoteBalance)}
+						/>
+					</Form.Group>
+					<Form.Group>
+						<Form.Label>Local balance</Form.Label>
+						<Form.Control
+							type='number'
+							value={localBalance}
+							onChange={(e) => onSetInput(e, setLocalBalance)}
+						/>
+					</Form.Group>
+					<Form.Group>
+						<Form.Label>Channel expiry (Weeks)</Form.Label>
+						<Form.Control
+							type='number'
+							value={channelExpiry}
+							onChange={(e) => onSetInput(e, setChannelExpiry)}
+						/>
+					</Form.Group>
+				</div>
 				<div className={'button-container'}>
 					<Button className={'form-button'} onClick={onBuy} type='submit' disabled={isSubmitting}>
 						Pay Now

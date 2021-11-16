@@ -1,12 +1,11 @@
 .form-card {
+  //min-height: 812px;
+  min-height: 788px;
   border-radius: 15px;
   background-color: transparent;
   background-clip: content-box;
   overflow: hidden;
-  padding-left: 36px;
-  padding-right: 36px;
-  padding-top: 19px;
-  padding-bottom: 19px;
+  padding: 19px 36px;
 
   h4 {
     text-align: center;
