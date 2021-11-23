@@ -12,6 +12,7 @@ import Spinner from '../../../components/spinner';
 import SupportLink from '../../../components/support-link';
 import QRCode from '../../../components/qr';
 import './index.scss';
+import { addressLink, txLink } from '../../../utils/links';
 
 const qrSize = 220;
 
@@ -32,12 +33,8 @@ const Payment = ({ order }: { order: IGetOrderResponse }): ReactElement => {
 		label: `Blocktank #${_id}`
 	});
 
-	// TODO if incoming payment show that instead
-	//			<p>{JSON.stringify(onchain_payments)}</p>
-
 	return (
 		<div style={{ textAlign: 'center' }}>
-			{/* <p>{JSON.stringify(onchain_payments)}</p> */}
 			<Tabs defaultActiveKey='onchain' className='mb-3 payment-tabs'>
 				<Tab eventKey='onchain' title='On chain payment'>
 					<QRCode value={onChainPaymentReq} size={qrSize} />
@@ -199,13 +196,45 @@ function OrderPage(): JSX.Element {
 		stateMessage,
 		channel_expiry,
 		total_amount,
+		onchain_payments,
+		btc_address
 	} = order;
 
 	let content = <></>;
+	let paymentLineItem = <></>;
+	let orderStatus = stateMessage;
 	switch (state) {
-		case 0:
-			content = <Payment order={order} />;
+		case 0: {
+			let unconfirmedIncoming = 0;
+			onchain_payments.forEach((p) => {
+				unconfirmedIncoming += p.amount_base;
+			});
+
+			let link = <></>;
+			if (onchain_payments.length === 1) {
+				link = txLink(onchain_payments[0].hash);
+			} else {
+				link = addressLink(btc_address);
+			}
+
+			paymentLineItem = (
+				<LineItem
+					label={'Received'}
+					value={`${unconfirmedIncoming || amount_received}/${total_amount} sats`}
+				/>
+			);
+
+			orderStatus = 'Unconfirmed payment';
+
+			// If we haven't yet received the full amount, keep showing the payment options
+			if (unconfirmedIncoming < total_amount) {
+				content = <Payment order={order} />;
+			} else {
+				content = <p className={'payment-link'}>Unconfirmed transaction: {link}</p>;
+			}
+
 			break;
+		}
 		// case 400:
 		// 	return 'Given up';
 		// case 500:
@@ -222,10 +251,8 @@ function OrderPage(): JSX.Element {
 
 	return (
 		<FormCard>
-			<LineItem label={'Order status'} value={stateMessage} spinner={state === 0} />
-			{state === 0 ? (
-				<LineItem label={'Received'} value={`${amount_received}/${total_amount} sats`} />
-			) : null}
+			<LineItem label={'Order status'} value={orderStatus} spinner={state === 0} />
+			{paymentLineItem}
 			<LineItem label={'Order expiry'} value={new Date(order_expiry).toLocaleString()} />
 			<LineItem label={'Remote balance'} value={`${local_balance} sats`} />
 			<LineItem label={'Local balance'} value={`${remote_balance} sats`} />
