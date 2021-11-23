@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Table, Form, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import { refreshOrder, selectOrders, selectOrdersState } from '../../store/cr';
+import { refreshOrder, selectOrders, selectOrdersState } from '../../store/store';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 function OrdersPage(): JSX.Element {

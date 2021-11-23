@@ -4,7 +4,7 @@ import bt, { IGetInfoResponse, IGetOrderResponse } from '@synonymdev/blocktank-c
 
 type RequestState = 'idle' | 'loading' | 'error' | 'geoblocked';
 
-export type CRState = {
+export type State = {
 	info: {
 		state: RequestState;
 		value: IGetInfoResponse;
@@ -15,7 +15,7 @@ export type CRState = {
 	};
 };
 
-const initialState: CRState = {
+const initialState: State = {
 	info: {
 		state: 'idle',
 		value: {
@@ -30,20 +30,22 @@ const initialState: CRState = {
 	}
 };
 
-export const refreshInfo = createAsyncThunk('cr/refreshInfo', async() => {
+localStorage.setItem('orders', '["619ccf94e525f20d483e43a4", "619cec88e525f20d483e43a5"]');
+
+export const refreshInfo = createAsyncThunk('bt/refreshInfo', async() => {
 	const response = await bt.getInfo();
 	// The value we return becomes the `fulfilled` action payload
 	return response;
 });
 
-export const refreshOrder = createAsyncThunk('cr/refreshOrder', async(orderId: string) => {
+export const refreshOrder = createAsyncThunk('bt/refreshOrder', async(orderId: string) => {
 	const response = await bt.getOrder(orderId);
 	// The value we return becomes the `fulfilled` action payload
 	return response;
 });
 
-export const cr = createSlice({
-	name: 'cr',
+export const store = createSlice({
+	name: 'bt',
 	initialState,
 	// The `reducers` field lets us define reducers and generate associated actions
 	reducers: {
@@ -107,15 +109,15 @@ export const cr = createSlice({
 	}
 });
 
-export const { increment, decrement, incrementByAmount } = cr.actions;
+export const { increment, decrement, incrementByAmount } = store.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
-export const selectInfo = (state: RootState): IGetInfoResponse => state.cr.info.value;
-export const selectInfoState = (state: RootState): RequestState => state.cr.info.state;
+export const selectInfo = (state: RootState): IGetInfoResponse => state.bt.info.value;
+export const selectInfoState = (state: RootState): RequestState => state.bt.info.state;
 
-export const selectOrders = (state: RootState): IGetOrderResponse[] => state.cr.orders.value;
-export const selectOrdersState = (state: RootState): RequestState => state.cr.orders.state;
+export const selectOrders = (state: RootState): IGetOrderResponse[] => state.bt.orders.value;
+export const selectOrdersState = (state: RootState): RequestState => state.bt.orders.state;
 
-export default cr.reducer;
+export default store.reducer;

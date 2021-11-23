@@ -1,9 +1,9 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import crReducer from './cr';
+import btReducer from './store';
 
 export const store = configureStore({
 	reducer: {
-		cr: crReducer
+		bt: btReducer
 	}
 });
 
