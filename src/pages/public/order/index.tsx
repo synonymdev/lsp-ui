@@ -235,18 +235,14 @@ function OrderPage(): JSX.Element {
 
 			break;
 		}
-		// case 400:
-		// 	return 'Given up';
-		// case 500:
-		// 	return 'Channel open';
-		// case 300:
-		// 	return 'Channel opening';
 		case 100: {
 			content = <ClaimChannel order={order} />;
 			break;
 		}
-		// case 450:
-		// return 'Channel closed';
+		case 400: // Given up
+		case 500: // Channel open
+		case 300: // Channel opening
+		case 450: // Channel closed
 	}
 
 	return (

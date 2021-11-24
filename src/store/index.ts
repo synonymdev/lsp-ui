@@ -1,10 +1,12 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import btReducer from './store';
+import { loadState } from '../utils/browser-storage';
 
 export const store = configureStore({
 	reducer: {
 		bt: btReducer
-	}
+	},
+	preloadedState: loadState()
 });
 
 export type AppDispatch = typeof store.dispatch;
