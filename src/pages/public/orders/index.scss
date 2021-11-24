@@ -1,0 +1,12 @@
+.orders-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.new-order {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}

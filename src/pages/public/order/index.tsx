@@ -10,6 +10,7 @@ import CopyText from '../../../components/copy-text';
 import FormCard from '../../../components/form-card';
 import Spinner from '../../../components/spinner';
 import SupportLink from '../../../components/support-link';
+import PreviousOrdersLink from '../../../components/previous-orders-link';
 import QRCode from '../../../components/qr';
 import './index.scss';
 import { addressLink, txLink } from '../../../utils/links';
@@ -169,7 +170,7 @@ function OrderPage(): JSX.Element {
 		if (ordersState === 'loading' || isLoading) {
 			return (
 				<FormCard>
-					<Spinner style={{ fontSize: 8 }} />
+					<Spinner style={{ fontSize: 8 }} centered />
 				</FormCard>
 			);
 		}
@@ -258,6 +259,7 @@ function OrderPage(): JSX.Element {
 
 			{content}
 
+			<PreviousOrdersLink />
 			<SupportLink orderId={_id} />
 		</FormCard>
 	);

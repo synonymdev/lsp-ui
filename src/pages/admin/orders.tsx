@@ -15,7 +15,6 @@ function OrdersPage(): JSX.Element {
 	return (
 		<Container>
 			<h1>Orders</h1>
-
 			<Form>
 				<Form.Group as={Row}>
 					<Col>

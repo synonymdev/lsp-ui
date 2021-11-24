@@ -3,6 +3,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 import React, { ReactElement } from 'react';
 import BuyPage from './buy';
 import OrderPage from './order';
+import OrdersPage from './orders';
 import './index.scss';
 
 const PageContainer = ({ children }): ReactElement => (
@@ -40,9 +41,15 @@ function PublicPages(): JSX.Element {
 				<OrderPage />
 			</Route>
 
+			<Route path={['/orders', '/blocktank/orders']}>
+				<OrdersPage />
+			</Route>
+
 			<Route path='*'>
-				<h4>404</h4>
-				<p style={{ textAlign: 'center' }}>Page not found</p>
+				<div style={{ textAlign: 'center' }}>
+					<h4>404</h4>
+					<p>Page not found</p>
+				</div>
 			</Route>
 		</Switch>
 	);

@@ -1,21 +1,34 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Spinner from '../spinner';
 import './index.scss';
 
 export default ({
 	label,
 	value,
-	spinner
+	spinner,
+	to
 }: {
 	label: string;
 	value: string;
 	spinner?: boolean;
+	to?: string;
 }): JSX.Element => {
-	return (
-		<div className={'line-item'}>
+	const content = (
+		<>
 			<span className={'label'}>{label}</span>
 			<span className={'value'}>{value}</span>
 			{spinner ? <Spinner /> : null}
-		</div>
+		</>
 	);
+
+	if (to) {
+		return (
+			<Link to={to} className={'line-item'}>
+				{content}
+			</Link>
+		);
+	}
+
+	return <div className={'line-item'}>{content}</div>;
 };

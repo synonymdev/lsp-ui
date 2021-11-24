@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { refreshInfo, selectInfo, selectInfoState } from '../../../store/store';
 import Spinner from '../../../components/spinner';
 import FormCard from '../../../components/form-card';
+import PreviousOrdersLink from '../../../components/previous-orders-link';
 import './index.scss';
 
 function BuyPage(): JSX.Element {
@@ -190,6 +191,8 @@ function BuyPage(): JSX.Element {
 					</Button>
 				</div>
 			</Form>
+
+			<PreviousOrdersLink />
 		</FormCard>
 	);
 }
