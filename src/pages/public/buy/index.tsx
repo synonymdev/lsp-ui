@@ -3,9 +3,10 @@ import { Button, Form } from 'react-bootstrap';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import bt, { IBuyChannelRequest, IService } from '@synonymdev/blocktank-client';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { refreshInfo, selectInfo, selectInfoState } from '../../../store/cr';
+import { refreshInfo, selectInfo, selectInfoState } from '../../../store/store';
 import Spinner from '../../../components/spinner';
 import FormCard from '../../../components/form-card';
+import PreviousOrdersLink from '../../../components/previous-orders-link';
 import './index.scss';
 
 function BuyPage(): JSX.Element {
@@ -190,6 +191,8 @@ function BuyPage(): JSX.Element {
 					</Button>
 				</div>
 			</Form>
+
+			<PreviousOrdersLink />
 		</FormCard>
 	);
 }
