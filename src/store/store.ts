@@ -30,8 +30,6 @@ const initialState: State = {
 	}
 };
 
-localStorage.setItem('orders', '["619ccf94e525f20d483e43a4", "619cec88e525f20d483e43a5"]');
-
 export const refreshInfo = createAsyncThunk('bt/refreshInfo', async() => {
 	const response = await bt.getInfo();
 	// The value we return becomes the `fulfilled` action payload
