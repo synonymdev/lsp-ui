@@ -22,21 +22,20 @@ function TermsPage(): JSX.Element {
 		fetchContent()
 			.then((c) => setContent(format(c)))
 			.catch((e) => alert('Failed to load terms and conditions'));
-		return () => {
-			// this now gets called when the component unmounts
-		};
 	}, []);
-
-	if (!content) {
-		return <Spinner />;
-	}
 
 	return (
 		<Container>
 			<Row>
-				<Col lg={10} md={11} sm={11}>
-					<div className={'terms-container'} dangerouslySetInnerHTML={{ __html: content }}></div>
-				</Col>
+				{content ? (
+					<Col lg={10} md={11} sm={11}>
+						<div className={'terms-container'} dangerouslySetInnerHTML={{ __html: content }}></div>
+					</Col>
+				) : (
+					<div className={'terms-spinner-container'}>
+						<Spinner centered />
+					</div>
+				)}
 			</Row>
 		</Container>
 	);
