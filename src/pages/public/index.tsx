@@ -6,32 +6,36 @@ import OrderPage from './order';
 import OrdersPage from './orders';
 import './index.scss';
 
-const PageContainer = ({ children }): ReactElement => (
+export const PageContainer = ({ children }): ReactElement => (
 	<>
 		<div className={'glowy-main1'} />
 		<div className={'glowy-main2'} />
 		<div className={'glowy-main3'} />
 
-		<Row className={'page-container'}>
-			<Col xl={7} lg={6} md={5} sm={12} className={'infoCol'}>
-				<h1>Lightning Network Services</h1>
-				<br />
-				<p>
-					Open a connection to the Lightning Network and receive or send bitcoin instantly. Choose
-					your custom capacity and BTC for your new channel, or paste a Lightning invoice to refill
-					an existing channel.
-				</p>
-			</Col>
-
-			<Col xl={5} lg={6} md={7} sm={12}>
-				{children}
-			</Col>
-		</Row>
+		<Row className={'page-container'}>{children}</Row>
 	</>
 );
 
+const CardContainer = ({ children }): ReactElement => (
+	<PageContainer>
+		<Col xl={7} lg={6} md={5} sm={12} className={'infoCol'}>
+			<h1>Lightning Network Services</h1>
+			<br />
+			<p>
+				Open a connection to the Lightning Network and receive or send bitcoin instantly. Choose
+				your custom capacity and BTC for your new channel, or paste a Lightning invoice to refill an
+				existing channel.
+			</p>
+		</Col>
+
+		<Col xl={5} lg={6} md={7} sm={12}>
+			{children}
+		</Col>
+	</PageContainer>
+);
+
 function PublicPages(): JSX.Element {
-	const card = (
+	const routes = (
 		<Switch>
 			<Route exact path={['/', '/blocktank']}>
 				<BuyPage />
@@ -58,12 +62,12 @@ function PublicPages(): JSX.Element {
 		new URLSearchParams(window.location.search).get('embed') === 'true' ||
 		(window as any).embedwidget === true
 	) {
-		return card;
+		return routes;
 	}
 
 	return (
 		<Container className={'container'}>
-			<PageContainer>{card}</PageContainer>
+			<CardContainer>{routes}</CardContainer>
 		</Container>
 	);
 }
