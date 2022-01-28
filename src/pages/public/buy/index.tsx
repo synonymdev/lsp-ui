@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import { useHistory, useRouteMatch, Link } from 'react-router-dom';
 import bt, { IBuyChannelRequest, IService } from '@synonymdev/blocktank-client';
+
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { refreshInfo, selectInfo, selectInfoState } from '../../../store/store';
 import Spinner from '../../../components/spinner';
 import FormCard from '../../../components/form-card';
 import PreviousOrdersLink from '../../../components/previous-orders-link';
+import Checkbox from '../../../components/checkbox';
 import './index.scss';
 
 function BuyPage(): JSX.Element {
@@ -16,6 +18,7 @@ function BuyPage(): JSX.Element {
 	const route = useRouteMatch();
 
 	const [isLoading, setIsLoading] = useState(true);
+	const [termsAccepted, setTermsAccepted] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [product, setProduct] = useState<IService | undefined>(undefined);
 	const [channelExpiry, setChannelExpiry] = useState<string>('1');
@@ -56,6 +59,10 @@ function BuyPage(): JSX.Element {
 
 		if (!product) {
 			return;
+		}
+
+		if (!termsAccepted) {
+			return alert('You must accept the terms and conditions');
 		}
 
 		// TODO check channel balance
@@ -184,6 +191,12 @@ function BuyPage(): JSX.Element {
 							onChange={(e) => onSetInput(e, setChannelExpiry)}
 						/>
 					</Form.Group>
+					<Checkbox isChecked={termsAccepted} setIsChecked={setTermsAccepted}>
+						<span>I accept the </span>
+						<Link className={'link'} to={'/terms-and-conditions'}>
+							terms and conditions
+						</Link>
+					</Checkbox>
 				</div>
 				<div className={'button-container'}>
 					<Button className={'form-button'} onClick={onBuy} type='submit' disabled={isSubmitting}>

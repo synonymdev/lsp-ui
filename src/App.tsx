@@ -2,10 +2,11 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { debounce } from 'debounce';
 import ScrollToTop from './utils/ScrollToTop';
-import PublicPages from './pages/public';
+import PublicPages, { PageContainer } from './pages/public';
 import AdminPages from './pages/admin';
 import { store } from './store/index';
 import { saveState } from './utils/browser-storage';
+import TermsPage from './pages/public/terms';
 
 store.subscribe(
 	debounce(() => {
@@ -20,6 +21,12 @@ function App(): JSX.Element {
 			<Switch>
 				<Route path='/admin'>
 					<AdminPages />
+				</Route>
+
+				<Route path={['/terms-and-conditions', '/blocktank/terms-and-conditions']}>
+					<PageContainer>
+						<TermsPage />
+					</PageContainer>
 				</Route>
 
 				<Route exact path={['/*', '/blocktank/*']}>
