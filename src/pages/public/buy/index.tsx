@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, FormControl, InputGroup } from 'react-bootstrap';
 import { useHistory, useRouteMatch, Link } from 'react-router-dom';
 import bt, { IBuyChannelRequest, IService } from '@synonymdev/blocktank-client';
 
@@ -175,6 +175,13 @@ function BuyPage(): JSX.Element {
 							onChange={(e) => onSetInput(e, setRemoteBalance)}
 						/>
 					</Form.Group>
+
+					<InputGroup className='mb-3'>
+						<InputGroup.Text>$</InputGroup.Text>
+						<InputGroup.Text>0.00</InputGroup.Text>
+						<FormControl aria-label='Dollar amount (with dot and two decimal places)' />
+					</InputGroup>
+
 					<Form.Group>
 						<Form.Label>Local balance</Form.Label>
 						<Form.Control
