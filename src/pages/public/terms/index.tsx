@@ -11,9 +11,11 @@ const fetchContent = async(): Promise<string> => {
 const format = (rawHtml: string): string => {
 	const font = 'Neue Haas Grotesk Display Pro';
 	return rawHtml
-		.replaceAll('#000000', '#FFF')
+		.replaceAll('#000000', '#FFF') // Black fonts need to be white on our BG
 		.replaceAll('Arial', font)
-		.replaceAll('Times New Roman', font);
+		.replaceAll('Times New Roman', font)
+		.replaceAll('c13', '') // Removes white highlighted text
+		.replaceAll('c5', ''); // Removes white highlighted text
 };
 
 function TermsPage(): JSX.Element {
