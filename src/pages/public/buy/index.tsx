@@ -200,9 +200,9 @@ function BuyPage(): JSX.Element {
 					</Form.Group>
 					<Checkbox isChecked={termsAccepted} setIsChecked={setTermsAccepted}>
 						<span>I accept the </span>
-						<Link className={'link'} to={'/terms-and-conditions'}>
+						<a target={'_blank'} className={'link'} href={'/terms-and-conditions'}>
 							terms and conditions
-						</Link>
+						</a>
 					</Checkbox>
 				</div>
 				<div className={'button-container'}>
@@ -211,7 +211,6 @@ function BuyPage(): JSX.Element {
 					</Button>
 				</div>
 			</Form>
-
 			<PreviousOrdersLink />
 		</FormCard>
 	);
