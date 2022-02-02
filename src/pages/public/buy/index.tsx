@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, FormControl, InputGroup } from 'react-bootstrap';
+import { Button, Form, FormControl } from 'react-bootstrap';
 import { useHistory, useRouteMatch, Link } from 'react-router-dom';
 import bt, { IBuyChannelRequest, IService } from '@synonymdev/blocktank-client';
 
@@ -8,6 +8,7 @@ import { refreshInfo, selectInfo, selectInfoState } from '../../../store/store';
 import Spinner from '../../../components/spinner';
 import FormCard from '../../../components/form-card';
 import PreviousOrdersLink from '../../../components/previous-orders-link';
+import InputGroup from '../../../components/input-group';
 import Checkbox from '../../../components/checkbox';
 import './index.scss';
 
@@ -54,7 +55,7 @@ function BuyPage(): JSX.Element {
 			.finally(() => setIsLoading(false));
 	}, []);
 
-	const onBuy = async(e): Promise<void> => {
+	const onBuy = async (e): Promise<void> => {
 		e.preventDefault();
 
 		if (!product) {
@@ -167,37 +168,34 @@ function BuyPage(): JSX.Element {
 			<Form className={'form-content'}>
 				<div>
 					<h4>Create Channel</h4>
-					<Form.Group>
-						<Form.Label>Remote balance</Form.Label>
-						<Form.Control
-							type='number'
-							value={remoteBalance}
-							onChange={(e) => onSetInput(e, setRemoteBalance)}
-						/>
-					</Form.Group>
 
-					<InputGroup className='mb-3'>
-						<InputGroup.Text>$</InputGroup.Text>
-						<InputGroup.Text>0.00</InputGroup.Text>
-						<FormControl aria-label='Dollar amount (with dot and two decimal places)' />
-					</InputGroup>
+					<InputGroup
+						type='number'
+						value={remoteBalance}
+						onChange={(e) => onSetInput(e, setRemoteBalance)}
+						id={'remote-balance'}
+						label={'Remote balance'}
+						append={'Sats'}
+					/>
 
-					<Form.Group>
-						<Form.Label>Local balance</Form.Label>
-						<Form.Control
-							type='number'
-							value={localBalance}
-							onChange={(e) => onSetInput(e, setLocalBalance)}
-						/>
-					</Form.Group>
-					<Form.Group>
-						<Form.Label>Channel expiry (Weeks)</Form.Label>
-						<Form.Control
-							type='number'
-							value={channelExpiry}
-							onChange={(e) => onSetInput(e, setChannelExpiry)}
-						/>
-					</Form.Group>
+					<InputGroup
+						type='number'
+						value={localBalance}
+						onChange={(e) => onSetInput(e, setLocalBalance)}
+						id={'local-balance'}
+						label={'Local balance'}
+						append={'Sats'}
+					/>
+
+					<InputGroup
+						type='number'
+						value={channelExpiry}
+						onChange={(e) => onSetInput(e, setChannelExpiry)}
+						id={'local-balance'}
+						label={'Channel expiry'}
+						append={'Weeks'}
+					/>
+
 					<Checkbox isChecked={termsAccepted} setIsChecked={setTermsAccepted}>
 						<span>I accept the </span>
 						<a target={'_blank'} className={'link'} href={'/terms-and-conditions'}>

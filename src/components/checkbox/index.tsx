@@ -17,14 +17,9 @@ export default ({
 	};
 
 	return (
-		<Form.Check type={'checkbox'} className={'checkbox-container'}>
-			<Form.Check.Input
-				checked={isChecked}
-				onChange={handleOnChange}
-				type={'checkbox'}
-				className={'checkbox'}
-			/>
-			<Form.Check.Label className={'label'}>{children}</Form.Check.Label>
+		<Form.Check type={'checkbox'}>
+			<Form.Check.Input checked={isChecked} onChange={handleOnChange} type={'checkbox'} />
+			<Form.Check.Label>{children}</Form.Check.Label>
 		</Form.Check>
 	);
 };
