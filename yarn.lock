@@ -3114,6 +3114,13 @@ bip21@^2.0.3:
   dependencies:
     qs "^6.3.0"
 
+bitcoin-units@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/bitcoin-units/-/bitcoin-units-0.3.0.tgz#014b22db005c31c02865166b5e5a46932865a9c0"
+  integrity sha512-CxmCxfoYDKQhKXMvT1HnShVL1E6rT5IUkVenhrFDphrRGKQHJUTGtK68UY7JnAQKqJA4510cC5MO6aEd/8v1EQ==
+  dependencies:
+    big.js "^5.2.2"
+
 bluebird@^3.5.5:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"

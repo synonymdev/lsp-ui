@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './';
 import bt, { IGetInfoResponse, IGetOrderResponse } from '@synonymdev/blocktank-client';
+import { fetchBitfinexRates, IExchangeRatesResponse } from '../utils/exchange-rates';
 
 type RequestState = 'idle' | 'loading' | 'error' | 'geoblocked';
 
@@ -13,9 +14,13 @@ export type State = {
 		state: RequestState;
 		value: IGetOrderResponse[];
 	};
+	exchangeRates: {
+		state: RequestState;
+		value: IExchangeRatesResponse;
+	};
 };
 
-const initialState: State = {
+export const initialState: State = {
 	info: {
 		state: 'idle',
 		value: {
@@ -27,6 +32,10 @@ const initialState: State = {
 	orders: {
 		state: 'idle',
 		value: []
+	},
+	exchangeRates: {
+		state: 'idle',
+		value: {}
 	}
 };
 
@@ -38,6 +47,12 @@ export const refreshInfo = createAsyncThunk('bt/refreshInfo', async() => {
 
 export const refreshOrder = createAsyncThunk('bt/refreshOrder', async(orderId: string) => {
 	const response = await bt.getOrder(orderId);
+	// The value we return becomes the `fulfilled` action payload
+	return response;
+});
+
+export const refreshExchangeRates = createAsyncThunk('bt/refreshExchangeRates', async() => {
+	const response = await fetchBitfinexRates();
 	// The value we return becomes the `fulfilled` action payload
 	return response;
 });
@@ -103,6 +118,23 @@ export const store = createSlice({
 				} else {
 					state.orders.value.push(updatedOrder);
 				}
+			})
+
+			// Refresh info exchange rates
+			.addCase(refreshExchangeRates.pending, (state) => {
+				state.exchangeRates.state = 'loading';
+			})
+			.addCase(refreshExchangeRates.rejected, (state, action) => {
+				if (action.error.message === 'Network request failed') {
+					// TODO check specifically for 403
+					state.exchangeRates.state = 'geoblocked';
+				} else {
+					state.exchangeRates.state = 'error';
+				}
+			})
+			.addCase(refreshExchangeRates.fulfilled, (state, action) => {
+				state.exchangeRates.state = 'idle';
+				state.exchangeRates.value = action.payload;
 			});
 	}
 });
@@ -117,5 +149,10 @@ export const selectInfoState = (state: RootState): RequestState => state.bt.info
 
 export const selectOrders = (state: RootState): IGetOrderResponse[] => state.bt.orders.value;
 export const selectOrdersState = (state: RootState): RequestState => state.bt.orders.state;
+
+export const selectExchangeRates = (state: RootState): IExchangeRatesResponse =>
+	state.bt.exchangeRates.value;
+export const selectExchangeRateState = (state: RootState): RequestState =>
+	state.bt.exchangeRates.state;
 
 export default store.reducer;

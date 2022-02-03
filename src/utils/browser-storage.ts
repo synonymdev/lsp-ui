@@ -1,3 +1,5 @@
+import { initialState, State } from '../store/store';
+
 const KEY = 'redux';
 
 export const loadState = (): any => {
@@ -7,7 +9,12 @@ export const loadState = (): any => {
 			return undefined;
 		}
 
-		return JSON.parse(serializedState);
+		const completeState = JSON.parse(serializedState);
+
+		// If we add new state with fields not previously cached
+		completeState.bt = { ...initialState, ...completeState.bt };
+
+		return completeState;
 	} catch (e) {
 		console.warn('No state to load');
 		return undefined;

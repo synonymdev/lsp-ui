@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form, FormControl } from 'react-bootstrap';
-import { useHistory, useRouteMatch, Link } from 'react-router-dom';
+import { Button, Form } from 'react-bootstrap';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import bt, { IBuyChannelRequest, IService } from '@synonymdev/blocktank-client';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
@@ -176,6 +176,7 @@ function BuyPage(): JSX.Element {
 						id={'remote-balance'}
 						label={'Remote balance'}
 						append={'Sats'}
+						showFiatFromSatsValue
 					/>
 
 					<InputGroup
@@ -185,6 +186,7 @@ function BuyPage(): JSX.Element {
 						id={'local-balance'}
 						label={'Local balance'}
 						append={'Sats'}
+						showFiatFromSatsValue
 					/>
 
 					<InputGroup
