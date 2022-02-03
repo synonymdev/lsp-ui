@@ -28,7 +28,7 @@ function TermsPage(): JSX.Element {
 
 	return (
 		<Container>
-			<Row>
+			<Row className='justify-content-md-center'>
 				{content ? (
 					<Col lg={10} md={11} sm={11}>
 						<div className={'terms-container'} dangerouslySetInnerHTML={{ __html: content }}></div>
