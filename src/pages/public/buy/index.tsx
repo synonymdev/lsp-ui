@@ -11,6 +11,7 @@ import PreviousOrdersLink from '../../../components/previous-orders-link';
 import InputGroup from '../../../components/input-group';
 import Checkbox from '../../../components/checkbox';
 import './index.scss';
+import RatesRefresher from '../../../hooks/ratesRefresher';
 
 function BuyPage(): JSX.Element {
 	const { services } = useAppSelector(selectInfo);
@@ -165,6 +166,7 @@ function BuyPage(): JSX.Element {
 
 	return (
 		<FormCard>
+			<RatesRefresher />
 			<Form className={'form-content'}>
 				<div>
 					<h4>Create Channel</h4>
