@@ -8,10 +8,14 @@ import { refreshInfo, selectInfo, selectInfoState } from '../../../store/store';
 import Spinner from '../../../components/spinner';
 import FormCard from '../../../components/form-card';
 import PreviousOrdersLink from '../../../components/previous-orders-link';
-import InputGroup from '../../../components/input-group';
 import Checkbox from '../../../components/checkbox';
 import './index.scss';
 import RatesRefresher from '../../../hooks/ratesRefresher';
+import InputGroup from '../../../components/input-group';
+
+export type IFormErrors = {
+	[key: string]: string;
+};
 
 function BuyPage(): JSX.Element {
 	const { services } = useAppSelector(selectInfo);
@@ -26,6 +30,7 @@ function BuyPage(): JSX.Element {
 	const [channelExpiry, setChannelExpiry] = useState<string>('1');
 	const [localBalance, setLocalBalance] = useState<string>('0');
 	const [remoteBalance, setRemoteBalance] = useState<string>('0');
+	const [formErrors, setFormErrors] = useState<IFormErrors>({});
 
 	useEffect(() => {
 		if (services.length > 0) {
@@ -63,18 +68,7 @@ function BuyPage(): JSX.Element {
 			return;
 		}
 
-		if (!termsAccepted) {
-			return alert('You must accept the terms and conditions');
-		}
-
-		// TODO check channel balance
-
-		if (Number(channelExpiry) < 1) {
-			alert(`Minimum channel expiry is 1 week`);
-		}
-
-		if (Number(localBalance) !== 0 && Number(localBalance) < product.min_channel_size) {
-			alert(`Local balance needs to be bigger than ${product.min_channel_size}`);
+		if (!(await isValid(true))) {
 			return;
 		}
 
@@ -96,6 +90,42 @@ function BuyPage(): JSX.Element {
 			setIsSubmitting(false);
 			alert(error);
 		}
+	};
+
+	const isValid = async (validateTermsCheckbox = false): Promise<boolean> => {
+		await new Promise((resolve) => setTimeout(resolve, 250));
+
+		if (!product) {
+			return true;
+		}
+
+		const errors: IFormErrors = {};
+
+		if (validateTermsCheckbox && !termsAccepted) {
+			errors.acceptTerms = 'You must accept the terms and conditions';
+		}
+
+		// TODO check channel balance
+
+		if (Number(channelExpiry) < 1) {
+			errors.channelExpiry = `Minimum channel expiry is ${product.min_chan_expiry} week${
+				product.min_chan_expiry !== 1 ? 's' : ''
+			}`;
+		} else if (Number(channelExpiry) > product.max_chan_expiry) {
+			errors.channelExpiry = `Maximum channel expiry is ${product.max_chan_expiry} weeks`;
+		}
+
+		if (Number(remoteBalance) > product.max_channel_size) {
+			errors.remoteBalance = `Max channel size must be smaller than ${product.max_channel_size}`;
+		}
+
+		if (Number(localBalance) !== 0 && Number(localBalance) < product.min_channel_size) {
+			errors.localBalance = `Local balance needs to be bigger than ${product.min_channel_size}`;
+		}
+
+		setFormErrors(errors);
+
+		return Object.keys(errors).length < 1;
 	};
 
 	// Updates the remoteBalance with a valid input if localBalance is updated
@@ -164,6 +194,12 @@ function BuyPage(): JSX.Element {
 		);
 	}
 
+	const onBlur = (): void => {
+		isValid()
+			.then()
+			.catch((e) => console.error(e));
+	};
+
 	return (
 		<FormCard>
 			<RatesRefresher />
@@ -179,6 +215,8 @@ function BuyPage(): JSX.Element {
 						label={'Remote balance'}
 						append={'Sats'}
 						showFiatFromSatsValue
+						error={formErrors.remoteBalance}
+						onBlur={onBlur}
 					/>
 
 					<InputGroup
@@ -189,18 +227,29 @@ function BuyPage(): JSX.Element {
 						label={'Local balance'}
 						append={'Sats'}
 						showFiatFromSatsValue
+						error={formErrors.localBalance}
+						onBlur={onBlur}
 					/>
 
 					<InputGroup
 						type='number'
 						value={channelExpiry}
 						onChange={(e) => onSetInput(e, setChannelExpiry)}
-						id={'local-balance'}
+						id={'channel-expiry'}
 						label={'Channel expiry'}
 						append={'Weeks'}
+						error={formErrors.channelExpiry}
+						onBlur={onBlur}
 					/>
 
-					<Checkbox isChecked={termsAccepted} setIsChecked={setTermsAccepted}>
+					<Checkbox
+						isChecked={termsAccepted}
+						setIsChecked={(isChecked) => {
+							setTermsAccepted(isChecked);
+							isValid(!isChecked).then();
+						}}
+						error={formErrors.acceptTerms}
+					>
 						<span>I accept the </span>
 						<a target={'_blank'} className={'link'} href={'/terms-and-conditions'}>
 							terms and conditions

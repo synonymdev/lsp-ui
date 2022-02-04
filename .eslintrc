@@ -38,6 +38,7 @@
     "@typescript-eslint/strict-boolean-expressions": "off",
     "@typescript-eslint/naming-convention": "off",
     "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/no-floating-promises": "off"
   },
   "settings": {
     "import/resolver": {
