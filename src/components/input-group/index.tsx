@@ -11,7 +11,10 @@ export default ({
 	id,
 	type,
 	append,
-	showFiatFromSatsValue
+	showFiatFromSatsValue,
+	error,
+	onFocus,
+	onBlur
 }: {
 	value: string;
 	onChange: ChangeEventHandler;
@@ -20,6 +23,9 @@ export default ({
 	type: 'number' | 'text';
 	append: string;
 	showFiatFromSatsValue?: boolean;
+	error?: string;
+	onFocus?: ChangeEventHandler;
+	onBlur?: ChangeEventHandler;
 }): JSX.Element => {
 	const fiat = useDisplayValues(Number(value));
 
@@ -34,7 +40,12 @@ export default ({
 					type={type}
 					value={value}
 					onChange={onChange}
+					isInvalid={!!error}
+					onFocus={onFocus}
+					onBlur={onBlur}
 				/>
+
+				<Form.Control.Feedback type='invalid'>{error}</Form.Control.Feedback>
 			</InputGroup>
 			{showFiatFromSatsValue ? (
 				<div className={'bottom-label'}>
