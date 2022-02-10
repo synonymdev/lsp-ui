@@ -117,10 +117,12 @@ function BuyPage(): JSX.Element {
 
 		if (Number(remoteBalance) > product.max_channel_size) {
 			errors.remoteBalance = `Max channel size must be smaller than ${product.max_channel_size}`;
+		} else if (Number(remoteBalance) < product.min_channel_size) {
+			errors.remoteBalance = `Min channel size must be greater than ${product.min_channel_size}`;
 		}
 
 		if (Number(localBalance) !== 0 && Number(localBalance) < product.min_channel_size) {
-			errors.localBalance = `Local balance needs to be bigger than ${product.min_channel_size}`;
+			errors.localBalance = `Local balance needs to be greater than ${product.min_channel_size}`;
 		}
 
 		setFormErrors(errors);

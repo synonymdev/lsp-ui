@@ -75,7 +75,7 @@ function HomePage(): JSX.Element {
 									<Card.Text>Min channel expiry: {min_chan_expiry}</Card.Text>
 								</Card.Body>
 								<Card.Footer>
-									<Link to={`/buy/${product_id}`} className='nav-link'>
+									<Link to={`/?product_id=${product_id}`} className='nav-link'>
 										<Button>Buy {description}</Button>
 									</Link>
 								</Card.Footer>
