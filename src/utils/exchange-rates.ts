@@ -8,17 +8,12 @@ export type IExchangeRatesResponse = {
 export const fetchBitfinexRates = async(): Promise<IExchangeRatesResponse> => {
 	const rates: IExchangeRatesResponse = {};
 
-	const dummyPath = '/dummy-rates.json';
-	const path = 'https://api-pub.bitfinex.com/v2/tickers';
-
-	const response = await fetch(
-		`${dummyPath}?symbols=${supportedExchangeTickers.map((c) => `tBTC${c}`).join(',')}`
-	);
+	const response = await fetch('https://blocktank.synonym.to/api/v1/rate');
 
 	const jsonResponse = (await response.json()) as string[][];
 	jsonResponse.forEach((a) => {
-		rates[a[0].replace('tBTC', '')] = Math.round(Number(a[10]) * 100) / 100;
-	});
+		rates[a[0].replace('tBTC', '')] = Math.round(Number(a[1]) * 100) / 100;
+	})
 
 	return rates;
 };
