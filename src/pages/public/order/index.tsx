@@ -14,6 +14,7 @@ import PreviousOrdersLink from '../../../components/previous-orders-link';
 import QRCode from '../../../components/qr';
 import './index.scss';
 import { addressLink, txLink } from '../../../utils/links';
+import InputGroup from '../../../components/input-group';
 
 const qrSize = 220;
 
@@ -83,20 +84,22 @@ const ClaimChannel = ({ order }: { order: IGetOrderResponse }): ReactElement => 
 		}
 	};
 
+	const onSetNodeUri = (e: React.ChangeEvent<any>): void => setNodeUri(e.target.value);
+
 	return (
 		<div style={{ textAlign: 'center' }}>
 			{showManual ? (
 				<>
 					<Form>
-						<Form.Group>
-							<Form.Label>Node URI</Form.Label>
-							<Form.Control
-								type='text'
-								placeholder={'nodeid@ip:port'}
-								value={nodeUri}
-								onChange={(e) => setNodeUri(e.target.value)}
-							/>
-						</Form.Group>
+						<InputGroup
+							type='text'
+							value={nodeUri}
+							onChange={onSetNodeUri}
+							id={'node-uri'}
+							placeholder={'nodeid@ip:port'}
+							label={'Node URI'}
+							// error={formErrors.remoteBalance}
+						/>
 
 						<div style={{ display: 'flex', justifyContent: 'center' }}>
 							<Button
@@ -204,6 +207,7 @@ function OrderPage(): JSX.Element {
 	let content = <></>;
 	let paymentLineItem = <></>;
 	let orderStatus = stateMessage;
+
 	switch (state) {
 		case 0: {
 			let unconfirmedIncoming = 0;
