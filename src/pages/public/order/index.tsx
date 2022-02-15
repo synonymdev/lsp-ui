@@ -3,7 +3,7 @@ import { Button, Form, Tab, Tabs } from 'react-bootstrap';
 import { useParams, Link } from 'react-router-dom';
 import bip21 from 'bip21';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { refreshOrder, selectOrders, selectOrdersState } from '../../../store/store';
+import { refreshOrder, selectOrders, selectOrdersState } from '../../../store/public-store';
 import bt, { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import LineItem from '../../../components/line-item';
 import CopyText from '../../../components/copy-text';

@@ -1,4 +1,4 @@
-import { initialState, State } from '../store/store';
+import { initialState } from '../store/public-store';
 
 const KEY = 'redux';
 
@@ -13,6 +13,7 @@ export const loadState = (): any => {
 
 		// If we add new state with fields not previously cached
 		completeState.bt = { ...initialState, ...completeState.bt };
+		// No need to cache admin state
 
 		return completeState;
 	} catch (e) {
