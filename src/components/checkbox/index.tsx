@@ -20,7 +20,12 @@ export default ({
 
 	return (
 		<Form.Check type={'checkbox'} className={'custom-checkbox'}>
-			<Form.Check.Input checked={isChecked} onChange={handleOnChange} type={'checkbox'} isInvalid={!!error} />
+			<Form.Check.Input
+				checked={isChecked}
+				onChange={handleOnChange}
+				type={'checkbox'}
+				isInvalid={!!error}
+			/>
 			<Form.Check.Label>{children}</Form.Check.Label>
 			<Form.Control.Feedback type='invalid'>{error}</Form.Control.Feedback>
 		</Form.Check>

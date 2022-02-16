@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { refreshInfo, selectInfo, selectInfoState } from '../../store/public-store';
+
 import { Link } from 'react-router-dom';
 
 function HomePage(): JSX.Element {

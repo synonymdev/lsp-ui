@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import bt from '@synonymdev/blocktank-client';
+import bt, { btAdmin } from '@synonymdev/blocktank-client';
 import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { store } from './store';
 
 bt.setNetwork(process.env.REACT_APP_MAINNET === 'true' ? 'mainnet' : 'testnet');
+btAdmin.setNetwork(process.env.REACT_APP_MAINNET === 'true' ? 'mainnet' : 'testnet');
 
 ReactDOM.render(
 	<React.StrictMode>
