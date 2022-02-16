@@ -6,7 +6,7 @@ import {
 	TBitcoinUnit
 } from '../utils/exchange-rates';
 import { useAppSelector } from '../store/hooks';
-import { selectExchangeRates, selectExchangeRateState } from '../store/store';
+import { selectExchangeRates, selectExchangeRateState } from '../store/public-store';
 
 export default function useDisplayValues(sats: number): IDisplayValues {
 	const exchangeRates = useAppSelector(selectExchangeRates);

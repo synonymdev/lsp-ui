@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAppDispatch } from '../store/hooks';
-import { refreshExchangeRates } from '../store/store';
+import { refreshExchangeRates } from '../store/public-store';
 
 // Rates auto refreshed every 10 seconds while the window is in focus
 const interval = 10000;

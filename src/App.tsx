@@ -7,6 +7,7 @@ import AdminPages from './pages/admin';
 import { store } from './store/index';
 import { saveState } from './utils/browser-storage';
 import TermsPage from './pages/public/terms';
+import AdminAuthModal from './components/admin/auth-modal';
 
 store.subscribe(
 	debounce(() => {
@@ -20,6 +21,7 @@ function App(): JSX.Element {
 			<ScrollToTop />
 			<Switch>
 				<Route path='/admin'>
+					<AdminAuthModal />
 					<AdminPages />
 				</Route>
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import { refreshOrder, selectOrders, selectOrdersState } from '../../store/store';
+import { refreshOrder, selectOrders, selectOrdersState } from '../../store/public-store';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import { addressLink, txLink, nodePubKeyLink } from '../../utils/links';

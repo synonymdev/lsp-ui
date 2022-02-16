@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import './index.scss';
 import { useAppSelector } from '../../store/hooks';
-import { selectOrders } from '../../store/store';
+import { selectOrders } from '../../store/public-store';
 
 export default (): JSX.Element => {
 	const orders = useAppSelector(selectOrders);

@@ -1,10 +1,12 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import btReducer from './store';
+import btPublicReducer from './public-store';
+import btAdminReducer from './admin-store';
 import { loadState } from '../utils/browser-storage';
 
 export const store = configureStore({
 	reducer: {
-		bt: btReducer
+		bt: btPublicReducer,
+		btAdmin: btAdminReducer
 	},
 	preloadedState: loadState()
 });

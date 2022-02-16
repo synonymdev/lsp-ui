@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Table, Form, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import { refreshOrder, selectOrders, selectOrdersState } from '../../store/store';
+import { refreshOrders, selectOrders, selectOrdersState } from '../../store/admin-store';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 function OrdersPage(): JSX.Element {
@@ -14,7 +14,7 @@ function OrdersPage(): JSX.Element {
 
 	return (
 		<Container>
-			<h1>Orders</h1>
+			<h1>Orders {ordersState}</h1>
 			<Form>
 				<Form.Group as={Row}>
 					<Col>
@@ -29,7 +29,7 @@ function OrdersPage(): JSX.Element {
 							variant='primary'
 							onClick={async () => {
 								try {
-									await dispatch(refreshOrder(search));
+									await dispatch(refreshOrders());
 								} catch (e) {
 									alert(e);
 								}

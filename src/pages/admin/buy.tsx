@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, Form, Row } from 'react-bootstrap';
 import { useParams, useHistory } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { refreshInfo, selectInfo, selectInfoState } from '../../store/store';
+import { refreshInfo, selectInfo, selectInfoState } from '../../store/public-store';
 import bt, { IBuyChannelRequest, IService } from '@synonymdev/blocktank-client';
 
 function BuyPage(): JSX.Element {
