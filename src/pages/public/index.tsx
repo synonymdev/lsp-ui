@@ -1,7 +1,7 @@
 import { Switch, Route } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
 import React, { ReactElement } from 'react';
-import BuyPage from './buy';
+import ConfigurePage from './configure';
 import OrderPage from './order';
 import OrdersPage from './orders';
 import './index.scss';
@@ -38,7 +38,7 @@ function PublicPages(): JSX.Element {
 	const routes = (
 		<Switch>
 			<Route exact path={['/', '/blocktank']}>
-				<BuyPage />
+				<ConfigurePage />
 			</Route>
 
 			<Route path={['/order/:orderId', '/blocktank/order/:orderId']}>

@@ -10,11 +10,11 @@ import CopyText from '../../../components/copy-text';
 import FormCard from '../../../components/form-card';
 import Spinner from '../../../components/spinner';
 import SupportLink from '../../../components/support-link';
-import PreviousOrdersLink from '../../../components/previous-orders-link';
 import QRCode from '../../../components/qr';
 import './index.scss';
 import { addressLink, txLink } from '../../../utils/links';
 import InputGroup from '../../../components/input-group';
+import PageIndicator from '../../../components/page-indicator';
 
 const qrSize = 220;
 
@@ -263,8 +263,9 @@ function OrderPage(): JSX.Element {
 
 			{content}
 
-			<PreviousOrdersLink />
 			<SupportLink orderId={_id} />
+
+			<PageIndicator total={4} active={2} />
 		</FormCard>
 	);
 }

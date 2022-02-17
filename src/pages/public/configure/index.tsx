@@ -7,24 +7,25 @@ import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { refreshInfo, selectInfo, selectInfoState } from '../../../store/public-store';
 import Spinner from '../../../components/spinner';
 import FormCard from '../../../components/form-card';
-import PreviousOrdersLink from '../../../components/previous-orders-link';
 import Checkbox from '../../../components/checkbox';
 import './index.scss';
 import RatesRefresher from '../../../hooks/ratesRefresher';
 import InputGroup from '../../../components/input-group';
+import PageIndicator from '../../../components/page-indicator';
+import Heading from '../../../components/heading';
 
 export type IFormErrors = {
 	[key: string]: string;
 };
 
-function BuyPage(): JSX.Element {
+function ConfigurePage(): JSX.Element {
 	const { services } = useAppSelector(selectInfo);
 	const infoState = useAppSelector(selectInfoState);
 	const history = useHistory();
 	const route = useRouteMatch();
 
 	const [isLoading, setIsLoading] = useState(true);
-	const [termsAccepted, setTermsAccepted] = useState(false);
+	// const [termsAccepted, setTermsAccepted] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [product, setProduct] = useState<IService | undefined>(undefined);
 	const [channelExpiry, setChannelExpiry] = useState<string>('1');
@@ -101,9 +102,9 @@ function BuyPage(): JSX.Element {
 
 		const errors: IFormErrors = {};
 
-		if (validateTermsCheckbox && !termsAccepted) {
-			errors.acceptTerms = 'You must accept the terms and conditions';
-		}
+		// if (validateTermsCheckbox && !termsAccepted) {
+		// 	errors.acceptTerms = 'You must accept the terms and conditions';
+		// }
 
 		// TODO check channel balance
 
@@ -205,9 +206,11 @@ function BuyPage(): JSX.Element {
 	return (
 		<FormCard>
 			<RatesRefresher />
+
 			<Form className={'form-content'}>
 				<div>
-					<h4>Create Channel</h4>
+					<h4>New Lightning Channel</h4>
+					<Heading>Configure</Heading>
 
 					<InputGroup
 						type='number'
@@ -215,7 +218,7 @@ function BuyPage(): JSX.Element {
 						onChange={(e) => onSetInput(e, setRemoteBalance)}
 						id={'remote-balance'}
 						label={'Remote balance'}
-						append={'Sats'}
+						append={'sats'}
 						showFiatFromSatsValue
 						error={formErrors.remoteBalance}
 						onBlur={onBlur}
@@ -227,7 +230,7 @@ function BuyPage(): JSX.Element {
 						onChange={(e) => onSetInput(e, setLocalBalance)}
 						id={'local-balance'}
 						label={'Local balance'}
-						append={'Sats'}
+						append={'sats'}
 						showFiatFromSatsValue
 						error={formErrors.localBalance}
 						onBlur={onBlur}
@@ -239,34 +242,35 @@ function BuyPage(): JSX.Element {
 						onChange={(e) => onSetInput(e, setChannelExpiry)}
 						id={'channel-expiry'}
 						label={'Channel expiry'}
-						append={'Weeks'}
+						append={'weeks'}
 						error={formErrors.channelExpiry}
 						onBlur={onBlur}
 					/>
 
-					<Checkbox
-						isChecked={termsAccepted}
-						setIsChecked={(isChecked) => {
-							setTermsAccepted(isChecked);
-							isValid(!isChecked).then();
-						}}
-						error={formErrors.acceptTerms}
-					>
-						<span>I accept the </span>
-						<a target={'_blank'} className={'link'} href={'/terms-and-conditions'}>
-							terms and conditions
-						</a>
-					</Checkbox>
+					{/* <Checkbox */}
+					{/*	isChecked={termsAccepted} */}
+					{/*	setIsChecked={(isChecked) => { */}
+					{/*		setTermsAccepted(isChecked); */}
+					{/*		isValid(!isChecked).then(); */}
+					{/*	}} */}
+					{/*	error={formErrors.acceptTerms} */}
+					{/* > */}
+					{/*	<span>I accept the </span> */}
+					{/*	<a target={'_blank'} className={'link'} href={'/terms-and-conditions'}> */}
+					{/*		terms and conditions */}
+					{/*	</a> */}
+					{/* </Checkbox> */}
 				</div>
 				<div className={'button-container'}>
 					<Button className={'form-button'} onClick={onBuy} type='submit' disabled={isSubmitting}>
-						Pay Now
+						Create my Channel
 					</Button>
 				</div>
 			</Form>
-			<PreviousOrdersLink />
+
+			<PageIndicator total={4} active={0} />
 		</FormCard>
 	);
 }
 
-export default BuyPage;
+export default ConfigurePage;

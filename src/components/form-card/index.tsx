@@ -1,5 +1,6 @@
 import { Card } from 'react-bootstrap';
 import React from 'react';
+import Footer from '../footer';
 import './index.scss';
 
 export default ({ children }): JSX.Element => {
@@ -9,6 +10,8 @@ export default ({ children }): JSX.Element => {
 			<div className={'glowy2'} />
 			<div className={'glowy3'} />
 			{children}
+
+			<Footer />
 		</Card>
 	);
 };
