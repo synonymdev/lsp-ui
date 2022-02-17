@@ -10,12 +10,27 @@ import FormCard from '../../../components/form-card';
 import Checkbox from '../../../components/checkbox';
 import './index.scss';
 import RatesRefresher from '../../../hooks/ratesRefresher';
-import InputGroup from '../../../components/input-group';
+import InputGroup, { TTooltip } from '../../../components/input-group';
 import PageIndicator from '../../../components/page-indicator';
 import Heading from '../../../components/heading';
 
 export type IFormErrors = {
 	[key: string]: string;
+};
+
+const inboundTip: TTooltip = {
+	title: 'Inbound capacity',
+	body: 'This is the amount of sats you will be able to receive in payments. The amount must be at least double the amount of your ‘spending balance’. The maximum amount of inbound capacity is 50,000,000 sats.'
+};
+
+const spendingTip: TTooltip = {
+	title: 'My spending balance',
+	body: 'This is the amount of sats you can spend when you first open this channel. The maximum is the current equivalent of $9999.'
+};
+
+const durationTip: TTooltip = {
+	title: 'Channel duration',
+	body: 'This is the minimum amount of time that your channel will remain open. We may choose to keep it open longer, but you can close your channel any time.'
 };
 
 function ConfigurePage(): JSX.Element {
@@ -222,6 +237,7 @@ function ConfigurePage(): JSX.Element {
 						showFiatFromSatsValue
 						error={formErrors.remoteBalance}
 						onBlur={onBlur}
+						tooltip={inboundTip}
 					/>
 
 					<InputGroup
@@ -234,6 +250,7 @@ function ConfigurePage(): JSX.Element {
 						showFiatFromSatsValue
 						error={formErrors.localBalance}
 						onBlur={onBlur}
+						tooltip={spendingTip}
 					/>
 
 					<InputGroup
@@ -245,6 +262,7 @@ function ConfigurePage(): JSX.Element {
 						append={'weeks'}
 						error={formErrors.channelExpiry}
 						onBlur={onBlur}
+						tooltip={durationTip}
 					/>
 
 					{/* <Checkbox */}

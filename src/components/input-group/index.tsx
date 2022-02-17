@@ -1,11 +1,16 @@
-import { FormControl, InputGroup, Form } from 'react-bootstrap';
-import React, { ChangeEventHandler } from 'react';
+import { Button, Overlay, OverlayTrigger } from 'react-bootstrap';
+import React, { ChangeEventHandler, useRef, useState } from 'react';
 
 import './index.scss';
 import { ReactComponent as TooltipIcon } from './tooltip.svg';
 import { ReactComponent as SatsIcon } from './sats.svg';
 import { ReactComponent as WeeksIcon } from './weeks.svg';
 import useDisplayValues from '../../hooks/displayValues';
+
+export type TTooltip = {
+	title: string;
+	body: string;
+};
 
 const AppendInput = ({ children }: { children: string | undefined }): JSX.Element => {
 	if (!children) {
@@ -31,6 +36,43 @@ const AppendInput = ({ children }: { children: string | undefined }): JSX.Elemen
 	);
 };
 
+const Tooltip = ({ tip }: { tip?: TTooltip }): JSX.Element => {
+	const [show, setShow] = useState(false);
+	const target = useRef(null);
+
+	if (!tip) {
+		return <></>;
+	}
+
+	return (
+		<>
+			<span
+				className={'custom-input-tooltip-icon'}
+				onMouseEnter={() => setShow(true)}
+				onMouseLeave={() => setTimeout(() => setShow(false), 250)}
+			>
+				<TooltipIcon ref={target} onClick={() => setShow(!show)} />
+			</span>
+			<Overlay target={target.current} show={show} placement='left'>
+				{({ placement, arrowProps, show: _show, popper, ...props }) => (
+					<div
+						{...props}
+						className={'custom-input-tooltip-container'}
+						style={{
+							...props.style,
+							backgroundColor: 'rgba(16, 16, 16, 0.92)',
+							borderRadius: 10
+						}}
+					>
+						<h4>{tip.title}</h4>
+						<p>{tip.body}</p>
+					</div>
+				)}
+			</Overlay>
+		</>
+	);
+};
+
 export default ({
 	value,
 	onChange,
@@ -42,7 +84,8 @@ export default ({
 	error,
 	onFocus,
 	onBlur,
-	placeholder
+	placeholder,
+	tooltip
 }: {
 	value: string;
 	onChange: ChangeEventHandler;
@@ -55,6 +98,7 @@ export default ({
 	onFocus?: ChangeEventHandler;
 	onBlur?: ChangeEventHandler;
 	placeholder?: string;
+	tooltip?: TTooltip;
 }): JSX.Element => {
 	const fiat = useDisplayValues(Number(value));
 
@@ -87,9 +131,7 @@ export default ({
 
 				<span className={'custom-input-append-container'}>
 					<AppendInput>{append}</AppendInput>
-					<span className={'custom-input-tooltip-icon'}>
-						<TooltipIcon />
-					</span>
+					<Tooltip tip={tooltip}></Tooltip>
 				</span>
 			</div>
 
