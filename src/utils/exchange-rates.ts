@@ -13,7 +13,7 @@ export const fetchBitfinexRates = async(): Promise<IExchangeRatesResponse> => {
 	const jsonResponse = (await response.json()) as string[][];
 	jsonResponse.forEach((a) => {
 		rates[a[0].replace('tBTC', '')] = Math.round(Number(a[1]) * 100) / 100;
-	})
+	});
 
 	return rates;
 };
@@ -30,6 +30,9 @@ export type IDisplayValues = {
 	bitcoinFormatted: string;
 	bitcoinSymbol: string; // ₿, m₿, μ₿, ⚡,
 	bitcoinTicker: string; // BTC, mBTC, μBTC, Sats
+	altBitcoinFormatted: string;
+	altBitcoinSymbol: string; // ₿, m₿, μ₿, ⚡,
+	altBitcoinTicker: string; // BTC, mBTC, μBTC, Sats
 	satoshis: number;
 };
 
@@ -43,6 +46,9 @@ export const defaultDisplayValues: IDisplayValues = {
 	bitcoinFormatted: '-',
 	bitcoinSymbol: '',
 	bitcoinTicker: '',
+	altBitcoinFormatted: '-',
+	altBitcoinSymbol: '',
+	altBitcoinTicker: '',
 	satoshis: 0
 };
 
@@ -65,8 +71,14 @@ export const getDisplayValues = ({
 			? bitcoinUnits(satoshis, 'satoshi').to(currency).value().toFixed(2)
 			: '-';
 
-		let { fiatFormatted, fiatWhole, fiatDecimal, fiatDecimalValue, fiatSymbol } =
-			defaultDisplayValues;
+		let {
+			fiatFormatted,
+			fiatWhole,
+			fiatDecimal,
+			fiatDecimalValue,
+			fiatSymbol,
+			altBitcoinFormatted
+		} = defaultDisplayValues;
 
 		if (!isNaN(fiatValue)) {
 			const fiatFormattedIntl = new Intl.NumberFormat(locale, {
@@ -96,11 +108,17 @@ export const getDisplayValues = ({
 			.toFixed(bitcoinUnit === 'satoshi' ? 0 : 8)
 			.toString();
 
-		let { bitcoinSymbol } = defaultDisplayValues;
+		let { bitcoinSymbol, altBitcoinSymbol } = defaultDisplayValues;
 		let bitcoinTicker = bitcoinUnit.toString();
+		let altBitcoinTicker: TBitcoinUnit = 'BTC';
 		switch (bitcoinUnit) {
 			case 'BTC':
 				bitcoinSymbol = '₿';
+
+				// Bitcoin's alt format is sats
+				altBitcoinSymbol = 'Sats';
+				altBitcoinTicker = 'satoshi';
+				altBitcoinFormatted = `${satoshis}`; // TODO format number
 				break;
 			case 'mBTC':
 				bitcoinSymbol = 'm₿';
@@ -111,6 +129,11 @@ export const getDisplayValues = ({
 			case 'satoshi':
 				bitcoinSymbol = '⚡';
 				bitcoinTicker = 'Sats';
+
+				// Sats alt format is whole bitcoins
+				altBitcoinSymbol = '₿';
+				altBitcoinTicker = 'BTC';
+				altBitcoinFormatted = `${(satoshis / 100000000).toFixed(8)}`;
 				break;
 		}
 
@@ -124,6 +147,9 @@ export const getDisplayValues = ({
 			bitcoinFormatted,
 			bitcoinSymbol,
 			bitcoinTicker,
+			altBitcoinFormatted,
+			altBitcoinSymbol,
+			altBitcoinTicker,
 			satoshis
 		};
 	} catch (e) {

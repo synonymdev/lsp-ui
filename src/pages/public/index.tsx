@@ -5,6 +5,7 @@ import ConfigurePage from './configure';
 import OrderPage from './order';
 import OrdersPage from './orders';
 import './index.scss';
+import ConfirmationPage from './confirm';
 
 export const PageContainer = ({ children }): ReactElement => (
 	<>
@@ -39,6 +40,10 @@ function PublicPages(): JSX.Element {
 		<Switch>
 			<Route exact path={['/', '/blocktank']}>
 				<ConfigurePage />
+			</Route>
+
+			<Route path={['/confirm/:orderId', '/blocktank/confirm/:orderId']}>
+				<ConfirmationPage />
 			</Route>
 
 			<Route path={['/order/:orderId', '/blocktank/order/:orderId']}>

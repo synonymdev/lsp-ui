@@ -2,9 +2,9 @@ import { Button, Overlay, OverlayTrigger } from 'react-bootstrap';
 import React, { ChangeEventHandler, useRef, useState } from 'react';
 
 import './index.scss';
-import { ReactComponent as TooltipIcon } from './tooltip.svg';
-import { ReactComponent as SatsIcon } from './sats.svg';
-import { ReactComponent as WeeksIcon } from './weeks.svg';
+import { ReactComponent as TooltipIcon } from '../../icons/tooltip.svg';
+import { ReactComponent as SatsIcon } from '../../icons/sats.svg';
+import { ReactComponent as WeeksIcon } from '../../icons/weeks.svg';
 import useDisplayValues from '../../hooks/displayValues';
 
 export type TTooltip = {
@@ -36,6 +36,8 @@ const AppendInput = ({ children }: { children: string | undefined }): JSX.Elemen
 	);
 };
 
+// TODO move tooltip to new component
+// TODO Detect device. Hover for desktop, click for mobile
 const Tooltip = ({ tip }: { tip?: TTooltip }): JSX.Element => {
 	const [show, setShow] = useState(false);
 	const target = useRef(null);

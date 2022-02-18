@@ -7,11 +7,9 @@ import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { refreshInfo, selectInfo, selectInfoState } from '../../../store/public-store';
 import Spinner from '../../../components/spinner';
 import FormCard from '../../../components/form-card';
-import Checkbox from '../../../components/checkbox';
 import './index.scss';
 import RatesRefresher from '../../../hooks/ratesRefresher';
 import InputGroup, { TTooltip } from '../../../components/input-group';
-import PageIndicator from '../../../components/page-indicator';
 import Heading from '../../../components/heading';
 
 export type IFormErrors = {
@@ -40,7 +38,6 @@ function ConfigurePage(): JSX.Element {
 	const route = useRouteMatch();
 
 	const [isLoading, setIsLoading] = useState(true);
-	// const [termsAccepted, setTermsAccepted] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [product, setProduct] = useState<IService | undefined>(undefined);
 	const [channelExpiry, setChannelExpiry] = useState<string>('1');
@@ -84,7 +81,7 @@ function ConfigurePage(): JSX.Element {
 			return;
 		}
 
-		if (!(await isValid(true))) {
+		if (!(await isValid())) {
 			return;
 		}
 
@@ -101,14 +98,14 @@ function ConfigurePage(): JSX.Element {
 			const buyRes = await bt.buyChannel(req);
 			const { order_id } = buyRes;
 
-			history.push(`${route.url}order/${order_id}`);
+			history.push(`${route.url}confirm/${order_id}`);
 		} catch (error) {
 			setIsSubmitting(false);
 			alert(error);
 		}
 	};
 
-	const isValid = async (validateTermsCheckbox = false): Promise<boolean> => {
+	const isValid = async (): Promise<boolean> => {
 		await new Promise((resolve) => setTimeout(resolve, 250));
 
 		if (!product) {
@@ -116,10 +113,6 @@ function ConfigurePage(): JSX.Element {
 		}
 
 		const errors: IFormErrors = {};
-
-		// if (validateTermsCheckbox && !termsAccepted) {
-		// 	errors.acceptTerms = 'You must accept the terms and conditions';
-		// }
 
 		// TODO check channel balance
 
@@ -219,12 +212,11 @@ function ConfigurePage(): JSX.Element {
 	};
 
 	return (
-		<FormCard>
+		<FormCard title={'New Lightning Channel'} pageIndicator={{ total: 4, active: 0 }}>
 			<RatesRefresher />
 
 			<Form className={'form-content'}>
-				<div>
-					<h4>New Lightning Channel</h4>
+				<div className={'form-fields'}>
 					<Heading>Configure</Heading>
 
 					<InputGroup
@@ -264,29 +256,16 @@ function ConfigurePage(): JSX.Element {
 						onBlur={onBlur}
 						tooltip={durationTip}
 					/>
-
-					{/* <Checkbox */}
-					{/*	isChecked={termsAccepted} */}
-					{/*	setIsChecked={(isChecked) => { */}
-					{/*		setTermsAccepted(isChecked); */}
-					{/*		isValid(!isChecked).then(); */}
-					{/*	}} */}
-					{/*	error={formErrors.acceptTerms} */}
-					{/* > */}
-					{/*	<span>I accept the </span> */}
-					{/*	<a target={'_blank'} className={'link'} href={'/terms-and-conditions'}> */}
-					{/*		terms and conditions */}
-					{/*	</a> */}
-					{/* </Checkbox> */}
 				</div>
+
 				<div className={'button-container'}>
-					<Button className={'form-button'} onClick={onBuy} type='submit' disabled={isSubmitting}>
-						Create my Channel
-					</Button>
+					<div>
+						<Button className={'form-button'} onClick={onBuy} type='submit' disabled={isSubmitting}>
+							Create my Channel
+						</Button>
+					</div>
 				</div>
 			</Form>
-
-			<PageIndicator total={4} active={0} />
 		</FormCard>
 	);
 }

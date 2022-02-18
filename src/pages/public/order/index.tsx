@@ -14,7 +14,6 @@ import QRCode from '../../../components/qr';
 import './index.scss';
 import { addressLink, txLink } from '../../../utils/links';
 import InputGroup from '../../../components/input-group';
-import PageIndicator from '../../../components/page-indicator';
 
 const qrSize = 220;
 
@@ -251,7 +250,11 @@ function OrderPage(): JSX.Element {
 	}
 
 	return (
-		<FormCard>
+		<FormCard
+			title={'New Lightning Channel'}
+			backlink={'/'}
+			pageIndicator={{ total: 4, active: 2 }}
+		>
 			<LineItem label={'Order status'} value={orderStatus} spinner={state === 0} />
 			{paymentLineItem}
 			<LineItem label={'Order expiry'} value={new Date(order_expiry).toLocaleString()} />
@@ -264,8 +267,6 @@ function OrderPage(): JSX.Element {
 			{content}
 
 			<SupportLink orderId={_id} />
-
-			<PageIndicator total={4} active={2} />
 		</FormCard>
 	);
 }
