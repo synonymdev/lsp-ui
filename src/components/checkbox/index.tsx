@@ -1,7 +1,7 @@
-import { Form } from 'react-bootstrap';
 import React from 'react';
-
 import { ReactComponent as CheckmarkIcon } from '../../icons/checkmark.svg';
+import Error from '../inline-error';
+
 import './index.scss';
 
 export default ({
@@ -29,7 +29,7 @@ export default ({
 				<span className={'custom-label'}>{children}</span>
 			</div>
 
-			{error ? <span>{error}</span> : null}
+			<Error>{error}</Error>
 		</div>
 	);
 };

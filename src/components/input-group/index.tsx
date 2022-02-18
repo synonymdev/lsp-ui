@@ -5,6 +5,7 @@ import './index.scss';
 import { ReactComponent as TooltipIcon } from '../../icons/tooltip.svg';
 import { ReactComponent as SatsIcon } from '../../icons/sats.svg';
 import { ReactComponent as WeeksIcon } from '../../icons/weeks.svg';
+import Error from '../inline-error';
 import useDisplayValues from '../../hooks/displayValues';
 
 export type TTooltip = {
@@ -137,35 +138,7 @@ export default ({
 				</span>
 			</div>
 
-			{error ? (
-				<div className={'custom-input-error'}>
-					<span>{error}</span>
-				</div>
-			) : null}
-
-			{/* <Form.Label htmlFor={id}>{label}</Form.Label> */}
-			{/* <InputGroup className='custom-input-group'> */}
-			{/*	{append ? <InputGroup.Text className='custom-form-append'>{append}</InputGroup.Text> : null} */}
-			{/*	<FormControl */}
-			{/*		className='custom-form-control' */}
-			{/*		id={id} */}
-			{/*		type={type} */}
-			{/*		value={value} */}
-			{/*		onChange={onChange} */}
-			{/*		isInvalid={!!error} */}
-			{/*		onFocus={onFocus} */}
-			{/*		onBlur={onBlur} */}
-			{/*		placeholder={placeholder} */}
-			{/*	/> */}
-			{/*	<Form.Control.Feedback type='invalid'>{error}</Form.Control.Feedback> */}
-			{/* </InputGroup> */}
-			{/* {showFiatFromSatsValue ? ( */}
-			{/*	<div className={'bottom-label'}> */}
-			{/*		<span> */}
-			{/*			{fiat.fiatSymbol} {fiat.fiatFormatted} */}
-			{/*		</span> */}
-			{/*	</div> */}
-			{/* ) : null} */}
+			<Error>{error}</Error>
 		</div>
 	);
 };
