@@ -1,6 +1,7 @@
 import { Form } from 'react-bootstrap';
 import React from 'react';
 
+import { ReactComponent as CheckmarkIcon } from '../../icons/checkmark.svg';
 import './index.scss';
 
 export default ({
@@ -19,15 +20,16 @@ export default ({
 	};
 
 	return (
-		<Form.Check type={'checkbox'} className={'custom-checkbox'}>
-			<Form.Check.Input
-				checked={isChecked}
-				onChange={handleOnChange}
-				type={'checkbox'}
-				isInvalid={!!error}
-			/>
-			<Form.Check.Label>{children}</Form.Check.Label>
-			<Form.Control.Feedback type='invalid'>{error}</Form.Control.Feedback>
-		</Form.Check>
+		<div>
+			<div className={'custom-checkbox-container'}>
+				<div className={`custom-checkbox ${isChecked ? 'checked' : ''}`} onClick={handleOnChange}>
+					{isChecked ? <CheckmarkIcon /> : null}
+				</div>
+
+				<span className={'custom-label'}>{children}</span>
+			</div>
+
+			{error ? <span>{error}</span> : null}
+		</div>
 	);
 };

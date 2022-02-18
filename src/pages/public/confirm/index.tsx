@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { useParams, Link, useHistory, useRouteMatch } from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
@@ -26,7 +26,6 @@ function ConfirmationPage(): JSX.Element {
 	const orders = useAppSelector(selectOrders);
 	const ordersState = useAppSelector(selectOrdersState);
 	const dispatch = useAppDispatch();
-	const route = useRouteMatch();
 	const history = useHistory();
 
 	useEffect(() => {
@@ -66,7 +65,7 @@ function ConfirmationPage(): JSX.Element {
 
 	const onPay = (): void => {
 		if (!termsAccepted) {
-			setShowAcceptTermsError(true);
+			return setShowAcceptTermsError(true);
 		}
 
 		// TODO check order is still valid
