@@ -1,24 +1,50 @@
 .payment-request-container {
-  display: flex;
 
-  .payment-request-qr {
-    background-color: rebeccapurple;
+  .payment-request-title {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    font-size: 15px;
+    color: #F75C1A;
+    margin-bottom: 12px;
   }
 
-  .payment-request-details {
-    padding-left: 20px;
-    overflow: hidden;
+  .payment-request-top {
+    display: flex;
 
-    .payment-request-title {
-      font-weight: 600;
-      font-size: 15px;
-      color: #F75C1A;
-      margin-bottom: 12px;
+    .payment-request-qr {
+      background-color: rebeccapurple;
     }
 
-    .payment-request-address {
-      font-size: 15px;
-      color: #8E8E93;
+    .payment-request-details {
+      padding-left: 20px;
+      overflow: hidden;
+
+      .payment-request-address {
+        font-size: 15px;
+        color: #8E8E93;
+      }
     }
+  }
+
+  .payment-request-middle {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+
+    .payment-request-middle-value {
+      font-size: 21px;
+      color: #FFFFFF;
+
+      .payment-request-middle-value-icon {
+        margin-right: 13px;
+      }
+    }
+  }
+
+  .payment-request-bottom-message {
+    font-size: 15px;
+    color: #8E8E93;
+    margin-top: 20px;
   }
 }

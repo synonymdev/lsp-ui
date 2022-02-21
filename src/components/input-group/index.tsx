@@ -1,17 +1,11 @@
-import { Button, Overlay, OverlayTrigger } from 'react-bootstrap';
-import React, { ChangeEventHandler, useRef, useState } from 'react';
-
-import './index.scss';
-import { ReactComponent as TooltipIcon } from '../../icons/tooltip.svg';
+import React, { ChangeEventHandler } from 'react';
 import { ReactComponent as SatsIcon } from '../../icons/lightning-active.svg';
 import { ReactComponent as WeeksIcon } from '../../icons/weeks.svg';
 import Error from '../inline-error';
 import useDisplayValues from '../../hooks/displayValues';
+import Tooltip, { TooltipProps } from '../tooltip';
 
-export type TTooltip = {
-	title: string;
-	body: string;
-};
+import './index.scss';
 
 const AppendInput = ({ children }: { children: string | undefined }): JSX.Element => {
 	if (!children) {
@@ -34,45 +28,6 @@ const AppendInput = ({ children }: { children: string | undefined }): JSX.Elemen
 		<span className={'custom-input-append'}>
 			{icon}&nbsp;{children}
 		</span>
-	);
-};
-
-// TODO move tooltip to new component
-// TODO Detect device. Hover for desktop, click for mobile
-const Tooltip = ({ tip }: { tip?: TTooltip }): JSX.Element => {
-	const [show, setShow] = useState(false);
-	const target = useRef(null);
-
-	if (!tip) {
-		return <></>;
-	}
-
-	return (
-		<>
-			<span
-				className={'custom-input-tooltip-icon'}
-				onMouseEnter={() => setShow(true)}
-				onMouseLeave={() => setTimeout(() => setShow(false), 250)}
-			>
-				<TooltipIcon ref={target} onClick={() => setShow(!show)} />
-			</span>
-			<Overlay target={target.current} show={show} placement='left'>
-				{({ placement, arrowProps, show: _show, popper, ...props }) => (
-					<div
-						{...props}
-						className={'custom-input-tooltip-container'}
-						style={{
-							...props.style,
-							backgroundColor: 'rgba(16, 16, 16, 0.92)',
-							borderRadius: 10
-						}}
-					>
-						<h4>{tip.title}</h4>
-						<p>{tip.body}</p>
-					</div>
-				)}
-			</Overlay>
-		</>
 	);
 };
 
@@ -101,7 +56,7 @@ export default ({
 	onFocus?: ChangeEventHandler;
 	onBlur?: ChangeEventHandler;
 	placeholder?: string;
-	tooltip?: TTooltip;
+	tooltip?: TooltipProps;
 }): JSX.Element => {
 	const fiat = useDisplayValues(Number(value));
 
