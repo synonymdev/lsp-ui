@@ -1,0 +1,24 @@
+.payment-request-container {
+  display: flex;
+
+  .payment-request-qr {
+    background-color: rebeccapurple;
+  }
+
+  .payment-request-details {
+    padding-left: 20px;
+    overflow: hidden;
+
+    .payment-request-title {
+      font-weight: 600;
+      font-size: 15px;
+      color: #F75C1A;
+      margin-bottom: 12px;
+    }
+
+    .payment-request-address {
+      font-size: 15px;
+      color: #8E8E93;
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ReactComponent as SatsIcon } from '../../icons/sats.svg';
+import { ReactComponent as SatsIcon } from '../../icons/lightning-active.svg';
 import './index.scss';
 import useDisplayValues from '../../hooks/displayValues';
 

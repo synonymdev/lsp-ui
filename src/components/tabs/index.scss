@@ -1,0 +1,34 @@
+.custom-tabs-container {
+
+
+  .custom-tabs-heading-container {
+    //background-color: yellow;
+    display: flex;
+  }
+
+  .custom-tabs-heading-container {
+    //background-color: green;
+    display: flex;
+    align-items: center;
+    margin-right: 24px;
+    cursor: pointer;
+
+    .custom-tabs-heading {
+      font-size: 21px;
+    }
+
+    .custom-tabs-heading-icon {
+      margin-right: 13.2px;
+    }
+
+    &.active {
+      border-bottom-style: solid;
+      border-width: 1px;
+      color: #F7931A;
+    }
+  }
+
+  .custom-tab {
+
+  }
+}

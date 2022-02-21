@@ -3,7 +3,7 @@ import React, { ChangeEventHandler, useRef, useState } from 'react';
 
 import './index.scss';
 import { ReactComponent as TooltipIcon } from '../../icons/tooltip.svg';
-import { ReactComponent as SatsIcon } from '../../icons/sats.svg';
+import { ReactComponent as SatsIcon } from '../../icons/lightning-active.svg';
 import { ReactComponent as WeeksIcon } from '../../icons/weeks.svg';
 import Error from '../inline-error';
 import useDisplayValues from '../../hooks/displayValues';

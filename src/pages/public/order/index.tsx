@@ -132,6 +132,7 @@ const ClaimChannel = ({ order }: { order: IGetOrderResponse }): ReactElement => 
 	);
 };
 
+// TODO deprecated
 function OrderPage(): JSX.Element {
 	const { orderId } = useParams();
 

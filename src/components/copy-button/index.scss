@@ -1,0 +1,23 @@
+.copy-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  //max-width: 146px;
+  cursor: pointer;
+
+  background: rgba(183, 182, 187, 0.15);
+  border-radius: 54px;
+  height: 38px;
+  padding: 0px 16px 0px 16px;
+
+  .copy-button-icon {
+    width: 12px;
+    margin-right: 10px;
+  }
+
+  .copy-button-text {
+    color: white;
+  }
+}
+
+

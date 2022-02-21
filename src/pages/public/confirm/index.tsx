@@ -70,7 +70,7 @@ function ConfirmationPage(): JSX.Element {
 
 		// TODO check order is still valid
 
-		history.push(`/order/${orderId}`);
+		history.push(`/payment/${orderId}`);
 	};
 
 	const {
