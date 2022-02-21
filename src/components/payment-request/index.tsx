@@ -14,6 +14,7 @@ type TOnchainRequest = {
 	address: string;
 	sats: number;
 	zeroConfMinFee: number | undefined;
+	receivingAmount: number | undefined; // TODO
 };
 
 type TLightningRequest = {
@@ -23,11 +24,15 @@ type TLightningRequest = {
 export default ({
 	orderId,
 	orderExpiry,
+	orderStatus,
+	orderTotal,
 	onchain,
 	lightning
 }: {
 	orderId: string;
 	orderExpiry: number;
+	orderStatus: string;
+	orderTotal: number;
 	onchain?: TOnchainRequest;
 	lightning?: TLightningRequest;
 }): JSX.Element => {
@@ -38,7 +43,7 @@ export default ({
 	let message = `This order ${orderExpiryFormat(orderExpiry)}.`;
 
 	if (onchain) {
-		const { address, sats, zeroConfMinFee } = onchain;
+		const { address, sats, zeroConfMinFee, receivingAmount } = onchain;
 		qrValue = bip21.encode(address, {
 			amount: sats / 100000000,
 			label: `Blocktank #${orderId}`
@@ -46,7 +51,15 @@ export default ({
 		title = 'Bitcoin address';
 		text = address;
 		copyButtonTitle = 'Copy address';
-		if (zeroConfMinFee) {
+
+		if (receivingAmount) {
+			if (receivingAmount < orderTotal) {
+				message = `${message} Received ${receivingAmount} of ${orderTotal} sats.`;
+			} else if (receivingAmount === orderTotal) {
+				message =
+					'Full payment received. Please wait for your on-chain Bitcoin payment to confirm (needs at least 1 confirmation).';
+			}
+		} else if (zeroConfMinFee) {
 			message = `${message} Set your transaction fee to more than ${zeroConfMinFee} sats/byte to receive your Lightning channel instantly.`;
 		}
 	} else if (lightning) {
@@ -83,14 +96,14 @@ export default ({
 					<h4 className={'payment-request-title'}>Total amount to pay</h4>
 					<span className={'payment-request-middle-value'}>
 						<LightningIconActive className={'payment-request-middle-value-icon'} />
-						12234
+						{orderTotal}
 					</span>
 				</div>
 				<div>
 					<h4 className={'payment-request-title'}>Order status</h4>
 					<span className={'payment-request-middle-value'}>
 						<TransferIconActive className={'payment-request-middle-value-icon'} />
-						TODO
+						{orderStatus}
 					</span>
 				</div>
 			</div>

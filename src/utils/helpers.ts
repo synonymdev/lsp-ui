@@ -1,9 +1,9 @@
-import TimeAgo, { CommonUnit } from 'javascript-time-ago';
+import TimeAgo, { Unit } from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en.json';
 TimeAgo.addDefaultLocale(en);
 const timeAgo = new TimeAgo('en-US');
 
-const orderExpiryFormatLabels = (unit: CommonUnit): any => {
+const orderExpiryFormatLabels = (unit: Unit): any => {
 	return {
 		past: {
 			one: `expired {0} ${unit} ago`,
@@ -11,7 +11,7 @@ const orderExpiryFormatLabels = (unit: CommonUnit): any => {
 		},
 		future: {
 			one: `expires in {0} ${unit}`,
-			other: `expires in {0} ${unit}`
+			other: `expires in {0} ${unit}s`
 		}
 	};
 };
@@ -23,7 +23,8 @@ const orderExpiryLabels = {
 	day: orderExpiryFormatLabels('day'),
 	hour: orderExpiryFormatLabels('hour'),
 	minute: orderExpiryFormatLabels('minute'),
-	second: orderExpiryFormatLabels('second')
+	second: orderExpiryFormatLabels('second'),
+	now: 'is expired'
 };
 
 TimeAgo.addLabels('en', 'long', orderExpiryLabels);

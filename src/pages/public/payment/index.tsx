@@ -81,8 +81,41 @@ function PaymentPage(): JSX.Element {
 		amount_received,
 		price,
 		onchain_payments,
-		order_expiry
+		order_expiry,
+		state
 	} = order;
+
+	let orderStatus = '';
+	let unconfirmedIncoming = 0;
+
+	switch (state) {
+		case 0: {
+			onchain_payments.forEach((p) => {
+				unconfirmedIncoming += p.amount_base;
+			});
+
+			if (unconfirmedIncoming === 0) {
+				orderStatus = 'Awaiting payment';
+			} else if (unconfirmedIncoming < total_amount) {
+				orderStatus = 'Partial payment';
+			} else {
+				orderStatus = 'Unconfirmed payment';
+			}
+
+			break;
+		}
+		case 100: {
+			// TODO navigate to claim view
+			break;
+		}
+		case 400: // Given up
+		case 500: // Channel open
+		case 300: // Channel opening
+		case 450: // Channel closed
+		// TODO navigate to status view
+	}
+
+	console.log(zero_conf_satvbyte);
 
 	return (
 		<FormCard
@@ -101,7 +134,9 @@ function PaymentPage(): JSX.Element {
 				>
 					<PaymentRequest
 						orderId={_id}
+						orderStatus={orderStatus}
 						orderExpiry={order_expiry}
+						orderTotal={total_amount}
 						lightning={{ invoice: purchase_invoice }}
 					/>
 				</Tab>
@@ -114,18 +149,16 @@ function PaymentPage(): JSX.Element {
 				>
 					<PaymentRequest
 						orderId={_id}
+						orderStatus={orderStatus}
 						orderExpiry={order_expiry}
+						orderTotal={total_amount}
 						onchain={{
 							address: btc_address,
 							sats: total_amount,
-							zeroConfMinFee: zero_conf_satvbyte
+							zeroConfMinFee: zero_conf_satvbyte,
+							receivingAmount: unconfirmedIncoming
 						}}
 					/>
-
-					{/*	Set fee to more than{' '} */}
-					{/*	<span style={{ fontWeight: 600 }}>{zero_conf_satvbyte} sats/byte</span> to receive */}
-					{/*	channel instantly */}
-					{/* </p> */}
 				</Tab>
 			</Tabs>
 		</FormCard>
