@@ -98,8 +98,8 @@ function ConfirmationPage(): JSX.Element {
 
 			<div className={'confirmation-top-half'}>
 				<div className={'confirmation-value-groups'}>
-					<ValueGroup label={'Inbound capacity'} sats={remote_balance} showFiat={true} />
-					<ValueGroup label={'My balance'} sats={local_balance} showFiat={true} />
+					<ValueGroup label={'Inbound capacity'} value={remote_balance} showFiat={true} />
+					<ValueGroup label={'My balance'} value={local_balance} showFiat={true} />
 				</div>
 
 				<ChannelBalanceBar local={local_balance} remote={remote_balance} />
@@ -113,7 +113,7 @@ function ConfirmationPage(): JSX.Element {
 
 				<ValueGroup
 					label={'Total amount to pay'}
-					sats={total_amount}
+					value={total_amount}
 					showFiat
 					showBitcoin
 					size={'lg'}

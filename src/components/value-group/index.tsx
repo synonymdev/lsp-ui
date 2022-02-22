@@ -5,18 +5,25 @@ import useDisplayValues from '../../hooks/displayValues';
 
 export default ({
 	label,
-	sats,
+	value,
 	showFiat,
 	showBitcoin,
-	size = 'md'
+	size = 'md',
+	Icon
 }: {
 	label: string;
-	sats: number;
-	showFiat: boolean;
+	value: number | string;
+	showFiat?: boolean;
 	showBitcoin?: boolean;
 	size?: 'md' | 'lg';
+	Icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement> & { title?: string }>;
 }): JSX.Element => {
-	const displayValues = useDisplayValues(Number(sats));
+	const displayValues = useDisplayValues(Number(value));
+
+	// Display as is with no formatting if it's a string
+	const formattedValue = typeof value === 'string' ? value : displayValues.bitcoinFormatted;
+
+	const PrependIcon = Icon ?? SatsIcon;
 
 	return (
 		<div className={'value-group-container'}>
@@ -41,8 +48,8 @@ export default ({
 			</div>
 
 			<div className={'value-group-row2'}>
-				<SatsIcon className={`value-group-icon-${size}`} />
-				<span className={`value-group-sats ${size}`}>{displayValues.bitcoinFormatted}</span>
+				<PrependIcon className={`value-group-icon-${size}`} />
+				<span className={`value-group-sats ${size}`}>{formattedValue}</span>
 			</div>
 		</div>
 	);

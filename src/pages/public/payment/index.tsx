@@ -85,10 +85,11 @@ function PaymentPage(): JSX.Element {
 		price,
 		onchain_payments,
 		order_expiry,
-		state
+		state,
+		stateMessage
 	} = order;
 
-	let orderStatus = '';
+	let orderStatus = stateMessage;
 	let unconfirmedIncoming = 0;
 
 	switch (state) {
@@ -109,7 +110,7 @@ function PaymentPage(): JSX.Element {
 		}
 		case 100: {
 			orderStatus = 'Payment received';
-			// TODO navigate to claim view
+			// Navigate to claim view
 			history.push(`/claim/${_id}`);
 			break;
 		}
@@ -117,7 +118,8 @@ function PaymentPage(): JSX.Element {
 		case 500: // Channel open
 		case 300: // Channel opening
 		case 450: // Channel closed
-		// TODO navigate to status view
+			// Navigate to status view
+			history.push(`/order/${_id}`);
 	}
 
 	return (

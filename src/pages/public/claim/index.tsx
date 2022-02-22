@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
-import { useParams, Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+import { useParams, Link, useHistory, useRouteMatch } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { refreshOrder, selectOrders, selectOrdersState } from '../../../store/public-store';
 import bt, { IGetOrderResponse } from '@synonymdev/blocktank-client';
@@ -31,6 +31,7 @@ function ClaimPage(): JSX.Element {
 	const orders = useAppSelector(selectOrders);
 	const ordersState = useAppSelector(selectOrdersState);
 	const dispatch = useAppDispatch();
+	const history = useHistory();
 
 	const [showManual, setShowManual] = useState(false);
 	const [nodeUri, setNodeUri] = useState('');
@@ -99,7 +100,7 @@ function ClaimPage(): JSX.Element {
 
 			await dispatch(refreshOrder(_id));
 
-			// TODO navigate to state frame
+			history.push(`/order/${_id}`);
 		} catch (e) {
 			alert(e);
 		} finally {
