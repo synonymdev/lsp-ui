@@ -7,6 +7,7 @@ import OrdersPage from './orders';
 import './index.scss';
 import ConfirmationPage from './confirm';
 import PaymentPage from './payment';
+import ClaimPage from './claim';
 
 export const PageContainer = ({ children }): ReactElement => (
 	<>
@@ -20,7 +21,7 @@ export const PageContainer = ({ children }): ReactElement => (
 
 const CardContainer = ({ children }): ReactElement => (
 	<PageContainer>
-		<Col xl={7} lg={6} md={5} sm={12} className={'infoCol'}>
+		<Col xl={6} lg={5} md={4} sm={12} className={'infoCol'}>
 			<h1>Lightning Network Services</h1>
 			<br />
 			<p>
@@ -30,7 +31,7 @@ const CardContainer = ({ children }): ReactElement => (
 			</p>
 		</Col>
 
-		<Col xl={5} lg={6} md={7} sm={12}>
+		<Col xl={6} lg={7} md={8} sm={12}>
 			{children}
 		</Col>
 	</PageContainer>
@@ -49,6 +50,10 @@ function PublicPages(): JSX.Element {
 
 			<Route path={['/payment/:orderId', '/blocktank/payment/:orderId']}>
 				<PaymentPage />
+			</Route>
+
+			<Route path={['/claim/:orderId', '/blocktank/claim/:orderId']}>
+				<ClaimPage />
 			</Route>
 
 			<Route path={['/order/:orderId', '/blocktank/order/:orderId']}>

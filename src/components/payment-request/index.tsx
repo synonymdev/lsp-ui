@@ -1,14 +1,14 @@
 import React from 'react';
 import bip21 from 'bip21';
 import QRCode from '../qr';
-import CopyButton from '../copy-button';
+import ActionButton from '../action-button';
 import './index.scss';
 import { clipCenter, orderExpiryFormat } from '../../utils/helpers';
 import Tooltip from '../tooltip';
 import { ReactComponent as LightningIconActive } from '../../icons/lightning-active.svg';
 import { ReactComponent as TransferIconActive } from '../../icons/transfer-active.svg';
 
-const qrSize = 180;
+const qrSize = 200;
 
 type TOnchainRequest = {
 	address: string;
@@ -87,7 +87,7 @@ export default ({
 						/>
 					</div>
 					<p className={'payment-request-address'}>{clipCenter(text, 45)}</p>
-					<CopyButton value={text}>{copyButtonTitle}</CopyButton>
+					<ActionButton copyText={text}>{copyButtonTitle}</ActionButton>
 				</div>
 			</div>
 

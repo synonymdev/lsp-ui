@@ -1,4 +1,4 @@
-.copy-button-container {
+.action-button-container {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,12 +10,12 @@
   height: 38px;
   padding: 0px 16px 0px 16px;
 
-  .copy-button-icon {
+  .action-button-icon {
     width: 12px;
     margin-right: 10px;
   }
 
-  .copy-button-text {
+  .action-button-text {
     color: white;
   }
 }

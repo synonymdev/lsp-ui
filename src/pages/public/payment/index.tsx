@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useHistory, useRouteMatch } from 'react-router-dom';
+
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { refreshOrder, selectOrders, selectOrdersState } from '../../../store/public-store';
 import { IGetOrderResponse } from '@synonymdev/blocktank-client';
@@ -23,6 +24,8 @@ function PaymentPage(): JSX.Element {
 	const orders = useAppSelector(selectOrders);
 	const ordersState = useAppSelector(selectOrdersState);
 	const dispatch = useAppDispatch();
+	const history = useHistory();
+	const route = useRouteMatch();
 
 	useEffect(() => {
 		const newOrder = orders.find((o) => o._id === orderId);
@@ -105,7 +108,9 @@ function PaymentPage(): JSX.Element {
 			break;
 		}
 		case 100: {
+			orderStatus = 'Payment received';
 			// TODO navigate to claim view
+			history.push(`/claim/${_id}`);
 			break;
 		}
 		case 400: // Given up
@@ -115,8 +120,6 @@ function PaymentPage(): JSX.Element {
 		// TODO navigate to status view
 	}
 
-	console.log(zero_conf_satvbyte);
-
 	return (
 		<FormCard
 			title={'New Lightning Channel'}
@@ -125,7 +128,7 @@ function PaymentPage(): JSX.Element {
 		>
 			<Heading>Pay now</Heading>
 			<h5 className={'payment-page-subheading'}>Payment method</h5>
-			<Tabs defaultActiveKey='onchain'>
+			<Tabs defaultActiveKey='lightning'>
 				<Tab
 					eventKey='lightning'
 					title='Lightning'

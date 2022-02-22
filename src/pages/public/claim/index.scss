@@ -1,6 +1,6 @@
-.payment-request-container {
+.claim-channel-container {
 
-  .payment-request-title {
+  .claim-channel-title {
     display: flex;
     justify-content: space-between;
     font-weight: 600;
@@ -9,41 +9,50 @@
     margin-bottom: 12px;
   }
 
-  .payment-request-top {
+  .claim-channel-top {
     display: flex;
 
-    .payment-request-qr {
+    .claim-channel-qr {
     }
 
-    .payment-request-details {
+    .claim-channel-details {
       padding-left: 20px;
       overflow: hidden;
 
-      .payment-request-address {
+      .claim-channel-address {
         font-size: 15px;
         color: #8E8E93;
+      }
+
+      .claim-channel-button-spacer {
+        margin-top: 21px;
       }
     }
   }
 
-  .payment-request-middle {
+  .claim-channel-middle {
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
 
-    .payment-request-middle-value {
+    .claim-channel-middle-value {
       font-size: 21px;
       color: #FFFFFF;
 
-      .payment-request-middle-value-icon {
+      .claim-channel-middle-value-icon {
         margin-right: 13px;
       }
     }
   }
 
-  .payment-request-bottom-message {
+  .claim-channel-bottom-message {
     font-size: 15px;
     color: #8E8E93;
     margin-top: 20px;
+
+    .highlight {
+      color: white;
+      font-weight: 600;
+    }
   }
 }
