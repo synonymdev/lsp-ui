@@ -1,4 +1,22 @@
 .claim-channel-container {
+  .claim-channel-button-spacer {
+    margin-top: 21px;
+  }
+
+  .claim-channel-title-container {
+    display: flex;
+    align-content: space-between;
+
+    .channel-claim-fiat-conversion {
+      margin-left: 10px;
+      text-align: right;
+      color: #8E8E93;
+
+      .decimal {
+        opacity: 0.5;
+      }
+    }
+  }
 
   .claim-channel-title {
     display: flex;
@@ -23,17 +41,24 @@
         font-size: 15px;
         color: #8E8E93;
       }
-
-      .claim-channel-button-spacer {
-        margin-top: 21px;
-      }
     }
+  }
+
+  .claim-channel-manual-action-buttons-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: flex-start;
   }
 
   .claim-channel-middle {
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
+
+    .claim-channel-middle-col {
+      flex: 1;
+    }
 
     .claim-channel-middle-value {
       font-size: 21px;
