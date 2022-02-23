@@ -92,11 +92,11 @@ function OrderPage(): JSX.Element {
 
 	switch (state) {
 		case 0: {
-			// TODO back to payment
+			dispatch(navigate({ page: 'payment' }));
 			break;
 		}
 		case 100: {
-			// TODO back to claim
+			dispatch(navigate({ page: 'claim' }));
 			break;
 		}
 		case 200: // URI set
