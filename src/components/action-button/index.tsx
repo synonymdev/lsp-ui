@@ -14,12 +14,14 @@ export default ({
 	children,
 	copyText,
 	onClick,
+	href,
 	Icon,
 	disabled
 }: {
 	children: string;
 	copyText?: string;
 	onClick?: () => void;
+	href?: string;
 	Icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement> & { title?: string }>;
 	disabled?: boolean;
 }): JSX.Element => {
@@ -44,6 +46,10 @@ export default ({
 			<span className={'action-button-text'}>{isCopied ? 'Copied!' : children}</span>
 		</div>
 	);
+
+	if (href) {
+		return <a href={href}>{button}</a>;
+	}
 
 	if (!copyText) {
 		return button;

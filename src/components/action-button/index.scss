@@ -1,8 +1,11 @@
+a:link, a:visited, a:hover, a:active {
+  text-decoration: none;
+}
+
 .action-button-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  //max-width: 146px;
   cursor: pointer;
 
   background: rgba(183, 182, 187, 0.15);

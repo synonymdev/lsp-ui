@@ -12,6 +12,7 @@ import RatesRefresher from '../../../hooks/ratesRefresher';
 import InputGroup from '../../../components/input-group';
 import Heading from '../../../components/heading';
 import { TooltipProps } from '../../../components/tooltip';
+import ErrorPage from '../error';
 
 export type IFormErrors = {
 	[key: string]: string;
@@ -168,11 +169,7 @@ function ConfigurePage(): JSX.Element {
 	}
 
 	if (infoState === 'geoblocked') {
-		return (
-			<FormCard>
-				<h4>Unfortunately this feature is not available in your country</h4>
-			</FormCard>
-		);
+		return <ErrorPage type={'geoblocked'} />;
 	}
 
 	if (!product) {

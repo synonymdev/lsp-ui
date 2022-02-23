@@ -8,6 +8,7 @@ import './index.scss';
 import ConfirmationPage from './confirm';
 import PaymentPage from './payment';
 import ClaimPage from './claim';
+import ErrorPage from './error';
 
 export const PageContainer = ({ children }): ReactElement => (
 	<>
@@ -62,6 +63,10 @@ function PublicPages(): JSX.Element {
 
 			<Route path={['/orders', '/blocktank/orders']}>
 				<OrdersPage />
+			</Route>
+
+			<Route path={['/error', '/blocktank/error']}>
+				<ErrorPage type={'geoblocked'} />
 			</Route>
 
 			<Route path='*'>
