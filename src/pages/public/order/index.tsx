@@ -229,6 +229,21 @@ function OrderPage(): JSX.Element {
 			break;
 		}
 		case 200: // URI set
+			iconName = 'hourglass-3d.png';
+			stateStyle = 'pending';
+			heading = 'Opening channel';
+			headerMessage =
+				'We are ready to connect to your node and establish your channel. Please ensure your node or wallet app is online and active.';
+			footerMessage = (
+				<>
+					This channel will stay open for at least{' '}
+					<span className={'highlight'}>
+						{channel_expiry} week{channel_expiry === 1 ? '' : 's'}
+					</span>
+					.
+				</>
+			);
+			break;
 		case 300: // Channel opening
 			iconName = 'hourglass-3d.png';
 			stateStyle = 'pending';
