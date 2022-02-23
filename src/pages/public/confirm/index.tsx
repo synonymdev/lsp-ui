@@ -12,7 +12,6 @@ import ValueGroup from '../../../components/value-group';
 import ChannelBalanceBar from '../../../components/channel-balance-bar';
 import Divider from '../../../components/divider';
 import Checkbox from '../../../components/checkbox';
-import RatesRefresher from '../../../hooks/ratesRefresher';
 
 import './index.scss';
 
@@ -93,7 +92,6 @@ function ConfirmationPage(): JSX.Element {
 			backlink={'/'}
 			pageIndicator={{ total: 4, active: 1 }}
 		>
-			<RatesRefresher />
 			<Heading>My Channel</Heading>
 
 			<div className={'confirmation-top-half'}>

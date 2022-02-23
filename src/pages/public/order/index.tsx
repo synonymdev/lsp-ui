@@ -10,7 +10,7 @@ import './index.scss';
 import Heading from '../../../components/heading';
 import Divider from '../../../components/divider';
 import ValueGroup from '../../../components/value-group';
-import IconRing, {TIconRingType, TIcon} from '../../../components/icon-ring';
+import IconRing, { TIconRingType, TIcon } from '../../../components/icon-ring';
 import { ReactComponent as CalendarIcon } from '../../../icons/calendar-active.svg';
 import { ReactComponent as ClockIcon } from '../../../icons/clock-active.svg';
 
@@ -73,7 +73,6 @@ function OrderPage(): JSX.Element {
 		);
 	}
 
-
 	const {
 		_id,
 		state,
@@ -85,9 +84,6 @@ function OrderPage(): JSX.Element {
 		channel_expiry,
 		created_at
 	} = order;
-
-	console.log(stateMessage);
-
 
 	let heading = '';
 	let icon: TIcon = 'lightning';

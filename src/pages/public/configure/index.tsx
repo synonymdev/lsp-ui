@@ -8,7 +8,6 @@ import { refreshInfo, selectInfo, selectInfoState } from '../../../store/public-
 import Spinner from '../../../components/spinner';
 import FormCard from '../../../components/form-card';
 import './index.scss';
-import RatesRefresher from '../../../hooks/ratesRefresher';
 import InputGroup from '../../../components/input-group';
 import Heading from '../../../components/heading';
 import { TooltipProps } from '../../../components/tooltip';
@@ -211,8 +210,6 @@ function ConfigurePage(): JSX.Element {
 
 	return (
 		<FormCard title={'New Lightning Channel'} pageIndicator={{ total: 4, active: 0 }}>
-			<RatesRefresher />
-
 			<Form className={'form-content'}>
 				<div className={'form-fields'}>
 					<Heading>Configure</Heading>

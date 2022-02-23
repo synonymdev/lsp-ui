@@ -1,14 +1,16 @@
 import { Switch, Route } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
 import React, { ReactElement } from 'react';
+import RatesRefresher from '../../hooks/ratesRefresher';
 import ConfigurePage from './configure';
 import OrderPage from './order';
 import OrdersPage from './orders';
-import './index.scss';
 import ConfirmationPage from './confirm';
 import PaymentPage from './payment';
 import ClaimPage from './claim';
 import ErrorPage from './error';
+
+import './index.scss';
 
 export const PageContainer = ({ children }): ReactElement => (
 	<>
@@ -40,42 +42,45 @@ const CardContainer = ({ children }): ReactElement => (
 
 function PublicPages(): JSX.Element {
 	const routes = (
-		<Switch>
-			<Route exact path={['/', '/blocktank']}>
-				<ConfigurePage />
-			</Route>
+		<>
+			<RatesRefresher />
+			<Switch>
+				<Route exact path={['/', '/blocktank']}>
+					<ConfigurePage />
+				</Route>
 
-			<Route path={['/confirm/:orderId', '/blocktank/confirm/:orderId']}>
-				<ConfirmationPage />
-			</Route>
+				<Route path={['/confirm/:orderId', '/blocktank/confirm/:orderId']}>
+					<ConfirmationPage />
+				</Route>
 
-			<Route path={['/payment/:orderId', '/blocktank/payment/:orderId']}>
-				<PaymentPage />
-			</Route>
+				<Route path={['/payment/:orderId', '/blocktank/payment/:orderId']}>
+					<PaymentPage />
+				</Route>
 
-			<Route path={['/claim/:orderId', '/blocktank/claim/:orderId']}>
-				<ClaimPage />
-			</Route>
+				<Route path={['/claim/:orderId', '/blocktank/claim/:orderId']}>
+					<ClaimPage />
+				</Route>
 
-			<Route path={['/order/:orderId', '/blocktank/order/:orderId']}>
-				<OrderPage />
-			</Route>
+				<Route path={['/order/:orderId', '/blocktank/order/:orderId']}>
+					<OrderPage />
+				</Route>
 
-			<Route path={['/orders', '/blocktank/orders']}>
-				<OrdersPage />
-			</Route>
+				<Route path={['/orders', '/blocktank/orders']}>
+					<OrdersPage />
+				</Route>
 
-			<Route path={['/error', '/blocktank/error']}>
-				<ErrorPage type={'geoblocked'} />
-			</Route>
+				<Route path={['/error', '/blocktank/error']}>
+					<ErrorPage type={'geoblocked'} />
+				</Route>
 
-			<Route path='*'>
-				<div style={{ textAlign: 'center' }}>
-					<h4>404</h4>
-					<p>Page not found</p>
-				</div>
-			</Route>
-		</Switch>
+				<Route path='*'>
+					<div style={{ textAlign: 'center' }}>
+						<h4>404</h4>
+						<p>Page not found</p>
+					</div>
+				</Route>
+			</Switch>
+		</>
 	);
 
 	if (
