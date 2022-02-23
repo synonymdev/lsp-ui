@@ -1,0 +1,21 @@
+.page-indicator-container {
+  margin-top: 27px;
+  display: flex;
+  justify-content: center;
+
+  .page-indicator {
+    width: 7px;
+    height: 7px;
+    margin-left: 4px;
+    margin-right: 4px;
+    background-color: white;
+    border-radius: 7px;
+    opacity: 0.3;
+  }
+
+  .active {
+    opacity: 1;
+  }
+}
+
+

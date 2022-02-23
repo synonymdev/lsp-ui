@@ -35,31 +35,18 @@ p {
 }
 
 .form-button {
-    box-shadow: 0px 8px 40px 0px #0000001A;
-    box-shadow: 0px 20px 48px 0px #0000004D;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    //padding: 18px 28px;
-    color: #4BC400;
+    color: #ffffff;
     font-weight: 600;
-
-    width: 185px;
     height: 56px;
-
-    background: rgba(255, 255, 255, 0.06);
-    box-shadow: 0px 20px 48px rgba(0, 0, 0, 0.3), 0px 8px 40px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    /* Note: backdrop-filter has minimal browser support */
-
-    border-radius: 64px;
     border-style: none;
-}
-
-.button-container {
-    display: flex;
-    justify-content: center;
+    background: linear-gradient(90deg, rgba(228, 103, 53, 0.98) 0%, rgba(201, 50, 80, 0.98) 70.83%, rgba(202, 72, 140, 0.98) 100%);
+    border-radius: 58px;
+    font-size: 17px;
+    padding: 15px 30px;
 }
 
 .glowy-main1 {

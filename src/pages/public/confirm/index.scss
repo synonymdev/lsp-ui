@@ -1,0 +1,20 @@
+.confirmation-top-half {
+  flex: 1;
+  padding-bottom: 20px;
+
+  .confirmation-value-groups {
+    display: flex;
+    margin-bottom: 20px;
+  }
+
+  .confirmation-message {
+    color: #8E8E93;
+    font-size: 15px;
+    line-height: 22px;
+  }
+}
+
+.pay-now-button-container {
+  display: flex;
+  justify-content: center;
+}

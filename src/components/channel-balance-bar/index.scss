@@ -1,0 +1,31 @@
+.channel-balance-bar-container {
+  height: 10px;
+  border-radius: 20px;
+  display: flex;
+  background: #3A3A3C;
+  margin-bottom: 20px;
+
+  .channel-balance-remote-buffer {
+    border-radius: 20px 0px 0px 20px;
+    height: 100%;
+  }
+
+  .channel-balance-remote {
+    background: #F7931A;
+    border-radius: 20px 0px 0px 20px;
+    height: 100%;
+    margin-right: 0.5px;
+  }
+
+  .channel-balance-local-buffer {
+    border-radius: 0px 20px 20px 0px;
+    height: 100%;
+  }
+
+  .channel-balance-local {
+    background: #75BF72;
+    border-radius: 0px 20px 20px 0px;
+    height: 100%;
+    margin-left: 0.5px;
+  }
+}

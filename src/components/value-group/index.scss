@@ -1,0 +1,50 @@
+.value-group-container {
+  flex: 1;
+
+  .value-group-row1 {
+    .value-group-label {
+      font-size: 15px;
+      line-height: 22px;
+      font-weight: 600;
+      color: #F75C1A;
+    }
+
+    .value-group-convert {
+      margin-left: 10px;
+      color: #8E8E93;
+
+      .bitcoin-value {
+        margin-left: 10px;
+      }
+
+      .decimal {
+        opacity: 0.5;
+      }
+    }
+  }
+
+  .value-group-row2 {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+
+    .value-group-sats {
+      font-size: 21px;
+      color: white;
+      margin-left: 13.24px;
+    }
+
+    > .lg {
+      font-size: 36px;
+    }
+
+    .value-group-icon-md {
+
+    }
+
+    .value-group-icon-lg {
+      height: 22.11px;
+      width: auto;
+    }
+  }
+}

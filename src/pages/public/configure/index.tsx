@@ -7,24 +7,38 @@ import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { refreshInfo, selectInfo, selectInfoState } from '../../../store/public-store';
 import Spinner from '../../../components/spinner';
 import FormCard from '../../../components/form-card';
-import PreviousOrdersLink from '../../../components/previous-orders-link';
-import Checkbox from '../../../components/checkbox';
 import './index.scss';
 import RatesRefresher from '../../../hooks/ratesRefresher';
 import InputGroup from '../../../components/input-group';
+import Heading from '../../../components/heading';
+import { TooltipProps } from '../../../components/tooltip';
 
 export type IFormErrors = {
 	[key: string]: string;
 };
 
-function BuyPage(): JSX.Element {
+const inboundTip: TooltipProps = {
+	title: 'Inbound capacity',
+	body: 'This is the amount of sats you will be able to receive in payments. The amount must be at least double the amount of your ‘spending balance’. The maximum amount of inbound capacity is 50,000,000 sats.'
+};
+
+const spendingTip: TooltipProps = {
+	title: 'My spending balance',
+	body: 'This is the amount of sats you can spend when you first open this channel. The maximum is the current equivalent of $9999.'
+};
+
+const durationTip: TooltipProps = {
+	title: 'Channel duration',
+	body: 'This is the minimum amount of time that your channel will remain open. We may choose to keep it open longer, but you can close your channel any time.'
+};
+
+function ConfigurePage(): JSX.Element {
 	const { services } = useAppSelector(selectInfo);
 	const infoState = useAppSelector(selectInfoState);
 	const history = useHistory();
 	const route = useRouteMatch();
 
 	const [isLoading, setIsLoading] = useState(true);
-	const [termsAccepted, setTermsAccepted] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [product, setProduct] = useState<IService | undefined>(undefined);
 	const [channelExpiry, setChannelExpiry] = useState<string>('1');
@@ -68,7 +82,7 @@ function BuyPage(): JSX.Element {
 			return;
 		}
 
-		if (!(await isValid(true))) {
+		if (!(await isValid())) {
 			return;
 		}
 
@@ -85,14 +99,14 @@ function BuyPage(): JSX.Element {
 			const buyRes = await bt.buyChannel(req);
 			const { order_id } = buyRes;
 
-			history.push(`${route.url}order/${order_id}`);
+			history.push(`${route.url}confirm/${order_id}`);
 		} catch (error) {
 			setIsSubmitting(false);
 			alert(error);
 		}
 	};
 
-	const isValid = async (validateTermsCheckbox = false): Promise<boolean> => {
+	const isValid = async (): Promise<boolean> => {
 		await new Promise((resolve) => setTimeout(resolve, 250));
 
 		if (!product) {
@@ -100,10 +114,6 @@ function BuyPage(): JSX.Element {
 		}
 
 		const errors: IFormErrors = {};
-
-		if (validateTermsCheckbox && !termsAccepted) {
-			errors.acceptTerms = 'You must accept the terms and conditions';
-		}
 
 		// TODO check channel balance
 
@@ -203,11 +213,12 @@ function BuyPage(): JSX.Element {
 	};
 
 	return (
-		<FormCard>
+		<FormCard title={'New Lightning Channel'} pageIndicator={{ total: 4, active: 0 }}>
 			<RatesRefresher />
+
 			<Form className={'form-content'}>
-				<div>
-					<h4>Create Channel</h4>
+				<div className={'form-fields'}>
+					<Heading>Configure</Heading>
 
 					<InputGroup
 						type='number'
@@ -215,10 +226,11 @@ function BuyPage(): JSX.Element {
 						onChange={(e) => onSetInput(e, setRemoteBalance)}
 						id={'remote-balance'}
 						label={'Remote balance'}
-						append={'Sats'}
+						append={'sats'}
 						showFiatFromSatsValue
 						error={formErrors.remoteBalance}
 						onBlur={onBlur}
+						tooltip={inboundTip}
 					/>
 
 					<InputGroup
@@ -227,10 +239,11 @@ function BuyPage(): JSX.Element {
 						onChange={(e) => onSetInput(e, setLocalBalance)}
 						id={'local-balance'}
 						label={'Local balance'}
-						append={'Sats'}
+						append={'sats'}
 						showFiatFromSatsValue
 						error={formErrors.localBalance}
 						onBlur={onBlur}
+						tooltip={spendingTip}
 					/>
 
 					<InputGroup
@@ -239,34 +252,23 @@ function BuyPage(): JSX.Element {
 						onChange={(e) => onSetInput(e, setChannelExpiry)}
 						id={'channel-expiry'}
 						label={'Channel expiry'}
-						append={'Weeks'}
+						append={'weeks'}
 						error={formErrors.channelExpiry}
 						onBlur={onBlur}
+						tooltip={durationTip}
 					/>
-
-					<Checkbox
-						isChecked={termsAccepted}
-						setIsChecked={(isChecked) => {
-							setTermsAccepted(isChecked);
-							isValid(!isChecked).then();
-						}}
-						error={formErrors.acceptTerms}
-					>
-						<span>I accept the </span>
-						<a target={'_blank'} className={'link'} href={'/terms-and-conditions'}>
-							terms and conditions
-						</a>
-					</Checkbox>
 				</div>
+
 				<div className={'button-container'}>
-					<Button className={'form-button'} onClick={onBuy} type='submit' disabled={isSubmitting}>
-						Pay Now
-					</Button>
+					<div>
+						<Button className={'form-button'} onClick={onBuy} type='submit' disabled={isSubmitting}>
+							Create my Channel
+						</Button>
+					</div>
 				</div>
 			</Form>
-			<PreviousOrdersLink />
 		</FormCard>
 	);
 }
 
-export default BuyPage;
+export default ConfigurePage;

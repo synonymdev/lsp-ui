@@ -5,16 +5,17 @@ import bip21 from 'bip21';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { refreshOrder, selectOrders, selectOrdersState } from '../../../store/public-store';
 import bt, { IGetOrderResponse } from '@synonymdev/blocktank-client';
-import LineItem from '../../../components/line-item';
 import CopyText from '../../../components/copy-text';
 import FormCard from '../../../components/form-card';
 import Spinner from '../../../components/spinner';
-import SupportLink from '../../../components/support-link';
-import PreviousOrdersLink from '../../../components/previous-orders-link';
 import QRCode from '../../../components/qr';
 import './index.scss';
-import { addressLink, txLink } from '../../../utils/links';
 import InputGroup from '../../../components/input-group';
+import Heading from '../../../components/heading';
+import Divider from '../../../components/divider';
+import ValueGroup from '../../../components/value-group';
+import { ReactComponent as CalendarIcon } from '../../../icons/calendar-active.svg';
+import { ReactComponent as ClockIcon } from '../../../icons/clock-active.svg';
 
 const qrSize = 220;
 
@@ -133,6 +134,7 @@ const ClaimChannel = ({ order }: { order: IGetOrderResponse }): ReactElement => 
 	);
 };
 
+// TODO deprecated
 function OrderPage(): JSX.Element {
 	const { orderId } = useParams();
 
@@ -190,6 +192,9 @@ function OrderPage(): JSX.Element {
 		);
 	}
 
+	let heading = '';
+	let iconName = 'lightning-3d.png';
+
 	const {
 		_id,
 		state,
@@ -199,72 +204,120 @@ function OrderPage(): JSX.Element {
 		remote_balance,
 		stateMessage,
 		channel_expiry,
-		total_amount,
-		onchain_payments,
-		btc_address
+		created_at
 	} = order;
 
-	let content = <></>;
-	let paymentLineItem = <></>;
-	let orderStatus = stateMessage;
+	console.log(stateMessage);
+
+	let headerMessage = stateMessage;
+	let footerMessage = <></>;
+	let stateStyle = 'pending';
+	let showIconCross = false;
+
+	// let state = 100;
+	// if (state) {
+	// 	state = 450;
+	// }
 
 	switch (state) {
 		case 0: {
-			let unconfirmedIncoming = 0;
-			onchain_payments.forEach((p) => {
-				unconfirmedIncoming += p.amount_base;
-			});
-
-			let link = <></>;
-			if (onchain_payments.length === 1) {
-				link = txLink(onchain_payments[0].hash);
-			} else {
-				link = addressLink(btc_address);
-			}
-
-			paymentLineItem = (
-				<LineItem
-					label={'Received'}
-					value={`${unconfirmedIncoming || amount_received}/${total_amount} sats`}
-				/>
-			);
-
-			orderStatus = 'Unconfirmed payment';
-
-			// If we haven't yet received the full amount, keep showing the payment options
-			if (unconfirmedIncoming < total_amount) {
-				content = <Payment order={order} />;
-			} else {
-				content = <p className={'payment-link'}>Unconfirmed transaction: {link}</p>;
-			}
-
+			// TODO back to payment
 			break;
 		}
 		case 100: {
-			content = <ClaimChannel order={order} />;
+			// TODO back to claim
 			break;
 		}
-		case 400: // Given up
-		case 500: // Channel open
+		case 200: // URI set
 		case 300: // Channel opening
+			iconName = 'hourglass-3d.png';
+			stateStyle = 'pending';
+			heading = 'Opening channel';
+			headerMessage =
+				'You successfully claimed your channel. Your channel will be ready to use in 10 - 30 minutes or so. Feel free to come back later.';
+			footerMessage = (
+				<>
+					This channel will stay open for at least{' '}
+					<span className={'highlight'}>
+						{channel_expiry} week{channel_expiry === 1 ? '' : 's'}
+					</span>
+					.
+				</>
+			);
+			break;
+		case 400: // Given up
+			iconName = 'thumb-down-3d.png';
+			stateStyle = 'error';
+			heading = 'Channel failed';
+			headerMessage =
+				'Unfortunately, we were unable to open the channel. It could be the case that your node dropped connection or is offline. Please contact support@synonym.to for assistance.';
+			break;
 		case 450: // Channel closed
+			stateStyle = 'neutral';
+			showIconCross = true;
+			heading = 'Channel closed';
+			headerMessage = 'This Lightning channel has expired.';
+			break;
+		case 500: // Channel open
+			stateStyle = 'success';
+			heading = 'Channel live';
+			headerMessage = 'Your Lightning channel is currently open and is ready for use.';
+			footerMessage = (
+				<>
+					This channel will stay open for at least{' '}
+					<span className={'highlight'}>
+						{channel_expiry} week{channel_expiry === 1 ? '' : 's'}
+					</span>
+					.
+				</>
+			);
+			break;
 	}
 
+	const date = new Date(created_at);
+
 	return (
-		<FormCard>
-			<LineItem label={'Order status'} value={orderStatus} spinner={state === 0} />
-			{paymentLineItem}
-			<LineItem label={'Order expiry'} value={new Date(order_expiry).toLocaleString()} />
-			<LineItem label={'Remote balance'} value={`${local_balance} sats`} />
-			<LineItem label={'Local balance'} value={`${remote_balance} sats`} />
-			<LineItem label={'Channel expiry'} value={`${channel_expiry} weeks`} />
+		<FormCard title={'New Lightning Channel'}>
+			<Heading>{heading}</Heading>
+			<div className={'order-state-container'}>
+				<p className={'order-state-message'}>{headerMessage}</p>
+				<div className={'icon-ring-container'}>
+					<div className={`icon-ring-${stateStyle}`}>
+						<img alt={heading} className={'icon-ring-image'} src={`/icons/${iconName}`} />
+						{showIconCross ? <div className={'icon-ring-neutral-line'} /> : null}
+					</div>
+				</div>
 
-			<br />
+				<Divider />
 
-			{content}
+				<div className={'value-group-row'}>
+					<ValueGroup
+						label={'Order date'}
+						value={date.toLocaleString('en-US', {
+							month: 'short',
+							day: 'numeric',
+							year: 'numeric'
+						})}
+						Icon={CalendarIcon}
+					/>
+					<ValueGroup
+						label={'Order time'}
+						value={date.toLocaleTimeString('en-US', {
+							hour: 'numeric',
+							minute: 'numeric',
+							hour12: false
+						})}
+						Icon={ClockIcon}
+					/>
+				</div>
 
-			<PreviousOrdersLink />
-			<SupportLink orderId={_id} />
+				<div className={'value-group-row'}>
+					<ValueGroup label={'Inbound capacity'} value={local_balance} showFiat />
+					<ValueGroup label={'My balance'} value={remote_balance} showFiat />
+				</div>
+
+				{footerMessage ? <p className={'order-state-message'}>{footerMessage}</p> : null}
+			</div>
 		</FormCard>
 	);
 }
