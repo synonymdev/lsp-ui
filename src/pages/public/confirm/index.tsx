@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { useParams, Link, useHistory } from 'react-router-dom';
 import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { refreshOrder, selectOrders, selectOrdersState } from '../../../store/public-store';
+import {
+	navigate,
+	refreshOrder,
+	selectCurrentOrderId,
+	selectOrders,
+	selectOrdersState
+} from '../../../store/public-store';
 import FormCard from '../../../components/form-card';
 import Spinner from '../../../components/spinner';
 import Heading from '../../../components/heading';
@@ -16,17 +21,16 @@ import Checkbox from '../../../components/checkbox';
 import './index.scss';
 
 function ConfirmationPage(): JSX.Element {
-	const { orderId } = useParams();
-
 	const [isLoading, setIsLoading] = useState(true);
+	const orderId = useAppSelector(selectCurrentOrderId);
 	const [order, setOrder] = useState<IGetOrderResponse | undefined>(undefined);
 	const [termsAccepted, setTermsAccepted] = useState(false);
 	const [showAcceptTermsError, setShowAcceptTermsError] = useState(false);
 	const orders = useAppSelector(selectOrders);
 	const ordersState = useAppSelector(selectOrdersState);
 	const dispatch = useAppDispatch();
-	const history = useHistory();
 
+	// TODO move to reusable hook
 	useEffect(() => {
 		const newOrder = orders.find((o) => o._id === orderId);
 		if (newOrder) {
@@ -54,9 +58,12 @@ function ConfirmationPage(): JSX.Element {
 			<FormCard>
 				<h4>Order not found</h4>
 				<div className={'button-container'}>
-					<Link to={'/'}>
-						<Button className={'form-button'}>Home</Button>
-					</Link>
+					<Button
+						className={'form-button'}
+						onClick={() => dispatch(navigate({ page: 'configure' }))}
+					>
+						Home
+					</Button>
 				</div>
 			</FormCard>
 		);
@@ -69,7 +76,7 @@ function ConfirmationPage(): JSX.Element {
 
 		// TODO check order is still valid
 
-		history.push(`/payment/${orderId}`);
+		dispatch(navigate({ page: 'payment' }));
 	};
 
 	const {
@@ -89,7 +96,7 @@ function ConfirmationPage(): JSX.Element {
 	return (
 		<FormCard
 			title={'New Lightning Channel'}
-			backlink={'/'}
+			backPage={'configure'}
 			pageIndicator={{ total: 4, active: 1 }}
 		>
 			<Heading>My Channel</Heading>

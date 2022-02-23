@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-import { Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { refreshOrder, selectOrders, selectOrdersState } from '../../../store/public-store';
@@ -45,13 +43,6 @@ function OrdersPage(): JSX.Element {
 					))}
 				</div>
 			</div>
-
-			<Link className={'new-order'} to={`/`}>
-				<Button className={'form-button'} type='submit'>
-					New order
-				</Button>
-			</Link>
-
 			<SupportLink />
 		</FormCard>
 	);

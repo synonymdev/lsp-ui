@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { useParams, Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { refreshOrder, selectOrders, selectOrdersState } from '../../../store/public-store';
+import {
+	navigate,
+	refreshOrder,
+	selectCurrentOrderId,
+	selectOrders,
+	selectOrdersState
+} from '../../../store/public-store';
 import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import FormCard from '../../../components/form-card';
 import Spinner from '../../../components/spinner';
@@ -14,12 +19,9 @@ import IconRing, { TIconRingType, TIcon } from '../../../components/icon-ring';
 import { ReactComponent as CalendarIcon } from '../../../icons/calendar-active.svg';
 import { ReactComponent as ClockIcon } from '../../../icons/clock-active.svg';
 
-const qrSize = 220;
-
 function OrderPage(): JSX.Element {
-	const { orderId } = useParams();
-
 	const [isLoading, setIsLoading] = useState(true);
+	const orderId = useAppSelector(selectCurrentOrderId);
 	const [order, setOrder] = useState<IGetOrderResponse | undefined>(undefined);
 	const orders = useAppSelector(selectOrders);
 	const ordersState = useAppSelector(selectOrdersState);
@@ -65,9 +67,12 @@ function OrderPage(): JSX.Element {
 			<FormCard>
 				<h4>Order not found</h4>
 				<div className={'button-container'}>
-					<Link>
-						<Button className={'form-button'}>Home</Button>
-					</Link>
+					<Button
+						className={'form-button'}
+						onClick={() => dispatch(navigate({ page: 'configure' }))}
+					>
+						Home
+					</Button>
 				</div>
 			</FormCard>
 		);
@@ -170,7 +175,7 @@ function OrderPage(): JSX.Element {
 	const date = new Date(created_at);
 
 	return (
-		<FormCard title={'New Lightning Channel'}>
+		<FormCard backPage={'configure'} title={'New Lightning Channel'}>
 			<Heading>{heading}</Heading>
 			<div className={'order-state-container'}>
 				<p className={'order-state-message'}>{headerMessage}</p>

@@ -8,6 +8,7 @@ import { store } from './store/index';
 import { saveState } from './utils/browser-storage';
 import TermsPage from './pages/public/terms';
 import AdminAuthModal from './components/admin/auth-modal';
+import RatesRefresher from './hooks/ratesRefresher';
 
 store.subscribe(
 	debounce(() => {
@@ -19,6 +20,7 @@ function App(): JSX.Element {
 	return (
 		<Router>
 			<ScrollToTop />
+			<RatesRefresher />
 			<Switch>
 				<Route path='/admin'>
 					<AdminAuthModal />
@@ -31,7 +33,7 @@ function App(): JSX.Element {
 					</PageContainer>
 				</Route>
 
-				<Route exact path={['/*', '/blocktank/*']}>
+				<Route exact path={['/*']}>
 					<PublicPages />
 				</Route>
 			</Switch>

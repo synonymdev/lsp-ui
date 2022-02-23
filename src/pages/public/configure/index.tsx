@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useHistory, useRouteMatch } from 'react-router-dom';
 import bt, { IBuyChannelRequest, IService } from '@synonymdev/blocktank-client';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { refreshInfo, selectInfo, selectInfoState } from '../../../store/public-store';
+import { refreshInfo, selectInfo, selectInfoState, navigate } from '../../../store/public-store';
 import Spinner from '../../../components/spinner';
 import FormCard from '../../../components/form-card';
 import './index.scss';
@@ -35,9 +34,7 @@ const durationTip: TooltipProps = {
 function ConfigurePage(): JSX.Element {
 	const { services } = useAppSelector(selectInfo);
 	const infoState = useAppSelector(selectInfoState);
-	const history = useHistory();
-	const route = useRouteMatch();
-
+	const dispatch = useAppDispatch();
 	const [isLoading, setIsLoading] = useState(true);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [product, setProduct] = useState<IService | undefined>(undefined);
@@ -66,8 +63,6 @@ function ConfigurePage(): JSX.Element {
 			}
 		}
 	}, [services]);
-
-	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		dispatch(refreshInfo())
@@ -99,7 +94,7 @@ function ConfigurePage(): JSX.Element {
 			const buyRes = await bt.buyChannel(req);
 			const { order_id } = buyRes;
 
-			history.push(`${route.url}confirm/${order_id}`);
+			dispatch(navigate({ page: 'confirm', orderId: order_id }));
 		} catch (error) {
 			setIsSubmitting(false);
 			alert(error);

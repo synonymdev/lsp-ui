@@ -1,16 +1,15 @@
-import { Switch, Route } from 'react-router-dom';
 import { Col, Container, Row } from 'react-bootstrap';
 import React, { ReactElement } from 'react';
-import RatesRefresher from '../../hooks/ratesRefresher';
+import { selectCurrentPage } from '../../store/public-store';
 import ConfigurePage from './configure';
 import OrderPage from './order';
 import OrdersPage from './orders';
 import ConfirmationPage from './confirm';
 import PaymentPage from './payment';
 import ClaimPage from './claim';
-import ErrorPage from './error';
 
 import './index.scss';
+import { useAppSelector } from '../../store/hooks';
 
 export const PageContainer = ({ children }): ReactElement => (
 	<>
@@ -40,59 +39,44 @@ const CardContainer = ({ children }): ReactElement => (
 	</PageContainer>
 );
 
+const Page = (): JSX.Element => {
+	const page = useAppSelector(selectCurrentPage);
+
+	switch (page) {
+		case 'configure': {
+			return <ConfigurePage />;
+		}
+		case 'confirm': {
+			return <ConfirmationPage />;
+		}
+		case 'payment': {
+			return <PaymentPage />;
+		}
+		case 'claim': {
+			return <ClaimPage />;
+		}
+		case 'order': {
+			return <OrderPage />;
+		}
+		case 'orders': {
+			return <OrdersPage />;
+		}
+	}
+};
+
 function PublicPages(): JSX.Element {
-	const routes = (
-		<>
-			<RatesRefresher />
-			<Switch>
-				<Route exact path={['/', '/blocktank']}>
-					<ConfigurePage />
-				</Route>
-
-				<Route path={['/confirm/:orderId', '/blocktank/confirm/:orderId']}>
-					<ConfirmationPage />
-				</Route>
-
-				<Route path={['/payment/:orderId', '/blocktank/payment/:orderId']}>
-					<PaymentPage />
-				</Route>
-
-				<Route path={['/claim/:orderId', '/blocktank/claim/:orderId']}>
-					<ClaimPage />
-				</Route>
-
-				<Route path={['/order/:orderId', '/blocktank/order/:orderId']}>
-					<OrderPage />
-				</Route>
-
-				<Route path={['/orders', '/blocktank/orders']}>
-					<OrdersPage />
-				</Route>
-
-				<Route path={['/error', '/blocktank/error']}>
-					<ErrorPage type={'geoblocked'} />
-				</Route>
-
-				<Route path='*'>
-					<div style={{ textAlign: 'center' }}>
-						<h4>404</h4>
-						<p>Page not found</p>
-					</div>
-				</Route>
-			</Switch>
-		</>
-	);
-
 	if (
 		new URLSearchParams(window.location.search).get('embed') === 'true' ||
 		(window as any).embedwidget === true
 	) {
-		return routes;
+		return <Page />;
 	}
 
 	return (
 		<Container className={'container'}>
-			<CardContainer>{routes}</CardContainer>
+			<CardContainer>
+				<Page />
+			</CardContainer>
 		</Container>
 	);
 }
