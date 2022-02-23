@@ -6,17 +6,20 @@ import SupportLink from '../../../components/support-link';
 
 import './index.scss';
 
-function ErrorPage(props: { type: 'geoblocked' | 'generic' }): JSX.Element {
+function ErrorPage(props: { type: 'geoblocked' | 'generic' | 'orderNotFound' }): JSX.Element {
 	let headerMessage = 'An error occurred. Please try again later.';
 	switch (props.type) {
 		case 'geoblocked':
 			headerMessage = 'Blocktank services are not available in your area.';
 			break;
+		case 'orderNotFound':
+			headerMessage = 'This order could not be found.';
+			break;
 		case 'generic':
 	}
 
 	return (
-		<FormCard title={'Lightning Channel'}>
+		<FormCard backPage={'configure'} title={'Lightning Channel'}>
 			<Heading>Sorry!</Heading>
 			<div className={'error-page-container'}>
 				<p className={'error-page-message'}>{headerMessage}</p>

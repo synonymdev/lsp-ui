@@ -19,6 +19,7 @@ import Divider from '../../../components/divider';
 import Checkbox from '../../../components/checkbox';
 
 import './index.scss';
+import ErrorPage from '../error';
 
 function ConfirmationPage(): JSX.Element {
 	const [isLoading, setIsLoading] = useState(true);
@@ -54,19 +55,7 @@ function ConfirmationPage(): JSX.Element {
 			);
 		}
 
-		return (
-			<FormCard>
-				<h4>Order not found</h4>
-				<div className={'button-container'}>
-					<Button
-						className={'form-button'}
-						onClick={() => dispatch(navigate({ page: 'configure' }))}
-					>
-						Home
-					</Button>
-				</div>
-			</FormCard>
-		);
+		return <ErrorPage type={'orderNotFound'} />;
 	}
 
 	const onPay = (): void => {

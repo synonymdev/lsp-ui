@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
 	navigate,
@@ -18,6 +17,7 @@ import ValueGroup from '../../../components/value-group';
 import IconRing, { TIconRingType, TIcon } from '../../../components/icon-ring';
 import { ReactComponent as CalendarIcon } from '../../../icons/calendar-active.svg';
 import { ReactComponent as ClockIcon } from '../../../icons/clock-active.svg';
+import ErrorPage from '../error';
 
 function OrderPage(): JSX.Element {
 	const [isLoading, setIsLoading] = useState(true);
@@ -63,19 +63,7 @@ function OrderPage(): JSX.Element {
 			);
 		}
 
-		return (
-			<FormCard>
-				<h4>Order not found</h4>
-				<div className={'button-container'}>
-					<Button
-						className={'form-button'}
-						onClick={() => dispatch(navigate({ page: 'configure' }))}
-					>
-						Home
-					</Button>
-				</div>
-			</FormCard>
-		);
+		return <ErrorPage type={'orderNotFound'} />;
 	}
 
 	const {

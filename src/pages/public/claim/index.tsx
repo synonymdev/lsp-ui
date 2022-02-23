@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
 	navigate,
@@ -25,6 +24,7 @@ import { ReactComponent as ClaimIcon } from '../../../icons/claim-white.svg';
 import { ReactComponent as QRIcon } from '../../../icons/qr-white.svg';
 import { ReactComponent as LightningIcon } from '../../../icons/lightning-white.svg';
 import useDisplayValues from '../../../hooks/displayValues';
+import ErrorPage from '../error';
 
 const qrSize = 200;
 
@@ -79,20 +79,7 @@ function ClaimPage(): JSX.Element {
 			);
 		}
 
-		// TODO move to error page view
-		return (
-			<FormCard>
-				<h4>Order not found</h4>
-				<div className={'button-container'}>
-					<Button
-						className={'form-button'}
-						onClick={() => dispatch(navigate({ page: 'configure' }))}
-					>
-						Home
-					</Button>
-				</div>
-			</FormCard>
-		);
+		return <ErrorPage type={'orderNotFound'} />;
 	}
 
 	const { _id, lnurl_string, remote_balance, local_balance, channel_expiry } = order;

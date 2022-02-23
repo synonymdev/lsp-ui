@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
 	navigate,
@@ -19,6 +18,7 @@ import { ReactComponent as LightningIconActive } from '../../../icons/lightning-
 import { ReactComponent as LightningIcon } from '../../../icons/lightning.svg';
 import { ReactComponent as BitcoinIconActive } from '../../../icons/bitcoin-active.svg';
 import { ReactComponent as BitcoinIcon } from '../../../icons/bitcoin.svg';
+import ErrorPage from '../error';
 
 function PaymentPage(): JSX.Element {
 	const [isLoading, setIsLoading] = useState(true);
@@ -65,19 +65,7 @@ function PaymentPage(): JSX.Element {
 			);
 		}
 
-		return (
-			<FormCard>
-				<Heading>Order not found</Heading>
-				<div className={'button-container'}>
-					<Button
-						className={'form-button'}
-						onClick={() => dispatch(navigate({ page: 'configure' }))}
-					>
-						Home
-					</Button>
-				</div>
-			</FormCard>
-		);
+		return <ErrorPage type={'orderNotFound'} />;
 	}
 
 	const {
