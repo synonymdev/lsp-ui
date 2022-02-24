@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
-import { useParams, Link, useHistory, useRouteMatch } from 'react-router-dom';
-
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { refreshOrder, selectOrders, selectOrdersState } from '../../../store/public-store';
+import {
+	navigate,
+	refreshOrder,
+	selectCurrentOrderId,
+	selectOrders,
+	selectOrdersState
+} from '../../../store/public-store';
 import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import FormCard from '../../../components/form-card';
 import Spinner from '../../../components/spinner';
@@ -15,18 +18,17 @@ import { ReactComponent as LightningIconActive } from '../../../icons/lightning-
 import { ReactComponent as LightningIcon } from '../../../icons/lightning.svg';
 import { ReactComponent as BitcoinIconActive } from '../../../icons/bitcoin-active.svg';
 import { ReactComponent as BitcoinIcon } from '../../../icons/bitcoin.svg';
+import ErrorPage from '../error';
 
 function PaymentPage(): JSX.Element {
-	const { orderId } = useParams();
-
 	const [isLoading, setIsLoading] = useState(true);
+	const orderId = useAppSelector(selectCurrentOrderId);
 	const [order, setOrder] = useState<IGetOrderResponse | undefined>(undefined);
 	const orders = useAppSelector(selectOrders);
 	const ordersState = useAppSelector(selectOrdersState);
 	const dispatch = useAppDispatch();
-	const history = useHistory();
-	const route = useRouteMatch();
 
+	// TODO move to reusable hook
 	useEffect(() => {
 		const newOrder = orders.find((o) => o._id === orderId);
 		if (newOrder) {
@@ -63,16 +65,7 @@ function PaymentPage(): JSX.Element {
 			);
 		}
 
-		return (
-			<FormCard>
-				<Heading>Order not found</Heading>
-				<div className={'button-container'}>
-					<Link>
-						<Button className={'form-button'}>Home</Button>
-					</Link>
-				</div>
-			</FormCard>
-		);
+		return <ErrorPage type={'orderNotFound'} />;
 	}
 
 	const {
@@ -111,7 +104,7 @@ function PaymentPage(): JSX.Element {
 		case 100: {
 			orderStatus = 'Payment received';
 			// Navigate to claim view
-			history.push(`/claim/${_id}`);
+			dispatch(navigate({ page: 'claim' }));
 			break;
 		}
 		case 400: // Given up
@@ -119,13 +112,13 @@ function PaymentPage(): JSX.Element {
 		case 300: // Channel opening
 		case 450: // Channel closed
 			// Navigate to status view
-			history.push(`/order/${_id}`);
+			dispatch(navigate({ page: 'order' }));
 	}
 
 	return (
 		<FormCard
 			title={'New Lightning Channel'}
-			backlink={'/'}
+			backPage={'configure'}
 			pageIndicator={{ total: 4, active: 2 }}
 		>
 			<Heading>Pay now</Heading>

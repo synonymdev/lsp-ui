@@ -1,0 +1,23 @@
+.error-page-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  .error-page-message {
+    font-size: 15px;
+    color: #8E8E93;
+    margin-top: 10px;
+  }
+
+  .error-page-content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+
+    .support-button-container {
+      margin-top: 18px;
+    }
+  }
+}

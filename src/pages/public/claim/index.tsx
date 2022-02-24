@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
-import { useParams, Link, useHistory, useRouteMatch } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { refreshOrder, selectOrders, selectOrdersState } from '../../../store/public-store';
+import {
+	navigate,
+	refreshOrder,
+	selectCurrentOrderId,
+	selectOrders,
+	selectOrdersState
+} from '../../../store/public-store';
 import bt, { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import FormCard from '../../../components/form-card';
 import Spinner from '../../../components/spinner';
@@ -20,18 +24,17 @@ import { ReactComponent as ClaimIcon } from '../../../icons/claim-white.svg';
 import { ReactComponent as QRIcon } from '../../../icons/qr-white.svg';
 import { ReactComponent as LightningIcon } from '../../../icons/lightning-white.svg';
 import useDisplayValues from '../../../hooks/displayValues';
+import ErrorPage from '../error';
 
 const qrSize = 200;
 
 function ClaimPage(): JSX.Element {
-	const { orderId } = useParams();
-
 	const [isLoading, setIsLoading] = useState(true);
+	const orderId = useAppSelector(selectCurrentOrderId);
 	const [order, setOrder] = useState<IGetOrderResponse | undefined>(undefined);
 	const orders = useAppSelector(selectOrders);
 	const ordersState = useAppSelector(selectOrdersState);
 	const dispatch = useAppDispatch();
-	const history = useHistory();
 
 	const [showManual, setShowManual] = useState(false);
 	const [nodeUri, setNodeUri] = useState('');
@@ -76,16 +79,7 @@ function ClaimPage(): JSX.Element {
 			);
 		}
 
-		return (
-			<FormCard>
-				<h4>Order not found</h4>
-				<div className={'button-container'}>
-					<Link>
-						<Button className={'form-button'}>Home</Button>
-					</Link>
-				</div>
-			</FormCard>
-		);
+		return <ErrorPage type={'orderNotFound'} />;
 	}
 
 	const { _id, lnurl_string, remote_balance, local_balance, channel_expiry } = order;
@@ -100,7 +94,7 @@ function ClaimPage(): JSX.Element {
 
 			await dispatch(refreshOrder(_id));
 
-			history.push(`/order/${_id}`);
+			dispatch(navigate({ page: 'order' }));
 		} catch (e) {
 			alert(e);
 		} finally {
@@ -168,11 +162,7 @@ function ClaimPage(): JSX.Element {
 	);
 
 	return (
-		<FormCard
-			title={'New Lightning Channel'}
-			backlink={'/'}
-			pageIndicator={{ total: 4, active: 3 }}
-		>
+		<FormCard title={'New Lightning Channel'} pageIndicator={{ total: 4, active: 3 }}>
 			<Heading>{showManual ? 'Claim manually' : 'Claim channel'}</Heading>
 			<Divider />
 			<div className='claim-channel-container'>

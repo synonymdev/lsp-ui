@@ -1,18 +1,24 @@
-import { Form } from 'react-bootstrap';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { ReactComponent as BackIcon } from '../../icons/back.svg';
+import { navigate, TPublicPage } from '../../store/public-store';
+import { useAppDispatch } from '../../store/hooks';
 
 import './index.scss';
 
-export default ({ to, children }: { to?: string; children: string }): JSX.Element => {
+export default ({
+	backPage,
+	children
+}: {
+	backPage?: TPublicPage;
+	children: string;
+}): JSX.Element => {
+	const dispatch = useAppDispatch();
+
 	return (
 		<div className={'backlink-container'}>
-			{to ? (
-				<div className={'header-backlink'}>
-					<Link to={to}>
-						<BackIcon />
-					</Link>{' '}
+			{backPage ? (
+				<div className={'header-backlink'} onClick={() => dispatch(navigate({ page: backPage }))}>
+					<BackIcon />
 				</div>
 			) : null}
 			<h4>{children}</h4>

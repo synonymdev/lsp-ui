@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Spinner from '../../../components/spinner';
-import './index.scss';
 import { Col, Container, Row } from 'react-bootstrap';
+
+import './index.scss';
 
 const fetchContent = async(): Promise<string> => {
 	const res = await fetch('/terms-and-conditions.html');
