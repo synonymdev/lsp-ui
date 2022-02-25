@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { refreshOrder, selectOrders, selectOrdersState } from '../../../store/public-store';
+import {
+	navigate,
+	refreshOrder,
+	selectOrders,
+	selectOrdersState
+} from '../../../store/public-store';
 import LineItem from '../../../components/line-item';
 import FormCard from '../../../components/form-card';
 import Spinner from '../../../components/spinner';
@@ -29,14 +34,14 @@ function OrdersPage(): JSX.Element {
 	}
 
 	return (
-		<FormCard>
+		<FormCard title={'Orders'} backPage={'configure'}>
 			<div className={'orders-container'}>
 				<div>
 					<h4>Orders</h4>
 					{orders.map(({ _id, state, stateMessage, created_at }) => (
 						<LineItem
 							key={_id}
-							to={`/order/${_id}`}
+							onClick={() => dispatch(navigate({ page: 'order', orderId: _id }))}
 							label={new Date(created_at).toLocaleDateString()}
 							value={stateMessage}
 						/>

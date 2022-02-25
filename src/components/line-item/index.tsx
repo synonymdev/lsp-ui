@@ -7,12 +7,14 @@ export default ({
 	label,
 	value,
 	spinner,
-	to
+	to,
+	onClick
 }: {
 	label: string;
 	value: string;
 	spinner?: boolean;
 	to?: string;
+	onClick?: () => void;
 }): JSX.Element => {
 	const content = (
 		<>
@@ -30,5 +32,9 @@ export default ({
 		);
 	}
 
-	return <div className={'line-item'}>{content}</div>;
+	return (
+		<div className={'line-item'} onClick={onClick}>
+			{content}
+		</div>
+	);
 };

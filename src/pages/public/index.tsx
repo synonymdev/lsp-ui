@@ -1,22 +1,22 @@
 import { Col, Container, Row } from 'react-bootstrap';
 import React, { ReactElement } from 'react';
-import { selectCurrentPage } from '../../store/public-store';
+import { selectCurrentPage, selectShowMenu } from '../../store/public-store';
 import ConfigurePage from './configure';
 import OrderPage from './order';
 import OrdersPage from './orders';
 import ConfirmationPage from './confirm';
 import PaymentPage from './payment';
 import ClaimPage from './claim';
+import MenuPage from './menu';
+import { useAppSelector } from '../../store/hooks';
 
 import './index.scss';
-import { useAppSelector } from '../../store/hooks';
 
 export const PageContainer = ({ children }): ReactElement => (
 	<>
 		<div className={'glowy-main1'} />
 		<div className={'glowy-main2'} />
 		<div className={'glowy-main3'} />
-
 		<Row className={'page-container'}>{children}</Row>
 	</>
 );
@@ -41,6 +41,11 @@ const CardContainer = ({ children }): ReactElement => (
 
 const Page = (): JSX.Element => {
 	const page = useAppSelector(selectCurrentPage);
+	const showMenu = useAppSelector(selectShowMenu);
+
+	if (showMenu) {
+		return <MenuPage />;
+	}
 
 	switch (page) {
 		case 'configure': {
@@ -58,7 +63,7 @@ const Page = (): JSX.Element => {
 		case 'order': {
 			return <OrderPage />;
 		}
-		case 'orders': {
+		default: {
 			return <OrdersPage />;
 		}
 	}
