@@ -1,4 +1,4 @@
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container } from 'react-bootstrap';
 import React, { ReactElement } from 'react';
 import { selectCurrentPage, selectShowMenu } from '../../store/public-store';
 import ConfigurePage from './configure';

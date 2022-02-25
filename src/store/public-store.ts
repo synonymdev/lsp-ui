@@ -128,6 +128,8 @@ export const publicStore = createSlice({
 				} else {
 					state.orders.value.push(updatedOrder);
 				}
+
+				state.orders.value.sort((a, b) => b.created_at - a.created_at);
 			})
 			// Refresh info exchange rates
 			.addCase(refreshExchangeRates.pending, (state) => {

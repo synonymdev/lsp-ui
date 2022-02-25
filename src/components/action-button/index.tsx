@@ -1,10 +1,4 @@
-import React, {
-	FunctionComponent,
-	ReactComponentElement,
-	ReactElement,
-	useEffect,
-	useState
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ReactComponent as CopyIcon } from '../../icons/copy.svg';
 
