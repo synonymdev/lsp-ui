@@ -2,12 +2,13 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { debounce } from 'debounce';
 import ScrollToTop from './utils/ScrollToTop';
-import PublicPages, { PageContainer } from './pages/public';
+import PublicPages from './pages/public';
 import AdminPages from './pages/admin';
 import { store } from './store/index';
 import { saveState } from './utils/browser-storage';
 import TermsPage from './pages/public/terms';
 import AdminAuthModal from './components/admin/auth-modal';
+import WidgetContainer from './components/widget-container';
 import RatesRefresher from './hooks/ratesRefresher';
 
 store.subscribe(
@@ -28,9 +29,9 @@ function App(): JSX.Element {
 				</Route>
 
 				<Route path={['/terms-and-conditions', '/blocktank/terms-and-conditions']}>
-					<PageContainer>
+					<WidgetContainer>
 						<TermsPage />
-					</PageContainer>
+					</WidgetContainer>
 				</Route>
 
 				<Route exact path={['/*']}>

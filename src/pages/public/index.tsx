@@ -8,21 +8,13 @@ import ConfirmationPage from './confirm';
 import PaymentPage from './payment';
 import ClaimPage from './claim';
 import MenuPage from './menu';
+import WidgetContainer from '../../components/widget-container';
 import { useAppSelector } from '../../store/hooks';
 
 import './index.scss';
 
-export const PageContainer = ({ children }): ReactElement => (
-	<>
-		<div className={'glowy-main1'} />
-		<div className={'glowy-main2'} />
-		<div className={'glowy-main3'} />
-		<Row className={'page-container'}>{children}</Row>
-	</>
-);
-
 const CardContainer = ({ children }): ReactElement => (
-	<PageContainer>
+	<WidgetContainer>
 		<Col xl={6} lg={5} md={4} sm={12} className={'infoCol'}>
 			<h1>Lightning Network Services</h1>
 			<br />
@@ -36,7 +28,7 @@ const CardContainer = ({ children }): ReactElement => (
 		<Col xl={6} lg={7} md={8} sm={12}>
 			{children}
 		</Col>
-	</PageContainer>
+	</WidgetContainer>
 );
 
 const Page = (): JSX.Element => {
