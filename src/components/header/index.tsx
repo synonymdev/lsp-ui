@@ -1,7 +1,9 @@
 import React from 'react';
 import { ReactComponent as BackIcon } from '../../icons/back.svg';
-import { navigate, TPublicPage } from '../../store/public-store';
-import { useAppDispatch } from '../../store/hooks';
+import { navigate, selectShowMenu, setShowMenu, TPublicPage } from '../../store/public-store';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { ReactComponent as MenuIcon } from '../../icons/menu-white.svg';
+import { ReactComponent as CloseIcon } from '../../icons/close-white.svg';
 
 import './index.scss';
 
@@ -13,15 +15,21 @@ export default ({
 	children: string;
 }): JSX.Element => {
 	const dispatch = useAppDispatch();
+	const showMenu = useAppSelector(selectShowMenu);
 
 	return (
 		<div className={'backlink-container'}>
 			{backPage ? (
-				<div className={'header-backlink'} onClick={() => dispatch(navigate({ page: backPage }))}>
+				<div className={'header-button'} onClick={() => dispatch(navigate({ page: backPage }))}>
 					<BackIcon />
 				</div>
-			) : null}
+			) : (
+				<div />
+			)}
 			<h4>{children}</h4>
+			<div className={'header-button'} onClick={() => dispatch(setShowMenu(!showMenu))}>
+				{showMenu ? <CloseIcon /> : <MenuIcon />}
+			</div>
 		</div>
 	);
 };

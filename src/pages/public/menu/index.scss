@@ -1,0 +1,43 @@
+.menu-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
+  justify-content: space-between;
+
+  .menu-list {
+    .menu-item-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+
+      .menu-item-title {
+        font-family: Neue Haas Grotesk Display Pro;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 48px;
+        line-height: 48px;
+        letter-spacing: -0.4px;
+        background: -webkit-linear-gradient(60deg, #E46735, #C93250, #CA488C);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    }
+  }
+
+  .menu-terms-link-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    a {
+      font-weight: 600;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: #F7931A;
+    }
+  }
+}

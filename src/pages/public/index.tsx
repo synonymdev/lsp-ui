@@ -1,28 +1,20 @@
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container } from 'react-bootstrap';
 import React, { ReactElement } from 'react';
-import { selectCurrentPage } from '../../store/public-store';
+import { selectCurrentPage, selectShowMenu } from '../../store/public-store';
 import ConfigurePage from './configure';
 import OrderPage from './order';
 import OrdersPage from './orders';
 import ConfirmationPage from './confirm';
 import PaymentPage from './payment';
 import ClaimPage from './claim';
-
-import './index.scss';
+import MenuPage from './menu';
+import WidgetContainer from '../../components/widget-container';
 import { useAppSelector } from '../../store/hooks';
 
-export const PageContainer = ({ children }): ReactElement => (
-	<>
-		<div className={'glowy-main1'} />
-		<div className={'glowy-main2'} />
-		<div className={'glowy-main3'} />
-
-		<Row className={'page-container'}>{children}</Row>
-	</>
-);
+import './index.scss';
 
 const CardContainer = ({ children }): ReactElement => (
-	<PageContainer>
+	<WidgetContainer>
 		<Col xl={6} lg={5} md={4} sm={12} className={'infoCol'}>
 			<h1>Lightning Network Services</h1>
 			<br />
@@ -36,11 +28,16 @@ const CardContainer = ({ children }): ReactElement => (
 		<Col xl={6} lg={7} md={8} sm={12}>
 			{children}
 		</Col>
-	</PageContainer>
+	</WidgetContainer>
 );
 
 const Page = (): JSX.Element => {
 	const page = useAppSelector(selectCurrentPage);
+	const showMenu = useAppSelector(selectShowMenu);
+
+	if (showMenu) {
+		return <MenuPage />;
+	}
 
 	switch (page) {
 		case 'configure': {
@@ -58,7 +55,7 @@ const Page = (): JSX.Element => {
 		case 'order': {
 			return <OrderPage />;
 		}
-		case 'orders': {
+		default: {
 			return <OrdersPage />;
 		}
 	}

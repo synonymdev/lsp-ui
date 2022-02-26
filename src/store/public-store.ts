@@ -9,6 +9,7 @@ export type TPublicPage = 'configure' | 'confirm' | 'payment' | 'claim' | 'order
 export type TNavigationState = {
 	page: TPublicPage;
 	orderId?: string;
+	showMenu?: boolean;
 };
 
 export type State = {
@@ -29,7 +30,8 @@ export type State = {
 
 export const initialState: State = {
 	navigation: {
-		page: 'configure'
+		page: 'configure',
+		showMenu: false
 	},
 	info: {
 		state: 'idle',
@@ -70,7 +72,13 @@ export const publicStore = createSlice({
 	initialState,
 	reducers: {
 		navigate: (state, action: PayloadAction<TNavigationState>) => {
-			state.navigation = { ...state.navigation, ...action.payload };
+			state.navigation = {
+				...state.navigation,
+				...action.payload
+			};
+		},
+		setShowMenu: (state, action: PayloadAction<boolean>) => {
+			state.navigation.showMenu = action.payload;
 		},
 		setOrderId: (state, action: PayloadAction<string>) => {
 			state.navigation.orderId = action.payload;
@@ -120,6 +128,8 @@ export const publicStore = createSlice({
 				} else {
 					state.orders.value.push(updatedOrder);
 				}
+
+				state.orders.value.sort((a, b) => b.created_at - a.created_at);
 			})
 			// Refresh info exchange rates
 			.addCase(refreshExchangeRates.pending, (state) => {
@@ -140,12 +150,13 @@ export const publicStore = createSlice({
 	}
 });
 
-export const { navigate, setOrderId } = publicStore.actions;
+export const { navigate, setShowMenu, setOrderId } = publicStore.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const selectCurrentPage = (state: RootState): TPublicPage => state.bt.navigation.page;
+export const selectShowMenu = (state: RootState): boolean => !!state.bt.navigation.showMenu;
 export const selectCurrentOrderId = (state: RootState): string => state.bt.navigation.orderId ?? '';
 
 export const selectInfo = (state: RootState): IGetInfoResponse => state.bt.info.value;
