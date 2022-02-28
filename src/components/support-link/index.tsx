@@ -1,16 +1,9 @@
 import React from 'react';
 import ActionButton from '../action-button';
 import './index.scss';
-
-const email = 'suport@synonym.to';
+import { supportHref } from '../../settings';
 
 // TODO pull current order ID from store
 export default ({ children, orderId }: { children?: string; orderId?: string }): JSX.Element => {
-	const subject = `BlockTank support${orderId ? ` (Order ID ${orderId})` : ''}`;
-
-	return (
-		<ActionButton href={encodeURI(`mailto:${email}?subject=${subject}`)}>
-			{children ?? 'Contact Support'}
-		</ActionButton>
-	);
+	return <ActionButton href={supportHref(orderId)}>{children ?? 'Contact Support'}</ActionButton>;
 };
