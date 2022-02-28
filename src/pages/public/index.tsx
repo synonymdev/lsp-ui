@@ -1,5 +1,5 @@
-import { Col, Container } from 'react-bootstrap';
-import React, { ReactElement } from 'react';
+import { Container } from 'react-bootstrap';
+import React from 'react';
 import { selectCurrentPage, selectShowMenu } from '../../store/public-store';
 import ConfigurePage from './configure';
 import OrderPage from './order';
@@ -8,30 +8,12 @@ import ConfirmationPage from './confirm';
 import PaymentPage from './payment';
 import ClaimPage from './claim';
 import MenuPage from './menu';
-import WidgetContainer from '../../components/widget-container';
+import FullWebpageContainer from '../../components/full-webpage-container';
 import { useAppSelector } from '../../store/hooks';
 
 import './index.scss';
 
-const CardContainer = ({ children }): ReactElement => (
-	<WidgetContainer>
-		<Col xl={6} lg={5} md={4} sm={12} className={'infoCol'}>
-			<h1>Lightning Network Services</h1>
-			<br />
-			<p>
-				Open a connection to the Lightning Network and receive or send bitcoin instantly. Choose
-				your custom capacity and BTC for your new channel, or paste a Lightning invoice to refill an
-				existing channel.
-			</p>
-		</Col>
-
-		<Col xl={6} lg={7} md={8} sm={12}>
-			{children}
-		</Col>
-	</WidgetContainer>
-);
-
-const Page = (): JSX.Element => {
+const Widget = (): JSX.Element => {
 	const page = useAppSelector(selectCurrentPage);
 	const showMenu = useAppSelector(selectShowMenu);
 
@@ -62,19 +44,19 @@ const Page = (): JSX.Element => {
 };
 
 function PublicPages(): JSX.Element {
+	// Check url param, check global var and check host name to determine if we only serve widget card
 	if (
 		new URLSearchParams(window.location.search).get('embed') === 'true' ||
-		(window as any).embedwidget === true
+		(window as any).embedwidget === true ||
+		window.location.hostname.includes('widget.')
 	) {
-		return <Page />;
+		return <Widget />;
 	}
 
 	return (
-		<Container className={'container'}>
-			<CardContainer>
-				<Page />
-			</CardContainer>
-		</Container>
+		<FullWebpageContainer>
+			<Widget />
+		</FullWebpageContainer>
 	);
 }
 
