@@ -1,0 +1,109 @@
+.glowy-main1 {
+  position: absolute;
+  width: 30%;
+  height: 40%;
+  left: 5%;
+  top: 20%;
+
+  background: rgba(243, 125, 192, 0.36);
+  filter: blur(135px);
+  transform: rotate(77.82deg);
+}
+
+.glowy-main2 {
+  position: absolute;
+  width: 30%;
+  height: 50%;
+  left: 15%;
+  top: 15%;
+
+  background: rgba(38, 88, 90, 0.4);
+  filter: blur(135px);
+  transform: rotate(77.82deg);
+}
+
+.glowy-main3 {
+  position: absolute;
+  width: 35%;
+  height: 60%;
+  left: -25%;
+  top: 20%;
+
+  background: conic-gradient(from 141.28deg at 50% 50%, #E46735 0deg, #C93250 187.5deg, #CA488C 360deg);
+  filter: blur(174px);
+}
+
+.webpage-container {
+  .full-webpage-row1 {
+    position: relative;
+    min-height: 100vh;
+
+    display: flex;
+    align-content: center;
+
+    .info-col {
+      display: flex;
+      justify-content: center;
+
+      .info-col-content {
+        max-width: 320px;
+        padding: 0px 20px 0px 20px;
+        max-width: 469px;
+
+        img {
+          max-width: 100%;
+          margin-bottom: 44px;
+        }
+      }
+    }
+
+    .widget-col {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  h1 {
+    font-family: Neue Haas Grotesk Display Pro;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 48px;
+    letter-spacing: -0.4px;
+    background: -webkit-linear-gradient(60deg, #E46735, #C93250, #CA488C);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 44px;
+  }
+
+  h4 {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 30px;
+    letter-spacing: -0.5px;
+    color: rgba(255, 255, 255, 0.98);
+  }
+
+  p {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    line-height: 25px;
+    color: #8E8E93;
+  }
+
+  .info-card-col {
+    display: flex;
+    justify-content: center;
+
+    .info-card {
+      background: rgba(16, 16, 16, 0.92);
+      box-shadow: 0px 25px 50px rgba(0, 0, 0, 0.25);
+      border-radius: 26px;
+      max-width: 480px;
+      padding: 40px
+    }
+  }
+
+
+}
