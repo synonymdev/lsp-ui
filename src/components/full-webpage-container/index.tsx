@@ -1,14 +1,28 @@
 import React, { ReactElement } from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
 import './index.scss';
-import Heading from '../heading';
+
+const InfoCard = ({
+	children,
+	heading
+}: {
+	children: ReactElement | ReactElement[];
+	heading: string;
+}): ReactElement => {
+	return (
+		<div className={'info-card'}>
+			<h4>{heading}</h4>
+			{children}
+		</div>
+	);
+};
 
 export default ({ children }): ReactElement => (
-	<Container>
+	<Container className={'webpage-container'}>
 		<div className={'glowy-main1'} />
 		<div className={'glowy-main2'} />
 		<div className={'glowy-main3'} />
-		<Row className={'full-webpage-container'}>
+		<Row className={'full-webpage-row1'}>
 			<Col xl={6} lg={5} md={12} sm={12} className={'info-col'}>
 				<div className={'info-col-content'}>
 					<img src={'/icons/logo.svg'} alt={'Blocktank'} />
@@ -37,8 +51,42 @@ export default ({ children }): ReactElement => (
 				</div>
 			</Col>
 
-			<Col xl={6} lg={7} md={12} sm={12} className={'widget-col'}>
+			<Col xl={6} lg={7} md={12} sm={12} className={'widget-col'} id={'widget-col'}>
 				{children}
+			</Col>
+		</Row>
+
+		<Row>
+			<Col xl={6} lg={6} md={6} sm={12} className={'info-card-col'}>
+				<InfoCard heading={'Blocktank API'}>
+					<p>
+						The <a href='https://synonym.readme.io/'>Blocktank API</a> allows any business, app, or
+						online platform to integrate and automate services from our Lightning node, including
+						channel purchases, resale of channels, and information about your channels. Let your
+						customers hold their own keys, offer them instant withdrawals, and tap as much BTC
+						liquidity as you need.
+					</p>
+					<p>
+						Check the <a href='https://synonym.readme.io/'>Blocktank API docs</a>, test the{' '}
+						<a href='https://github.com/synonymdev/blocktank-client'>Blocktank Client</a>, or
+						contact us if you want to be whitelisted for access.
+					</p>
+				</InfoCard>
+			</Col>
+			<Col xl={6} lg={6} md={6} sm={12} className={'info-card-col'}>
+				<InfoCard heading={'Blocktank Web Widget'}>
+					<p>
+						Empower your visitors by onboarding them onto the Lightning Network as simply, quickly,
+						and affordably as possible. The <a href={'#widget-col'}>Blocktank Web Widget</a> (see
+						above) allows your website visitors to quickly configure and purchase Lightning channels
+						and liquidity from our Lightning node.
+					</p>
+					<p>
+						This widget can be embedded into any web page or platform as an iframe.{' '}
+						<a href='mailto:info@synonym.to?subject=Blocktank widget implemntation'>Contact us</a>{' '}
+						if you need help implementing and customizing it!
+					</p>
+				</InfoCard>
 			</Col>
 		</Row>
 	</Container>
