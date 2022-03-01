@@ -22,16 +22,18 @@
 }
 
 .webpage-container {
+  padding-bottom: 100px;
+
   .full-webpage-row1 {
     position: relative;
     min-height: 100vh;
-
     display: flex;
     align-content: center;
 
     .info-col {
       display: flex;
       justify-content: center;
+      align-items: center;
 
       .info-col-content {
         max-width: 320px;
@@ -48,6 +50,8 @@
     .widget-col {
       display: flex;
       justify-content: center;
+      padding-bottom: 40px;
+      padding-top: 40px;
     }
   }
 

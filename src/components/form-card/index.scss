@@ -1,11 +1,11 @@
 .form-card {
+  width: 100%;
   max-width: 480px;
   height: 830px;
   border-radius: 15px;
   background: rgba(16, 16, 16, 0.92);
   background-clip: content-box;
   overflow: hidden;
-  z-index: 100;
 
   .form-card-container {
     padding: 40px 40px 0px 40px;
