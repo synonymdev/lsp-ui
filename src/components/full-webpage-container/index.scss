@@ -1,36 +1,24 @@
-.glowy-main1 {
-  position: absolute;
-  width: 30%;
-  height: 40%;
-  left: 5%;
-  top: 20%;
+.halos-container {
+  .halo-top-left {
+    position: fixed;
+    top: -650px;
+    left: -200px;
+    z-index: -1;
+  }
 
-  background: rgba(243, 125, 192, 0.36);
-  filter: blur(135px);
-  transform: rotate(77.82deg);
-}
+  .halo-top {
+    position: fixed;
+    top: -200px;
+    left: 20%;
+    z-index: -1;
+  }
 
-.glowy-main2 {
-  position: absolute;
-  width: 30%;
-  height: 50%;
-  left: 15%;
-  top: 15%;
-
-  background: rgba(38, 88, 90, 0.4);
-  filter: blur(135px);
-  transform: rotate(77.82deg);
-}
-
-.glowy-main3 {
-  position: absolute;
-  width: 35%;
-  height: 60%;
-  left: -25%;
-  top: 20%;
-
-  background: conic-gradient(from 141.28deg at 50% 50%, #E46735 0deg, #C93250 187.5deg, #CA488C 360deg);
-  filter: blur(174px);
+  .halo-footer {
+    position: fixed;
+    bottom: -150px;
+    right: -40%;
+    z-index: -1;
+  }
 }
 
 .webpage-container {
