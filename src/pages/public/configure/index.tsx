@@ -181,20 +181,7 @@ function ConfigurePage(): JSX.Element {
 	} = product;
 
 	if (!available) {
-		return (
-			<FormCard>
-				<h4>{description} not available</h4>
-				<div className={'button-container'}>
-					<Button
-						className={'form-button'}
-						onClick={() => dispatch(refreshInfo())}
-						disabled={infoState === 'loading'}
-					>
-						Retry
-					</Button>
-				</div>
-			</FormCard>
-		);
+		return <ErrorPage type={'unavailable'} />;
 	}
 
 	const onBlur = (): void => {
