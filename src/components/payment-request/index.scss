@@ -12,7 +12,12 @@
   .payment-request-top {
     display: flex;
 
+    @media (max-width:480px)  {
+      flex-direction: column;
+    }
+
     .payment-request-qr {
+      margin-bottom: 20px;
     }
 
     .payment-request-details {

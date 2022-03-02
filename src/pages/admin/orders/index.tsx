@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Container, Table, Form, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import { refreshOrders, selectOrders, selectOrdersState } from '../../store/admin-store';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { refreshOrders, selectOrders, selectOrdersState } from '../../../store/admin-store';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 
 function OrdersPage(): JSX.Element {
 	const orders = useAppSelector(selectOrders);
@@ -62,7 +62,7 @@ function OrdersPage(): JSX.Element {
 								<td>{amount_received}</td>
 								<td>{stateMessage}</td>
 								<td>
-									<Link to={`/order/${_id}`}>Details</Link>
+									<Link to={`/admin/order/${_id}`}>Details</Link>
 								</td>
 							</tr>
 						);

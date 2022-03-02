@@ -2,7 +2,6 @@ import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import Navbar from '../../components/navbar';
 import HomePage from './home';
-import BuyPage from './buy';
 import OrdersPage from './orders';
 import OrderPage from './order';
 import React from 'react';
@@ -17,9 +16,6 @@ function AdminPages(): JSX.Element {
 				<Switch>
 					<Route exact path={path}>
 						<HomePage />
-					</Route>
-					<Route path={`${path}/buy/:productId`}>
-						<BuyPage />
 					</Route>
 
 					<Route path={`${path}/orders`}>
