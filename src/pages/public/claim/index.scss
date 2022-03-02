@@ -9,6 +9,7 @@
 
     .channel-claim-fiat-conversion {
       margin-left: 10px;
+      margin-right: 10px;
       text-align: right;
       color: #8E8E93;
 
@@ -29,8 +30,12 @@
 
   .claim-channel-top {
     display: flex;
+    @media (max-width:480px)  {
+      flex-direction: column;
+    }
 
     .claim-channel-qr {
+      margin-bottom: 20px;
     }
 
     .claim-channel-details {
