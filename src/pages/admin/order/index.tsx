@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import { refreshOrder, selectOrders, selectOrdersState } from '../../store/public-store';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { navigate, refreshOrder, selectOrders, selectOrdersState } from '../../../store/public-store';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { IGetOrderResponse } from '@synonymdev/blocktank-client';
-import { addressLink, txLink, nodePubKeyLink } from '../../utils/links';
-import PaymentCard from '../../components/payment';
-import LnurlCard from '../../components/lnurl';
+import { addressLink, txLink, nodePubKeyLink } from '../../../utils/links';
+import { Widget } from '../../public';
 
 function OrderPage(): JSX.Element {
 	const { orderId } = useParams();
@@ -25,7 +24,11 @@ function OrderPage(): JSX.Element {
 	}, [orders]);
 
 	useEffect(() => {
-		dispatch(refreshOrder(orderId)).catch((e) => alert(e));
+		dispatch(refreshOrder(orderId))
+			.then(() => {
+				dispatch(navigate({ page: 'order', orderId }));
+			})
+			.catch((e) => alert(e));
 	}, []);
 
 	if (!order) {
@@ -104,17 +107,9 @@ function OrderPage(): JSX.Element {
 
 			<Row>
 				<Col>
-					<PaymentCard order={order} />
-				</Col>
-			</Row>
-
-			<br />
-
-			<Row>
-				<Col>
 					<Card>
 						<Card.Body>
-							<Card.Title>Channel</Card.Title>
+							<Card.Title>Channel details</Card.Title>
 							<Card.Text>Remote node source: {remote_node_src}</Card.Text>
 							<Card.Text>Remote node URI: {nodePubKeyLink(remote_node_uri)}</Card.Text>
 							<Card.Text>Channel expiry: {channel_expiry}</Card.Text>
@@ -129,12 +124,11 @@ function OrderPage(): JSX.Element {
 				</Col>
 			</Row>
 
-			<br />
+			<br/>
 
-			<Row>
-				<Col>
-					<LnurlCard {...order} />
-				</Col>
+			<Row style={{ display: 'flex', justifyContent: 'center' }}>
+				<h4 style={{textAlign: 'center'}}>What user currently sees:</h4>
+				<Widget />
 			</Row>
 		</div>
 	);

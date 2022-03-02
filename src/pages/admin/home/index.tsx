@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Button, Card, Col, Row } from 'react-bootstrap';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { refreshInfo, selectInfo, selectInfoState } from '../../store/public-store';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { refreshInfo, selectInfo, selectInfoState } from '../../../store/public-store';
 
 import { Link } from 'react-router-dom';
 
@@ -75,11 +75,6 @@ function HomePage(): JSX.Element {
 									<Card.Text>Max channel expiry: {max_chan_expiry}</Card.Text>
 									<Card.Text>Min channel expiry: {min_chan_expiry}</Card.Text>
 								</Card.Body>
-								<Card.Footer>
-									<Link to={`/?product_id=${product_id}`} className='nav-link'>
-										<Button>Buy {description}</Button>
-									</Link>
-								</Card.Footer>
 							</Card>
 						</Col>
 					</Row>

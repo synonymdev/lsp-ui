@@ -1,4 +1,3 @@
-import { Container } from 'react-bootstrap';
 import React from 'react';
 import { selectCurrentPage, selectShowMenu } from '../../store/public-store';
 import ConfigurePage from './configure';
@@ -13,7 +12,7 @@ import { useAppSelector } from '../../store/hooks';
 
 import './index.scss';
 
-const Widget = (): JSX.Element => {
+export const Widget = (): JSX.Element => {
 	const page = useAppSelector(selectCurrentPage);
 	const showMenu = useAppSelector(selectShowMenu);
 
