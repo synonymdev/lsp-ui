@@ -138,6 +138,13 @@ function OrderPage(): JSX.Element {
 			headerMessage =
 				'Unfortunately, we were unable to open the channel. It could be the case that your node dropped connection or is offline. Please contact support@synonym.to for assistance.';
 			break;
+		case 410: // Order expired
+			icon = 'thumb-down';
+			iconState = 'error';
+			heading = 'Order expired';
+			headerMessage =
+				'Unfortunately, we were unable to open the channel as a payment was not received in time.';
+			break;
 		case 450: // Channel closed
 			iconState = 'neutral';
 			showIconCross = true;
