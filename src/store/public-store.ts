@@ -1,11 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './';
-import bt, { IGetInfoResponse, IGetOrderResponse } from '@synonymdev/blocktank-client';
-import { fetchBitfinexRates, IExchangeRatesResponse } from '../utils/exchange-rates';
+import bt, {
+	IExchangeRatesResponse,
+	IGetInfoResponse,
+	IGetOrderResponse
+} from '@synonymdev/blocktank-client';
 
 type RequestState = 'idle' | 'loading' | 'error' | 'geoblocked';
 
-export type TPublicPage = 'configure' | 'confirm' | 'payment' | 'claim' | 'order' | 'orders';
+export type TPublicPage = 'configure' | 'confirm' | 'payment' | 'claim' | 'order' | 'orders' | 'terms';
 export type TNavigationState = {
 	page: TPublicPage;
 	orderId?: string;
@@ -63,7 +66,7 @@ export const refreshOrder = createAsyncThunk('bt/refreshOrder', async(orderId: s
 });
 
 export const refreshExchangeRates = createAsyncThunk('bt/refreshExchangeRates', async() => {
-	const response = await fetchBitfinexRates();
+	const response = await bt.getRates();
 	return response;
 });
 

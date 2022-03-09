@@ -50,6 +50,8 @@
 
     .custom-input-append-container {
       text-align: right;
+      display: flex;
+      align-items: center;
 
       .custom-input-append {
         color: #F7931A;
@@ -60,6 +62,10 @@
         text-align: right;
         margin-right: 10px;
         white-space: nowrap;
+
+        .custom-input-append-icon {
+          margin-right: 8.24px;
+        }
       }
     }
   }

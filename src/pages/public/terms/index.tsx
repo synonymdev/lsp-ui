@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Spinner from '../../../components/spinner';
+import FormCard from '../../../components/form-card';
 import { Col, Container, Row } from 'react-bootstrap';
 
 import './index.scss';
@@ -19,7 +20,7 @@ const format = (rawHtml: string): string => {
 		.replaceAll('c5', ''); // Removes white highlighted text
 };
 
-function TermsPage(): JSX.Element {
+function TermsPage({ showFullPage }: { showFullPage?: boolean }): JSX.Element {
 	const [content, setContent] = useState('');
 	useEffect(() => {
 		fetchContent()
@@ -27,20 +28,32 @@ function TermsPage(): JSX.Element {
 			.catch((e) => alert('Failed to load terms and conditions'));
 	}, []);
 
+	const contents = (
+		<>
+			{content ? (
+				<Col lg={10} md={11} sm={11}>
+					<div className={'terms-container'} dangerouslySetInnerHTML={{ __html: content }}></div>
+				</Col>
+			) : (
+				<div className={'terms-spinner-container'}>
+					<Spinner centered />
+				</div>
+			)}
+		</>
+	);
+
+	if (showFullPage) {
+		return (
+			<Container>
+				<Row className='justify-content-md-center'>{contents}</Row>
+			</Container>
+		);
+	}
+
 	return (
-		<Container>
-			<Row className='justify-content-md-center'>
-				{content ? (
-					<Col lg={10} md={11} sm={11}>
-						<div className={'terms-container'} dangerouslySetInnerHTML={{ __html: content }}></div>
-					</Col>
-				) : (
-					<div className={'terms-spinner-container'}>
-						<Spinner centered />
-					</div>
-				)}
-			</Row>
-		</Container>
+		<FormCard title={'Terms of service'} backPage={'confirm'}>
+			{contents}
+		</FormCard>
 	);
 }
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import { ReactComponent as SatsIcon } from '../../icons/lightning-active.svg';
-import './index.scss';
 import useDisplayValues from '../../hooks/displayValues';
+
+import './index.scss';
 
 export default ({
 	label,
@@ -40,7 +41,13 @@ export default ({
 						{showBitcoin ? (
 							<span className={'bitcoin-value'}>
 								&nbsp;{displayValues.altBitcoinSymbol}
-								<span className={'decimal'}>{displayValues.altBitcoinFormatted}</span>
+								{displayValues.altBitcoinFormatted.substr(0, 6)}
+								<span className={'decimal'}>
+									{displayValues.altBitcoinFormatted.substr(
+										6,
+										displayValues.altBitcoinFormatted.length - 6
+									)}
+								</span>
 							</span>
 						) : null}
 					</span>

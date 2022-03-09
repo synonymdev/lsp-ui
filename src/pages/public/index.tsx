@@ -6,6 +6,7 @@ import OrdersPage from './orders';
 import ConfirmationPage from './confirm';
 import PaymentPage from './payment';
 import ClaimPage from './claim';
+import TermsPage from './terms';
 import MenuPage from './menu';
 import FullWebpageContainer from '../../components/full-webpage-container';
 import { useAppSelector } from '../../store/hooks';
@@ -35,6 +36,9 @@ export const Widget = (): JSX.Element => {
 		}
 		case 'order': {
 			return <OrderPage />;
+		}
+		case 'terms': {
+			return <TermsPage />;
 		}
 		default: {
 			return <OrdersPage />;

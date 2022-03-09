@@ -2,6 +2,7 @@ import React from 'react';
 import bip21 from 'bip21';
 import QRCode from '../qr';
 import ActionButton from '../action-button';
+import Divider from '../divider';
 import './index.scss';
 import { clipCenter, orderExpiryFormat } from '../../utils/helpers';
 import Tooltip from '../tooltip';
@@ -86,10 +87,12 @@ export default ({
 							}}
 						/>
 					</div>
-					<p className={'payment-request-address'}>{clipCenter(text, 45)}</p>
+					<p className={'payment-request-address'}>{clipCenter(text, 42)}</p>
 					<ActionButton copyText={text}>{copyButtonTitle}</ActionButton>
 				</div>
 			</div>
+
+			<Divider />
 
 			<div className={'payment-request-middle'}>
 				<div>

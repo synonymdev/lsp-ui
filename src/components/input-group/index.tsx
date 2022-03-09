@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler } from 'react';
+import React, { ChangeEventHandler, ReactElement } from 'react';
 import { ReactComponent as SatsIcon } from '../../icons/lightning-active.svg';
 import { ReactComponent as WeeksIcon } from '../../icons/weeks.svg';
 import Error from '../inline-error';
@@ -12,7 +12,7 @@ const AppendInput = ({ children }: { children: string | undefined }): JSX.Elemen
 		return <></>;
 	}
 
-	let icon = <></>;
+	let icon: ReactElement | undefined;
 	switch (children.toLocaleLowerCase()) {
 		case 'sats': {
 			icon = <SatsIcon />;
@@ -26,7 +26,8 @@ const AppendInput = ({ children }: { children: string | undefined }): JSX.Elemen
 
 	return (
 		<span className={'custom-input-append'}>
-			{icon}&nbsp;{children}
+			{icon ? <span className={'custom-input-append-icon'}>{icon}</span> : null}
+			{children}
 		</span>
 	);
 };

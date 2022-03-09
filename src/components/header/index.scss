@@ -1,12 +1,19 @@
-.backlink-container {
+.header-container {
   display: flex;
   justify-content: space-between;
+  padding-bottom: 45px;
 
-  h4 {
+  .header-title {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 0px;
     font-weight: 600;
     font-size: 20px;
+    display: flex;
+    align-items: center;
+
+    svg {
+      margin-right: 13.24px;
+    }
   }
 
   .header-button {

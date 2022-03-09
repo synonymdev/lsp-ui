@@ -1,4 +1,4 @@
-import { Button, Overlay } from 'react-bootstrap';
+import { Overlay } from 'react-bootstrap';
 import React, { useRef, useState } from 'react';
 
 import './index.scss';
@@ -21,7 +21,6 @@ export default ({ tip }: { tip?: TooltipProps }): JSX.Element => {
 	return (
 		<>
 			<span
-				className={'custom-input-tooltip-icon'}
 				onMouseEnter={() => setShow(true)}
 				onMouseLeave={() => setTimeout(() => setShow(false), 250)}
 			>
