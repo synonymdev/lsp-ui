@@ -201,7 +201,7 @@ function ConfigurePage(): JSX.Element {
 						value={remoteBalance}
 						onChange={(e) => onSetInput(e, setRemoteBalance)}
 						id={'remote-balance'}
-						label={'Remote balance'}
+						label={'My inbound capacity'}
 						append={'sats'}
 						showFiatFromSatsValue
 						error={formErrors.remoteBalance}
@@ -214,7 +214,7 @@ function ConfigurePage(): JSX.Element {
 						value={localBalance}
 						onChange={(e) => onSetInput(e, setLocalBalance)}
 						id={'local-balance'}
-						label={'Local balance'}
+						label={'My spending balance'}
 						append={'sats'}
 						showFiatFromSatsValue
 						error={formErrors.localBalance}
@@ -227,7 +227,7 @@ function ConfigurePage(): JSX.Element {
 						value={channelExpiry}
 						onChange={(e) => onSetInput(e, setChannelExpiry)}
 						id={'channel-expiry'}
-						label={'Channel expiry'}
+						label={'Keep my channel open for at least'}
 						append={'weeks'}
 						error={formErrors.channelExpiry}
 						onBlur={onBlur}
