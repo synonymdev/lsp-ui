@@ -28,7 +28,7 @@ function App(): JSX.Element {
 				</Route>
 
 				<Route path={['/terms-and-conditions', '/blocktank/terms-and-conditions']}>
-					<TermsPage />
+					<TermsPage showFullPage />
 				</Route>
 
 				<Route exact path={['/*']}>

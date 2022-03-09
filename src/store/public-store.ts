@@ -8,7 +8,7 @@ import bt, {
 
 type RequestState = 'idle' | 'loading' | 'error' | 'geoblocked';
 
-export type TPublicPage = 'configure' | 'confirm' | 'payment' | 'claim' | 'order' | 'orders';
+export type TPublicPage = 'configure' | 'confirm' | 'payment' | 'claim' | 'order' | 'orders' | 'terms';
 export type TNavigationState = {
 	page: TPublicPage;
 	orderId?: string;
