@@ -143,7 +143,7 @@ function OrderPage(): JSX.Element {
 			iconState = 'error';
 			heading = 'Order expired';
 			headerMessage =
-				'Unfortunately, we were unable to open the channel as a payment was not received in time.';
+				'Orders expire if they remain unpaid for too long. If your payment was sent after this expiration, and you did not receive your channel, please contact support@synonym.to for a refund.';
 			break;
 		case 450: // Channel closed
 			iconState = 'neutral';

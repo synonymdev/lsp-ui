@@ -4,6 +4,7 @@ import { navigate, selectShowMenu, setShowMenu, TPublicPage } from '../../store/
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { ReactComponent as MenuIcon } from '../../icons/menu-white.svg';
 import { ReactComponent as CloseIcon } from '../../icons/close-white.svg';
+import { ReactComponent as LightningIcon } from '../../icons/lightning-active.svg';
 
 import './index.scss';
 
@@ -18,7 +19,7 @@ export default ({
 	const showMenu = useAppSelector(selectShowMenu);
 
 	return (
-		<div className={'backlink-container'}>
+		<div className={'header-container'}>
 			{backPage ? (
 				<div className={'header-button'} onClick={() => dispatch(navigate({ page: backPage }))}>
 					<BackIcon />
@@ -26,7 +27,9 @@ export default ({
 			) : (
 				<div />
 			)}
-			<h4>{children}</h4>
+			<h4 className={'header-title'}>
+				<LightningIcon /> {children}
+			</h4>
 			<div className={'header-button'} onClick={() => dispatch(setShowMenu(!showMenu))}>
 				{showMenu ? <CloseIcon /> : <MenuIcon />}
 			</div>
