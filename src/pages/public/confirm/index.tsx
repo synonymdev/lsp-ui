@@ -92,11 +92,11 @@ function ConfirmationPage(): JSX.Element {
 
 			<div className={'confirmation-top-half'}>
 				<div className={'confirmation-value-groups'}>
-					<ValueGroup label={'Inbound capacity'} value={remote_balance} showFiat={true} />
-					<ValueGroup label={'My balance'} value={local_balance} showFiat={true} />
+					<ValueGroup label={'Inbound capacity'} value={local_balance} showFiat={true} />
+					<ValueGroup label={'My balance'} value={remote_balance} showFiat={true} />
 				</div>
 
-				<ChannelBalanceBar local={local_balance} remote={remote_balance} />
+				<ChannelBalanceBar local={remote_balance} remote={local_balance} />
 
 				<p className={'confirmation-message'}>
 					This channel may close automatically after {channel_expiry} week

@@ -1,22 +1,6 @@
 import bitcoinUnits from 'bitcoin-units';
+
 export const supportedExchangeTickers = ['USD', 'EUR', 'JPY', 'GBP'];
-
-export type IExchangeRatesResponse = {
-	[key: string]: number;
-};
-
-export const fetchBitfinexRates = async(): Promise<IExchangeRatesResponse> => {
-	const rates: IExchangeRatesResponse = {};
-
-	const response = await fetch('https://blocktank.synonym.to/api/v1/rate');
-
-	const jsonResponse = (await response.json()) as string[][];
-	jsonResponse.forEach((a) => {
-		rates[a[0].replace('tBTC', '')] = Math.round(Number(a[1]) * 100) / 100;
-	});
-
-	return rates;
-};
 
 export type TBitcoinUnit = 'satoshi' | 'BTC' | 'mBTC' | 'μBTC';
 
@@ -50,6 +34,10 @@ export const defaultDisplayValues: IDisplayValues = {
 	altBitcoinSymbol: '',
 	altBitcoinTicker: '',
 	satoshis: 0
+};
+
+const numberWithSpaces = (x: number): string => {
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 };
 
 export const getDisplayValues = ({
@@ -102,7 +90,7 @@ export const getDisplayValues = ({
 			fiatFormatted = isNaN(fiatValue) ? '-' : fiatFormatted.replace(fiatSymbol, '');
 		}
 
-		const bitcoinFormatted = bitcoinUnits(satoshis, 'satoshi')
+		let bitcoinFormatted = bitcoinUnits(satoshis, 'satoshi')
 			.to(bitcoinUnit)
 			.value()
 			.toFixed(bitcoinUnit === 'satoshi' ? 0 : 8)
@@ -118,7 +106,7 @@ export const getDisplayValues = ({
 				// Bitcoin's alt format is sats
 				altBitcoinSymbol = 'Sats';
 				altBitcoinTicker = 'satoshi';
-				altBitcoinFormatted = `${satoshis}`; // TODO format number
+				altBitcoinFormatted = numberWithSpaces(satoshis);
 				break;
 			case 'mBTC':
 				bitcoinSymbol = 'm₿';
@@ -129,6 +117,7 @@ export const getDisplayValues = ({
 			case 'satoshi':
 				bitcoinSymbol = '⚡';
 				bitcoinTicker = 'Sats';
+				bitcoinFormatted = numberWithSpaces(satoshis);
 
 				// Sats alt format is whole bitcoins
 				altBitcoinSymbol = '₿';
