@@ -97,7 +97,12 @@ function ConfigurePage(): JSX.Element {
 			dispatch(navigate({ page: 'confirm', orderId: order_id }));
 		} catch (error) {
 			setIsSubmitting(false);
-			alert(error);
+			console.log(error);
+			if (error.toString().indexOf('GEO_BLOCKED') > -1) {
+				dispatch(navigate({ page: 'geoblocked' }));
+			} else {
+				alert(error);
+			}
 		}
 	};
 
@@ -162,23 +167,11 @@ function ConfigurePage(): JSX.Element {
 		return <Spinner style={{ fontSize: 8 }} />;
 	}
 
-	if (infoState === 'geoblocked') {
-		return <ErrorPage type={'geoblocked'} />;
-	}
-
 	if (!product) {
 		return <div />;
 	}
 
-	const {
-		available,
-		max_channel_size,
-		min_channel_size,
-		max_chan_expiry,
-		min_chan_expiry,
-		order_states,
-		description
-	} = product;
+	const { available } = product;
 
 	if (!available) {
 		return <ErrorPage type={'unavailable'} />;
