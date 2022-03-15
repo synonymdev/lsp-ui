@@ -120,6 +120,7 @@ function PaymentPage(): JSX.Element {
 			title={'New Lightning Channel'}
 			backPage={'configure'}
 			pageIndicator={{ total: 4, active: 2 }}
+			showLightningIcon
 		>
 			<Heading>Pay now</Heading>
 			<h5 className={'payment-page-subheading'}>Payment method</h5>

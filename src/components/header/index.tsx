@@ -10,10 +10,12 @@ import './index.scss';
 
 export default ({
 	backPage,
-	children
+	children,
+	showLightningIcon
 }: {
 	backPage?: TPublicPage;
 	children: string;
+	showLightningIcon?: boolean;
 }): JSX.Element => {
 	const dispatch = useAppDispatch();
 	const showMenu = useAppSelector(selectShowMenu);
@@ -28,7 +30,7 @@ export default ({
 				<div />
 			)}
 			<h4 className={'header-title'}>
-				<LightningIcon /> {children}
+				{showLightningIcon ? <LightningIcon /> : null} {children}
 			</h4>
 			<div className={'header-button'} onClick={() => dispatch(setShowMenu(!showMenu))}>
 				{showMenu ? <CloseIcon /> : <MenuIcon />}

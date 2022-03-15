@@ -39,7 +39,7 @@ function OrdersPage(): JSX.Element {
 	}
 
 	return (
-		<FormCard title={'Orders'} backPage={'configure'}>
+		<FormCard title={'My orders'} backPage={'configure'}>
 			<div className={'orders-container'}>
 				{orders.map(({ _id, state, stateMessage, created_at }) => {
 					const date = new Date(created_at);

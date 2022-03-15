@@ -184,7 +184,11 @@ function ConfigurePage(): JSX.Element {
 	};
 
 	return (
-		<FormCard title={'New Lightning Channel'} pageIndicator={{ total: 4, active: 0 }}>
+		<FormCard
+			title={'New Lightning Channel'}
+			pageIndicator={{ total: 4, active: 0 }}
+			showLightningIcon
+		>
 			<Form className={'form-content'}>
 				<div className={'form-fields'}>
 					<Heading>Configure</Heading>

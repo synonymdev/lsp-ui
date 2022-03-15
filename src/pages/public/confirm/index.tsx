@@ -87,6 +87,7 @@ function ConfirmationPage(): JSX.Element {
 			title={'New Lightning Channel'}
 			backPage={'configure'}
 			pageIndicator={{ total: 4, active: 1 }}
+			showLightningIcon
 		>
 			<Heading>My Channel</Heading>
 

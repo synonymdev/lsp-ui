@@ -162,9 +162,13 @@ function ClaimPage(): JSX.Element {
 	);
 
 	return (
-		<FormCard title={'New Lightning Channel'} pageIndicator={{ total: 4, active: 3 }}>
+		<FormCard
+			title={'New Lightning Channel'}
+			pageIndicator={{ total: 4, active: 3 }}
+			showLightningIcon
+		>
 			<Heading>{showManual ? 'Claim manually' : 'Claim channel'}</Heading>
-			<Divider />
+			<Divider className={'claim-channel-top-divider'} />
 			<div className='claim-channel-container'>
 				{showManual ? manualClaim : autoClaim}
 				<div className={'claim-channel-middle'}>
