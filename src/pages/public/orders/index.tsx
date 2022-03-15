@@ -14,10 +14,47 @@ import Divider from '../../../components/divider';
 import Button from '../../../components/action-button';
 import { ReactComponent as TransferActive } from '../../../icons/transfer-active.svg';
 import { ReactComponent as Lightning } from '../../../icons/lightning.svg';
+import { ReactComponent as LightningActive } from '../../../icons/lightning-active.svg';
 import { ReactComponent as LightningGreen } from '../../../icons/lightning-green.svg';
 import { ReactComponent as LightningRed } from '../../../icons/lightning-red.svg';
 
 import './index.scss';
+
+const ListItem = ({
+	key,
+	Icon,
+	title,
+	subHeading,
+	label,
+	onClick,
+	buttonText
+}: {
+	key: string;
+	Icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+	title: string;
+	subHeading: string;
+	label: string;
+	onClick: () => void;
+	buttonText: string;
+}): JSX.Element => {
+	return (
+		<div key={key} className={'order-list-item'}>
+			<p className={'order-list-item-date'}>{title}</p>
+			<div className={'order-list-content'}>
+				<div className={'order-list-details'}>
+					<span className={'order-status-heading'}>{subHeading}</span>
+					<span className={'order-status-value'}>
+						<Icon className={'order-status-icon'} />
+						{label}
+					</span>
+				</div>
+
+				<Button onClick={onClick}>{buttonText}</Button>
+			</div>
+			<Divider />
+		</div>
+	);
+};
 
 function OrdersPage(): JSX.Element {
 	const orders = useAppSelector(selectOrders);
@@ -41,6 +78,17 @@ function OrdersPage(): JSX.Element {
 	return (
 		<FormCard title={'My orders'} backPage={'configure'}>
 			<div className={'orders-container'}>
+				{orders.length === 0 ? (
+					<ListItem
+						key={'no-order'}
+						Icon={LightningActive}
+						title={'No orders yet'}
+						subHeading={'New channel'}
+						label={'Lightning channel'}
+						buttonText={'Create channel'}
+						onClick={() => dispatch(navigate({ page: 'configure' }))}
+					/>
+				) : null}
 				{orders.map(({ _id, state, stateMessage, created_at }) => {
 					const date = new Date(created_at);
 					let buttonText = 'Order details';
@@ -78,29 +126,19 @@ function OrdersPage(): JSX.Element {
 					}
 
 					return (
-						<div key={_id} className={'order-list-item'}>
-							<p className={'order-list-item-date'}>
-								{date.toLocaleString('en-US', {
-									month: 'short',
-									day: 'numeric',
-									year: 'numeric'
-								})}
-							</p>
-							<div className={'order-list-content'}>
-								<div className={'order-list-details'}>
-									<span className={'order-status-heading'}>Order status</span>
-									<span className={'order-status-value'}>
-										<Icon className={'order-status-icon'} />
-										{stateMessage}
-									</span>
-								</div>
-
-								<Button onClick={() => dispatch(navigate({ page, orderId: _id }))}>
-									{buttonText}
-								</Button>
-							</div>
-							<Divider />
-						</div>
+						<ListItem
+							key={_id}
+							Icon={Icon}
+							onClick={() => dispatch(navigate({ page, orderId: _id }))}
+							title={date.toLocaleString('en-US', {
+								month: 'short',
+								day: 'numeric',
+								year: 'numeric'
+							})}
+							subHeading={'Order status'}
+							label={stateMessage}
+							buttonText={buttonText}
+						/>
 					);
 				})}
 			</div>
