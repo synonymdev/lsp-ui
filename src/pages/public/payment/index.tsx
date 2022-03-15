@@ -19,6 +19,7 @@ import { ReactComponent as LightningIcon } from '../../../icons/lightning.svg';
 import { ReactComponent as BitcoinIconActive } from '../../../icons/bitcoin-active.svg';
 import { ReactComponent as BitcoinIcon } from '../../../icons/bitcoin.svg';
 import ErrorPage from '../error';
+import IconRing from '../../../components/icon-ring';
 
 function PaymentPage(): JSX.Element {
 	const [isLoading, setIsLoading] = useState(true);
@@ -55,6 +56,13 @@ function PaymentPage(): JSX.Element {
 
 		return () => clearInterval(intervalId);
 	}, []);
+
+	// Once we've received the payment show the success view for 3 seconds before navigating to claim frame
+	useEffect(() => {
+		if (order?.state === 100) {
+			setTimeout(() => dispatch(navigate({ page: 'claim' })), 3000);
+		}
+	}, [order]);
 
 	if (!order) {
 		if (ordersState === 'loading' || isLoading) {
@@ -102,9 +110,7 @@ function PaymentPage(): JSX.Element {
 			break;
 		}
 		case 100: {
-			orderStatus = 'Payment received';
-			// Navigate to claim view
-			dispatch(navigate({ page: 'claim' }));
+			// Shows a success view for 3 secs
 			break;
 		}
 		case 400: // Given up
@@ -122,44 +128,56 @@ function PaymentPage(): JSX.Element {
 			pageIndicator={{ total: 4, active: 2 }}
 			showLightningIcon
 		>
-			<Heading>Pay now</Heading>
-			<h5 className={'payment-page-subheading'}>Payment method</h5>
-			<Tabs defaultActiveKey='lightning'>
-				<Tab
-					eventKey='lightning'
-					title='Lightning'
-					icon={<LightningIcon />}
-					iconActive={<LightningIconActive />}
-				>
-					<PaymentRequest
-						orderId={_id}
-						orderStatus={orderStatus}
-						orderExpiry={order_expiry}
-						orderTotal={total_amount}
-						lightning={{ invoice: purchase_invoice }}
-					/>
-				</Tab>
+			{state === 100 ? (
+				<>
+					<Heading>Payment received</Heading>
+					<p>Your Lightning channel is ready to claim.</p>
+					<div className={'payment-page-success-container'}>
+						<IconRing icon={'lightning'} type={'success'} />
+					</div>
+				</>
+			) : (
+				<>
+					<Heading>Pay now</Heading>
+					<h5 className={'payment-page-subheading'}>Payment method</h5>
+					<Tabs defaultActiveKey='lightning'>
+						<Tab
+							eventKey='lightning'
+							title='Lightning'
+							icon={<LightningIcon />}
+							iconActive={<LightningIconActive />}
+						>
+							<PaymentRequest
+								orderId={_id}
+								orderStatus={orderStatus}
+								orderExpiry={order_expiry}
+								orderTotal={total_amount}
+								lightning={{ invoice: purchase_invoice }}
+							/>
+						</Tab>
 
-				<Tab
-					eventKey='onchain'
-					title='On-chain'
-					icon={<BitcoinIcon />}
-					iconActive={<BitcoinIconActive />}
-				>
-					<PaymentRequest
-						orderId={_id}
-						orderStatus={orderStatus}
-						orderExpiry={order_expiry}
-						orderTotal={total_amount}
-						onchain={{
-							address: btc_address,
-							sats: total_amount,
-							zeroConfMinFee: zero_conf_satvbyte,
-							receivingAmount: unconfirmedIncoming
-						}}
-					/>
-				</Tab>
-			</Tabs>
+						<Tab
+							eventKey='onchain'
+							title='On-chain'
+							icon={<BitcoinIcon />}
+							iconActive={<BitcoinIconActive />}
+						>
+							<PaymentRequest
+								orderId={_id}
+								orderStatus={orderStatus}
+								orderExpiry={order_expiry}
+								orderTotal={total_amount}
+								onchain={{
+									address: btc_address,
+									sats: total_amount,
+									zeroConfMinFee: zero_conf_satvbyte,
+									receivingAmount: unconfirmedIncoming
+								}}
+							/>
+						</Tab>
+					</Tabs>
+				</>
+			)}
 		</FormCard>
 	);
 }
