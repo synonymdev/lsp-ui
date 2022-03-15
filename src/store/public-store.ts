@@ -1,14 +1,23 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './';
 import bt, {
+	IBuyChannelRequest,
 	IExchangeRatesResponse,
 	IGetInfoResponse,
 	IGetOrderResponse
 } from '@synonymdev/blocktank-client';
 
-type RequestState = 'idle' | 'loading' | 'error' | 'geoblocked';
+type RequestState = 'idle' | 'loading' | 'error';
 
-export type TPublicPage = 'configure' | 'confirm' | 'payment' | 'claim' | 'order' | 'orders' | 'terms';
+export type TPublicPage =
+	| 'configure'
+	| 'confirm'
+	| 'payment'
+	| 'claim'
+	| 'order'
+	| 'orders'
+	| 'terms'
+	| 'geoblocked';
 export type TNavigationState = {
 	page: TPublicPage;
 	orderId?: string;
@@ -65,6 +74,11 @@ export const refreshOrder = createAsyncThunk('bt/refreshOrder', async(orderId: s
 	return response;
 });
 
+export const placeOrder = createAsyncThunk('bt/placeOrder', async(req: IBuyChannelRequest) => {
+	const response = await bt.buyChannel(req);
+	return response;
+});
+
 export const refreshExchangeRates = createAsyncThunk('bt/refreshExchangeRates', async() => {
 	const response = await bt.getRates();
 	return response;
@@ -85,7 +99,7 @@ export const publicStore = createSlice({
 		},
 		setOrderId: (state, action: PayloadAction<string>) => {
 			state.navigation.orderId = action.payload;
-		}
+		},
 	},
 	extraReducers: (builder) => {
 		builder
@@ -94,12 +108,7 @@ export const publicStore = createSlice({
 				state.info.state = 'loading';
 			})
 			.addCase(refreshInfo.rejected, (state, action) => {
-				if (action.error.message === 'Network request failed') {
-					// TODO check specifically for 403
-					state.info.state = 'geoblocked';
-				} else {
-					state.info.state = 'error';
-				}
+				state.info.state = 'error';
 			})
 			.addCase(refreshInfo.fulfilled, (state, action) => {
 				state.info.state = 'idle';
@@ -139,12 +148,7 @@ export const publicStore = createSlice({
 				state.exchangeRates.state = 'loading';
 			})
 			.addCase(refreshExchangeRates.rejected, (state, action) => {
-				if (action.error.message === 'Network request failed') {
-					// TODO check specifically for 403
-					state.exchangeRates.state = 'geoblocked';
-				} else {
-					state.exchangeRates.state = 'error';
-				}
+				state.exchangeRates.state = 'error';
 			})
 			.addCase(refreshExchangeRates.fulfilled, (state, action) => {
 				state.exchangeRates.state = 'idle';

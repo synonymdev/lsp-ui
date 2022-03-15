@@ -85,11 +85,6 @@ function OrderPage(): JSX.Element {
 	let footerMessage = <></>;
 	let showIconCross = false;
 
-	// let state = 100;
-	// if (state) {
-	// 	state = 450;
-	// }
-
 	switch (state) {
 		case 0: {
 			dispatch(navigate({ page: 'payment' }));
@@ -104,7 +99,7 @@ function OrderPage(): JSX.Element {
 			iconState = 'pending';
 			heading = 'Opening channel';
 			headerMessage =
-				'We are ready to connect to your node and establish your channel. Please ensure your node or wallet app is online and active.';
+				'Ready to connect and establish your channel. Please ensure your node or wallet app is online and active.';
 			footerMessage = (
 				<>
 					This channel will stay open for at least{' '}
@@ -120,7 +115,7 @@ function OrderPage(): JSX.Element {
 			iconState = 'pending';
 			heading = 'Opening channel';
 			headerMessage =
-				'You successfully claimed your channel. Your channel will be ready to use in 10 - 30 minutes or so. Feel free to come back later.';
+				'You successfully claimed your channel. Your channel will be ready to use in ± 10 - 30 minutes. Feel free to come back later.';
 			footerMessage = (
 				<>
 					This channel will stay open for at least{' '}
@@ -170,7 +165,7 @@ function OrderPage(): JSX.Element {
 	const date = new Date(created_at);
 
 	return (
-		<FormCard backPage={'configure'} title={'New Lightning Channel'}>
+		<FormCard title={'New Lightning Channel'} showLightningIcon>
 			<Heading>{heading}</Heading>
 			<div className={'order-state-container'}>
 				<p className={'order-state-message'}>{headerMessage}</p>

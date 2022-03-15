@@ -7,7 +7,6 @@ import reportWebVitals from './reportWebVitals';
 import { store } from './store';
 import { setNetwork } from './settings';
 
-
 setNetwork();
 
 ReactDOM.render(

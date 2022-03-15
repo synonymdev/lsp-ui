@@ -1,6 +1,6 @@
 import React from 'react';
 import './index.scss';
 
-export default (): JSX.Element => {
-	return <div className={'custom-divider'}></div>;
+export default ({ className }: { className?: string }): JSX.Element => {
+	return <div className={`custom-divider ${className}`}></div>;
 };
