@@ -7,7 +7,7 @@ import bt, {
 	IGetOrderResponse
 } from '@synonymdev/blocktank-client';
 
-type RequestState = 'idle' | 'loading' | 'error';
+export type RequestState = 'idle' | 'loading' | 'error';
 
 export type TPublicPage =
 	| 'configure'

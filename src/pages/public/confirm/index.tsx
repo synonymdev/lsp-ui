@@ -1,15 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { IGetOrderResponse } from '@synonymdev/blocktank-client';
-
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import {
-	navigate,
-	refreshOrder,
-	selectCurrentOrderId,
-	selectOrders,
-	selectOrdersState
-} from '../../../store/public-store';
+import { useAppDispatch } from '../../../store/hooks';
+import { navigate } from '../../../store/public-store';
 import FormCard from '../../../components/form-card';
 import Spinner from '../../../components/spinner';
 import Heading from '../../../components/heading';
@@ -20,34 +12,16 @@ import Checkbox from '../../../components/checkbox';
 
 import './index.scss';
 import ErrorPage from '../error';
+import useOrder from '../../../hooks/useOrder';
 
 function ConfirmationPage(): JSX.Element {
-	const [isLoading, setIsLoading] = useState(true);
-	const orderId = useAppSelector(selectCurrentOrderId);
-	const [order, setOrder] = useState<IGetOrderResponse | undefined>(undefined);
 	const [termsAccepted, setTermsAccepted] = useState(false);
 	const [showAcceptTermsError, setShowAcceptTermsError] = useState(false);
-	const orders = useAppSelector(selectOrders);
-	const ordersState = useAppSelector(selectOrdersState);
 	const dispatch = useAppDispatch();
-
-	// TODO move to reusable hook
-	useEffect(() => {
-		const newOrder = orders.find((o) => o._id === orderId);
-		if (newOrder) {
-			setOrder(newOrder);
-			setIsLoading(false);
-		}
-	}, [orders]);
-
-	useEffect(() => {
-		dispatch(refreshOrder(orderId))
-			.catch((e) => alert(e))
-			.finally(() => setIsLoading(false));
-	}, []);
+	const { order, orderState } = useOrder();
 
 	if (!order) {
-		if (ordersState === 'loading' || isLoading) {
+		if (orderState === 'loading') {
 			return (
 				<FormCard>
 					<Spinner style={{ fontSize: 8 }} centered />
@@ -63,24 +37,15 @@ function ConfirmationPage(): JSX.Element {
 			return setShowAcceptTermsError(true);
 		}
 
-		// TODO check order is still valid
-
 		dispatch(navigate({ page: 'payment' }));
 	};
 
-	const {
-		_id,
-		state,
-		amount_received,
-		order_expiry,
-		local_balance,
-		remote_balance,
-		stateMessage,
-		channel_expiry,
-		total_amount,
-		onchain_payments,
-		btc_address
-	} = order;
+	const { local_balance, remote_balance, channel_expiry, total_amount, state } = order;
+
+	// If order expires while waiting for payment
+	if (state === 410) {
+		dispatch(navigate({ page: 'order' }));
+	}
 
 	return (
 		<FormCard

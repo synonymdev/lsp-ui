@@ -1,13 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import {
-	navigate,
-	refreshOrder,
-	selectCurrentOrderId,
-	selectOrders,
-	selectOrdersState
-} from '../../../store/public-store';
-import bt, { IGetOrderResponse } from '@synonymdev/blocktank-client';
+import React, { useState } from 'react';
+import { useAppDispatch } from '../../../store/hooks';
+import { navigate, refreshOrder } from '../../../store/public-store';
+import bt from '@synonymdev/blocktank-client';
 import FormCard from '../../../components/form-card';
 import Spinner from '../../../components/spinner';
 import QRCode from '../../../components/qr';
@@ -25,53 +19,21 @@ import { ReactComponent as QRIcon } from '../../../icons/qr-white.svg';
 import { ReactComponent as LightningIcon } from '../../../icons/lightning-white.svg';
 import useDisplayValues from '../../../hooks/displayValues';
 import ErrorPage from '../error';
+import useOrder from '../../../hooks/useOrder';
 
 const qrSize = 200;
 
 function ClaimPage(): JSX.Element {
-	const [isLoading, setIsLoading] = useState(true);
-	const orderId = useAppSelector(selectCurrentOrderId);
-	const [order, setOrder] = useState<IGetOrderResponse | undefined>(undefined);
-	const orders = useAppSelector(selectOrders);
-	const ordersState = useAppSelector(selectOrdersState);
-	const dispatch = useAppDispatch();
-
 	const [showManual, setShowManual] = useState(false);
 	const [nodeUri, setNodeUri] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
-
-	useEffect(() => {
-		const newOrder = orders.find((o) => o._id === orderId);
-		if (newOrder) {
-			setOrder(newOrder);
-			setIsLoading(false);
-		}
-	}, [orders]);
-
-	useEffect(() => {
-		dispatch(refreshOrder(orderId))
-			.catch((e) => alert(e))
-			.finally(() => setIsLoading(false));
-	}, []);
-
-	useEffect(() => {
-		const intervalId = setInterval(() => {
-			if (order?.state === 500) {
-				// Once channel is open stop trying
-				return;
-			}
-
-			dispatch(refreshOrder(orderId)).catch((e) => alert(e));
-		}, 5000);
-
-		return () => clearInterval(intervalId);
-	}, []);
-
+	const dispatch = useAppDispatch();
+	const { order, orderState } = useOrder();
 	const inboundDisplay = useDisplayValues(Number(order?.local_balance));
 	const myBalanceDisplay = useDisplayValues(Number(order?.remote_balance));
 
 	if (!order) {
-		if (ordersState === 'loading' || isLoading) {
+		if (orderState === 'loading' || orderState === 'idle') {
 			return (
 				<FormCard>
 					<Spinner style={{ fontSize: 8 }} centered />
