@@ -1,6 +1,6 @@
 import { Button, Modal, Form } from 'react-bootstrap';
-import React, { useEffect, useState } from 'react';
-import { login, refreshSession, selectAuth, selectAuthState } from '../../store/admin-store';
+import React, { useState } from 'react';
+import { login, selectAuth, selectAuthState } from '../../store/admin-store';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 export default (): JSX.Element => {
@@ -12,21 +12,7 @@ export default (): JSX.Element => {
 	const [password, setPassword] = useState('');
 	const [token, setToken] = useState('');
 
-	// If we have a session key we can just check if the session is still alive
-	useEffect(() => {
-		if (authStatus.authenticated === false && authStatus.sessionKey) {
-			dispatch(refreshSession(authStatus.sessionKey));
-		}
-	}, [authCheckState, authStatus]);
-
 	const show = authStatus.authenticated === false;
-
-	let message = '';
-	if (authStatus.authenticated === false) {
-		message = 'Please login';
-	} else if (authStatus.authenticated === undefined) {
-		message = 'Checking auth status...';
-	}
 
 	const onSubmit = async (): Promise<void> => {
 		await dispatch(login({ username, password, token }));
@@ -35,7 +21,7 @@ export default (): JSX.Element => {
 	return (
 		<Modal show={show} backdrop='static' keyboard={false}>
 			<Modal.Header closeButton>
-				<Modal.Title>{message}</Modal.Title>
+				<Modal.Title>Please login</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
 				<Form>
@@ -64,6 +50,7 @@ export default (): JSX.Element => {
 				</Form>
 			</Modal.Body>
 			<Modal.Footer>
+				<pre>Login state: {authCheckState}</pre>
 				<Button variant='primary' onClick={onSubmit}>
 					Login
 				</Button>

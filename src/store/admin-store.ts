@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from './';
 import { btAdmin, IAdminLoginResponse, IAdminOrderResponse } from '@synonymdev/blocktank-client';
 import { IAdminLoginRequest } from '@synonymdev/blocktank-client/dist/types';
@@ -10,7 +10,7 @@ type AuthStatus = {
 	sessionKey: string;
 };
 
-export type State = {
+export type TAdminState = {
 	auth: {
 		state: RequestState;
 		value: AuthStatus;
@@ -21,11 +21,11 @@ export type State = {
 	};
 };
 
-export const initialState: State = {
+export const initialState: TAdminState = {
 	auth: {
 		state: 'idle',
 		value: {
-			authenticated: undefined,
+			authenticated: false,
 			sessionKey: ''
 		}
 	},
@@ -35,18 +35,6 @@ export const initialState: State = {
 	}
 };
 
-export const refreshSession = createAsyncThunk(
-	'btAdmin/refreshSession',
-	async(sessionKey: string) => {
-		btAdmin.setSessionKey(sessionKey);
-
-		// TODO maybe use another endpoint to check for active session
-		await btAdmin.getOrders();
-
-		return sessionKey;
-	}
-);
-
 export const login = createAsyncThunk(
 	'btAdmin/login',
 	async(req: IAdminLoginRequest): Promise<IAdminLoginResponse> => {
@@ -55,6 +43,10 @@ export const login = createAsyncThunk(
 );
 
 export const refreshOrders = createAsyncThunk('btAdmin/refreshOrders', async() => {
+	if (!btAdmin.getSessionKey()) {
+		throw new Error('Missing session key');
+	}
+
 	const response = await btAdmin.getOrders();
 	return response;
 });
@@ -91,43 +83,27 @@ export const adminStore = createSlice({
 					authenticated: false
 				};
 			})
-			.addCase(refreshSession.fulfilled, (state, action) => {
-				state.auth.state = 'idle';
-				state.auth.value = {
-					authenticated: true,
-					sessionKey: action.payload
-				};
-			})
-			.addCase(refreshSession.pending, (state, action) => {
-				state.auth.state = 'loading';
-				state.auth.value = {
-					...state.auth.value,
-					authenticated: undefined
-				};
-			})
-			.addCase(refreshSession.rejected, (state, action) => {
-				state.auth.state = 'error';
-				state.auth.value = {
-					authenticated: false,
-					sessionKey: ''
-				};
-			})
 			.addCase(refreshOrders.fulfilled, (state, action) => {
 				state.orders.state = 'idle';
 				state.orders.value = action.payload;
+				state.auth.value.authenticated = true;
 			})
 			.addCase(refreshOrders.pending, (state, action) => {
 				state.orders.state = 'loading';
 			})
 			.addCase(refreshOrders.rejected, (state, action) => {
 				state.orders.state = 'error';
+				state.orders.value = [];
 				// TODO catch 403 errors and set auth state to false
 				if (action.error.message === 'Network request failed') {
 					state.auth.value = {
 						...state.auth.value,
-						authenticated: false
+						authenticated: false,
+						sessionKey: ''
 					};
 				}
+
+				console.warn(JSON.stringify(action.error));
 			});
 	}
 });
