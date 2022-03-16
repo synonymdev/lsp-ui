@@ -1,4 +1,4 @@
-import { initialState } from '../store/public-store';
+import { initialState, TState } from '../store/public-store';
 import { initialState as initialAdminState, TAdminState } from '../store/admin-store';
 import { btAdmin } from '@synonymdev/blocktank-client';
 
@@ -11,15 +11,17 @@ export const loadState = (): any => {
 			return undefined;
 		}
 
-		const completeState = JSON.parse(serializedState);
+		const completeState: { bt: TState; btAdmin: TAdminState } = JSON.parse(serializedState);
 
 		// If we add new state with fields not previously cached
 		completeState.bt = { ...initialState, ...completeState.bt };
-		completeState.btAdmin = { ...initialAdminState, ...completeState.btAdmin };
+
+		const cachedAdminState = completeState.btAdmin;
+		completeState.btAdmin = { ...initialAdminState, auth: cachedAdminState.auth };
 
 		// If we have a stored session key set it before any API calls are made
-		if ((completeState.btAdmin as TAdminState).auth.value.sessionKey) {
-			btAdmin.setSessionKey((completeState.btAdmin as TAdminState).auth.value.sessionKey);
+		if (completeState.btAdmin.auth.value.sessionKey) {
+			btAdmin.setSessionKey(completeState.btAdmin.auth.value.sessionKey);
 		}
 
 		return completeState;

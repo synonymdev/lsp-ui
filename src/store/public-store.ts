@@ -24,7 +24,7 @@ export type TNavigationState = {
 	showMenu?: boolean;
 };
 
-export type State = {
+export type TState = {
 	navigation: TNavigationState;
 	info: {
 		state: RequestState;
@@ -40,7 +40,7 @@ export type State = {
 	};
 };
 
-export const initialState: State = {
+export const initialState: TState = {
 	navigation: {
 		page: 'configure',
 		showMenu: false

@@ -8,7 +8,9 @@ import {
 	selectOrders,
 	selectOrdersState
 } from '../../../store/admin-store';
+
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import OrderStateFilterDropdown from '../../../components/admin/order-state-filter-dropdown';
 
 function OrdersPage(): JSX.Element {
 	const orders = useAppSelector(selectOrders);
@@ -42,7 +44,8 @@ function OrdersPage(): JSX.Element {
 			>
 				Refresh orders
 			</Button>
-
+			&nbsp;
+			<OrderStateFilterDropdown />
 			<Table striped bordered hover size='sm'>
 				<thead>
 					<tr>
