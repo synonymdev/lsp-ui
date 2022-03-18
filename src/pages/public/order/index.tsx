@@ -1,13 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import {
-	navigate,
-	refreshOrder,
-	selectCurrentOrderId,
-	selectOrders,
-	selectOrdersState
-} from '../../../store/public-store';
-import { IGetOrderResponse } from '@synonymdev/blocktank-client';
+import React from 'react';
+import { useAppDispatch } from '../../../store/hooks';
+import { navigate } from '../../../store/public-store';
 import FormCard from '../../../components/form-card';
 import Spinner from '../../../components/spinner';
 import './index.scss';
@@ -18,44 +11,14 @@ import IconRing, { TIconRingType, TIcon } from '../../../components/icon-ring';
 import { ReactComponent as CalendarIcon } from '../../../icons/calendar-active.svg';
 import { ReactComponent as ClockIcon } from '../../../icons/clock-active.svg';
 import ErrorPage from '../error';
+import useOrder from '../../../hooks/useOrder';
 
 function OrderPage(): JSX.Element {
-	const [isLoading, setIsLoading] = useState(true);
-	const orderId = useAppSelector(selectCurrentOrderId);
-	const [order, setOrder] = useState<IGetOrderResponse | undefined>(undefined);
-	const orders = useAppSelector(selectOrders);
-	const ordersState = useAppSelector(selectOrdersState);
 	const dispatch = useAppDispatch();
-
-	useEffect(() => {
-		const newOrder = orders.find((o) => o._id === orderId);
-		if (newOrder) {
-			setOrder(newOrder);
-			setIsLoading(false);
-		}
-	}, [orders]);
-
-	useEffect(() => {
-		dispatch(refreshOrder(orderId))
-			.catch((e) => alert(e))
-			.finally(() => setIsLoading(false));
-	}, []);
-
-	useEffect(() => {
-		const intervalId = setInterval(() => {
-			if (order?.state === 500) {
-				// Once channel is open stop trying
-				return;
-			}
-
-			dispatch(refreshOrder(orderId)).catch((e) => alert(e));
-		}, 5000);
-
-		return () => clearInterval(intervalId);
-	}, []);
+	const { order, orderState } = useOrder();
 
 	if (!order) {
-		if (ordersState === 'loading' || isLoading) {
+		if (orderState === 'loading' || orderState === 'idle') {
 			return (
 				<FormCard>
 					<Spinner style={{ fontSize: 8 }} centered />
@@ -66,17 +29,7 @@ function OrderPage(): JSX.Element {
 		return <ErrorPage type={'orderNotFound'} />;
 	}
 
-	const {
-		_id,
-		state,
-		amount_received,
-		order_expiry,
-		local_balance,
-		remote_balance,
-		stateMessage,
-		channel_expiry,
-		created_at
-	} = order;
+	const { state, local_balance, remote_balance, stateMessage, channel_expiry, created_at } = order;
 
 	let heading = '';
 	let icon: TIcon = 'lightning';

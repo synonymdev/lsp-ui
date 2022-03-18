@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Col, Row } from 'react-bootstrap';
+import { Accordion, Card, Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import { navigate, refreshOrder, selectOrders, selectOrdersState } from '../../../store/public-store';
+import {
+	navigate,
+	refreshOrder,
+	selectOrders,
+	selectOrdersState
+} from '../../../store/public-store';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import { addressLink, txLink, nodePubKeyLink } from '../../../utils/links';
 import { Widget } from '../../public';
+import OrderActions from '../../../components/admin/order-actions';
 
 function OrderPage(): JSX.Element {
 	const { orderId } = useParams();
@@ -60,9 +66,15 @@ function OrderPage(): JSX.Element {
 
 	return (
 		<div>
-			<h1>Order: {new Date(created_at).toLocaleString()}</h1>
 			<Row>
-				<Col>
+				<Col lg={7}>
+					<h2>{new Date(created_at).toLocaleString()}</h2>
+
+					<OrderActions orderId={orderId} />
+
+					<br />
+					<br />
+
 					<Card>
 						<Card.Body>
 							<Card.Title>
@@ -75,9 +87,9 @@ function OrderPage(): JSX.Element {
 							{/* <Card.Text>Active channels: {node_info.active_channels_count}</Card.Text> */}
 						</Card.Body>
 					</Card>
-				</Col>
 
-				<Col>
+					<br />
+
 					<Card>
 						<Card.Body>
 							<Card.Title>Payment</Card.Title>
@@ -100,13 +112,9 @@ function OrderPage(): JSX.Element {
 								: null}
 						</Card.Body>
 					</Card>
-				</Col>
-			</Row>
 
-			<br />
+					<br />
 
-			<Row>
-				<Col>
 					<Card>
 						<Card.Body>
 							<Card.Title>Channel details</Card.Title>
@@ -121,14 +129,23 @@ function OrderPage(): JSX.Element {
 							) : null}
 						</Card.Body>
 					</Card>
+
+					<br />
+
+					<Accordion>
+						<Accordion.Item eventKey='0'>
+							<Accordion.Header>Debug data</Accordion.Header>
+							<Accordion.Body>
+								<pre>{JSON.stringify(order, null, 2)}</pre>
+							</Accordion.Body>
+						</Accordion.Item>
+					</Accordion>
 				</Col>
-			</Row>
 
-			<br/>
-
-			<Row style={{ display: 'flex', justifyContent: 'center' }}>
-				<h4 style={{textAlign: 'center'}}>What user currently sees:</h4>
-				<Widget />
+				<Col lg={5}>
+					<h4>What user currently sees:</h4>
+					<Widget />
+				</Col>
 			</Row>
 		</div>
 	);

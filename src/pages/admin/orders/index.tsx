@@ -1,46 +1,51 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Table, Form, Button, Row, Col } from 'react-bootstrap';
+import React, { useEffect } from 'react';
+import { Container, Table, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import { refreshOrders, selectOrders, selectOrdersState } from '../../../store/admin-store';
+import {
+	refreshOrders,
+	selectAuth,
+	selectOrders,
+	selectOrdersState
+} from '../../../store/admin-store';
+
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import OrderStateFilterDropdown from '../../../components/admin/order-state-filter-dropdown';
 
 function OrdersPage(): JSX.Element {
 	const orders = useAppSelector(selectOrders);
 	const ordersState = useAppSelector(selectOrdersState);
 	const dispatch = useAppDispatch();
+	const authStatus = useAppSelector(selectAuth);
 
-	const [search, setSearch] = useState('');
+	useEffect(() => {
+		dispatch(refreshOrders());
+	}, []);
+
+	useEffect(() => {
+		if (authStatus.authenticated && ordersState === 'error') {
+			dispatch(refreshOrders());
+		}
+	}, [authStatus]);
 
 	return (
 		<Container>
-			<h1>Orders {ordersState}</h1>
-			<Form>
-				<Form.Group as={Row}>
-					<Col>
-						<Form.Control
-							value={search}
-							onChange={(e) => setSearch(e.target.value)}
-							placeholder='Order ID'
-						/>
-					</Col>
-					<Col>
-						<Button
-							variant='primary'
-							onClick={async () => {
-								try {
-									await dispatch(refreshOrders());
-								} catch (e) {
-									alert(e);
-								}
-							}}
-						>
-							Find
-						</Button>
-					</Col>
-				</Form.Group>
-			</Form>
-
+			<h1>Orders</h1>
+			<pre>Orders state: {ordersState}</pre>
+			<Button
+				variant='primary'
+				onClick={async () => {
+					try {
+						await dispatch(refreshOrders());
+					} catch (e) {
+						alert(e);
+					}
+				}}
+			>
+				Refresh orders
+			</Button>
+			&nbsp;
+			<OrderStateFilterDropdown />
 			<Table striped bordered hover size='sm'>
 				<thead>
 					<tr>
