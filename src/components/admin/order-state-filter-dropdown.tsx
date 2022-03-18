@@ -3,7 +3,6 @@ import { DropdownButton, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { filterOrdersByState, refreshOrders, selectOrdersFilters } from '../../store/admin-store';
 import { selectInfo } from '../../store/public-store';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import bt from '@synonymdev/blocktank-client';
 
 function OrderStateFilterDropdown(): JSX.Element {
 	const [label, setLabel] = useState('Order state');
