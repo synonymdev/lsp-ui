@@ -64,7 +64,7 @@ function ClaimPage(): JSX.Element {
 		}
 	};
 
-	const onSetNodeUri = (e: React.ChangeEvent<any>): void => setNodeUri(e.target.value);
+	const onSetNodeUri = (uri: string): void => setNodeUri(uri);
 
 	const autoClaim = (
 		<>

@@ -1,4 +1,5 @@
 import React, { ChangeEventHandler, ReactElement } from 'react';
+import NumberFormat from 'react-number-format';
 import { ReactComponent as SatsIcon } from '../../icons/lightning-active.svg';
 import { ReactComponent as WeeksIcon } from '../../icons/weeks.svg';
 import Error from '../inline-error';
@@ -47,7 +48,7 @@ export default ({
 	tooltip
 }: {
 	value: string;
-	onChange: ChangeEventHandler;
+	onChange: (string) => void;
 	label: string;
 	id: string;
 	type: 'number' | 'text';
@@ -77,16 +78,29 @@ export default ({
 			</div>
 
 			<div className={'custom-input-container'}>
-				<input
-					className={'custom-input'}
-					id={id}
-					type={type}
-					placeholder={placeholder}
-					value={value}
-					onChange={onChange}
-					onFocus={onFocus}
-					onBlur={onBlur}
-				/>
+				{type === 'number' ? (
+					<NumberFormat
+						className={'custom-input'}
+						thousandSeparator={' '}
+						id={id}
+						placeholder={placeholder}
+						value={value}
+						onValueChange={(values, sourceInfo) => onChange(values.value)}
+						onFocus={onFocus}
+						onBlur={onBlur}
+					/>
+				) : (
+					<input
+						className={'custom-input'}
+						id={id}
+						type={type}
+						placeholder={placeholder}
+						value={value}
+						onChange={(e) => onChange(e.target.value)}
+						onFocus={onFocus}
+						onBlur={onBlur}
+					/>
+				)}
 
 				<span className={'custom-input-append-container'}>
 					<AppendInput>{append}</AppendInput>

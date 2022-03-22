@@ -154,13 +154,13 @@ function ConfigurePage(): JSX.Element {
 		}
 	}, [localBalance]);
 
-	const onSetInput = (e: React.ChangeEvent<any>, set: Function): void => {
+	const onSetInput = (str: string, set: Function): void => {
 		// Block negative numbers
-		if (e.target.value && Number(e.target.value) < 0) {
+		if (str && Number(str) < 0) {
 			return;
 		}
 
-		set(e.target.value);
+		set(str);
 	};
 
 	if (isLoading) {
@@ -196,7 +196,7 @@ function ConfigurePage(): JSX.Element {
 					<InputGroup
 						type='number'
 						value={remoteBalance}
-						onChange={(e) => onSetInput(e, setRemoteBalance)}
+						onChange={(str) => onSetInput(str, setRemoteBalance)}
 						id={'remote-balance'}
 						label={'My inbound capacity'}
 						append={'sats'}
@@ -209,7 +209,7 @@ function ConfigurePage(): JSX.Element {
 					<InputGroup
 						type='number'
 						value={localBalance}
-						onChange={(e) => onSetInput(e, setLocalBalance)}
+						onChange={(str) => onSetInput(str, setLocalBalance)}
 						id={'local-balance'}
 						label={'My spending balance'}
 						append={'sats'}
@@ -222,7 +222,7 @@ function ConfigurePage(): JSX.Element {
 					<InputGroup
 						type='number'
 						value={channelExpiry}
-						onChange={(e) => onSetInput(e, setChannelExpiry)}
+						onChange={(str) => onSetInput(str, setChannelExpiry)}
 						id={'channel-expiry'}
 						label={'Keep my channel open for at least'}
 						append={'weeks'}
