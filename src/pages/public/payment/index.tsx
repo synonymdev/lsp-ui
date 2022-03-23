@@ -94,7 +94,7 @@ function PaymentPage(): JSX.Element {
 					<Heading>Payment received</Heading>
 					<p>Your Lightning channel is ready to claim.</p>
 					<div className={'payment-page-success-container'}>
-						<IconRing icon={'lightning'} type={'success'} />
+						<IconRing icon={'checkmark'} type={'success'} />
 					</div>
 				</>
 			) : (

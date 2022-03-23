@@ -32,7 +32,7 @@ function OrderPage(): JSX.Element {
 	const { state, local_balance, remote_balance, stateMessage, channel_expiry, created_at } = order;
 
 	let heading = '';
-	let icon: TIcon = 'lightning';
+	let icon: TIcon = 'lightning-3d';
 	let iconState: TIconRingType = 'pending';
 	let headerMessage = stateMessage;
 	let footerMessage = <></>;
@@ -48,7 +48,7 @@ function OrderPage(): JSX.Element {
 			break;
 		}
 		case 200: // URI set
-			icon = 'hourglass';
+			icon = 'hourglass-3d';
 			iconState = 'pending';
 			heading = 'Opening channel';
 			headerMessage =
@@ -64,7 +64,7 @@ function OrderPage(): JSX.Element {
 			);
 			break;
 		case 300: // Channel opening
-			icon = 'hourglass';
+			icon = 'hourglass-3d';
 			iconState = 'pending';
 			heading = 'Opening channel';
 			headerMessage =
@@ -80,14 +80,14 @@ function OrderPage(): JSX.Element {
 			);
 			break;
 		case 400: // Given up
-			icon = 'thumb-down';
+			icon = 'thumb-down-3d';
 			iconState = 'error';
 			heading = 'Channel failed';
 			headerMessage =
 				'Unfortunately, we were unable to open the channel. It could be the case that your node dropped connection or is offline. Please contact support@synonym.to for assistance.';
 			break;
 		case 410: // Order expired
-			icon = 'thumb-down';
+			icon = 'thumb-down-3d';
 			iconState = 'error';
 			heading = 'Order expired';
 			headerMessage =
