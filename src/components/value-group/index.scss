@@ -4,7 +4,7 @@
   .value-group-row1 {
     .value-group-label {
       font-size: 15px;
-      line-height: 22px;
+      line-height: 15px;
       font-weight: 600;
       color: #F75C1A;
     }
@@ -30,11 +30,13 @@
 
     .value-group-sats {
       font-size: 21px;
+      font-size: 21px;
       color: white;
       margin-left: 13.24px;
     }
 
     > .lg {
+      line-height: 36px;
       font-size: 36px;
     }
 

@@ -8,6 +8,7 @@ import { clipCenter, orderExpiryFormat } from '../../utils/helpers';
 import Tooltip from '../tooltip';
 import { ReactComponent as LightningIconActive } from '../../icons/lightning-active.svg';
 import { ReactComponent as TransferIconActive } from '../../icons/transfer-active.svg';
+import useDisplayValues from '../../hooks/displayValues';
 
 const qrSize = 200;
 
@@ -42,6 +43,7 @@ export default ({
 	let text = '';
 	let copyButtonTitle = '';
 	let message = `This order ${orderExpiryFormat(orderExpiry)}.`;
+	const orderTotalDisplay = useDisplayValues(orderTotal);
 
 	if (onchain) {
 		const { address, sats, zeroConfMinFee, receivingAmount } = onchain;
@@ -99,7 +101,7 @@ export default ({
 					<h4 className={'payment-request-title'}>Total amount to pay</h4>
 					<span className={'payment-request-middle-value'}>
 						<LightningIconActive className={'payment-request-middle-value-icon'} />
-						{orderTotal}
+						{orderTotalDisplay.bitcoinFormatted}
 					</span>
 				</div>
 				<div>
