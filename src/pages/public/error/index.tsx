@@ -34,7 +34,7 @@ function ErrorPage(props: {
 			<div className={'error-page-container'}>
 				<p className={'error-page-message'}>{headerMessage}</p>
 				<div className={'error-page-content'}>
-					<IconRing icon={'thumb-down'} type={'error'} />
+					<IconRing icon={'thumb-down-3d'} type={'error'} />
 					<div className={'support-button-container'}>
 						<SupportLink />
 					</div>

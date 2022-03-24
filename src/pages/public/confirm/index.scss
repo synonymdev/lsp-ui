@@ -1,6 +1,6 @@
 .confirmation-top-half {
   flex: 1;
-  padding-bottom: 20px;
+  padding-bottom: 0px;
 
   .confirmation-value-groups {
     display: flex;
@@ -8,6 +8,7 @@
   }
 
   .confirmation-message {
+    margin-top: 20px;
     color: #8E8E93;
     font-size: 15px;
     line-height: 22px;

@@ -27,7 +27,8 @@ const ListItem = ({
 	subHeading,
 	label,
 	onClick,
-	buttonText
+	buttonText,
+	hasScrollBar
 }: {
 	key: string;
 	Icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
@@ -36,9 +37,10 @@ const ListItem = ({
 	label: string;
 	onClick: () => void;
 	buttonText: string;
+	hasScrollBar: boolean;
 }): JSX.Element => {
 	return (
-		<div key={key} className={'order-list-item'}>
+		<div key={key} className={`order-list-item ${hasScrollBar ? 'with-scrollbar' : ''}`}>
 			<p className={'order-list-item-date'}>{title}</p>
 			<div className={'order-list-content'}>
 				<div className={'order-list-details'}>
@@ -75,6 +77,9 @@ function OrdersPage(): JSX.Element {
 		);
 	}
 
+	// After 4 orders we need to add padding on the right for the scrollbar
+	const hasScrollbar = orders.length > 4;
+
 	return (
 		<FormCard title={'My orders'} backPage={'configure'}>
 			<div className={'orders-container'}>
@@ -87,6 +92,7 @@ function OrdersPage(): JSX.Element {
 						label={'Lightning channel'}
 						buttonText={'Create channel'}
 						onClick={() => dispatch(navigate({ page: 'configure' }))}
+						hasScrollBar={hasScrollbar}
 					/>
 				) : null}
 				{orders.map(({ _id, state, stateMessage, created_at }) => {
@@ -138,6 +144,7 @@ function OrdersPage(): JSX.Element {
 							subHeading={'Order status'}
 							label={stateMessage}
 							buttonText={buttonText}
+							hasScrollBar={hasScrollbar}
 						/>
 					);
 				})}
