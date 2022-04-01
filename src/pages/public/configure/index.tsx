@@ -19,8 +19,8 @@ export type IFormErrors = {
 };
 
 const inboundTip: TooltipProps = {
-	title: 'Inbound capacity',
-	body: 'This is the amount of sats you will be able to receive in payments. The amount must be at least double the amount of your ‘spending balance’. The maximum amount of inbound capacity is 50,000,000 sats.'
+	title: 'My receiving capacity',
+	body: 'This is the amount of sats you will be able to receive in payments. The amount must be at least double that of your \\‘spending balance\\’. Maximum receiving capacity is 50 000 000 sats.'
 };
 
 const spendingTip: TooltipProps = {

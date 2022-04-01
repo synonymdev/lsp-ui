@@ -34,7 +34,8 @@ export default ({ tip }: { tip?: TooltipProps }): JSX.Element => {
 						style={{
 							...props.style,
 							backgroundColor: 'rgba(16, 16, 16, 0.92)',
-							borderRadius: 10
+							borderRadius: 10,
+							letterSpacing: 0
 						}}
 					>
 						<h4>{tip.title}</h4>

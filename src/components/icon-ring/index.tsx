@@ -3,7 +3,7 @@ import React from 'react';
 import './index.scss';
 
 export type TIconRingType = 'success' | 'error' | 'neutral' | 'pending';
-export type TIcon = 'hourglass-3d' | 'lightning-3d' | 'thumb-down-3d' | 'checkmark'; // Add 3D icon to /public/icons when adding an icon type
+export type TIcon = 'hourglass-3d' | 'lightning-3d' | 'thumb-down-3d' | 'checkmark' | 'coins-3d'; // Add 3D icon to /public/icons when adding an icon type
 
 export default ({
 	icon,

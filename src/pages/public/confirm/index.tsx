@@ -54,7 +54,7 @@ function ConfirmationPage(): JSX.Element {
 			pageIndicator={{ total: 4, active: 1 }}
 			showLightningIcon
 		>
-			<Heading>My Channel</Heading>
+			<Heading>Review channel</Heading>
 
 			<div className={'confirmation-top-half'}>
 				<div className={'confirmation-value-groups'}>
@@ -65,8 +65,12 @@ function ConfirmationPage(): JSX.Element {
 				<ChannelBalanceBar local={remote_balance} remote={local_balance} />
 
 				<p className={'confirmation-message'}>
-					This channel may close automatically after {channel_expiry} week
-					{channel_expiry > 1 ? 's' : ''}.
+					This channel may close automatically after{' '}
+					<span className={'confirmation-message-highlight'}>
+						{channel_expiry} week
+						{channel_expiry > 1 ? 's' : ''}
+					</span>
+					.
 				</p>
 
 				<Divider />

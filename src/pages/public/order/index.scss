@@ -1,6 +1,15 @@
 .order-state-container {
   flex: 1;
 
+  .order-state-support-button-container {
+    display: flex;
+    justify-content: center;
+
+    .order-state-support-button-spacer {
+      width: 10px;
+    }
+  }
+
   .order-state-message {
     font-size: 15px;
     color: #8E8E93;

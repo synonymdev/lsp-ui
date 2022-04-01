@@ -10,7 +10,7 @@ export default ({
 	setIsChecked,
 	error
 }: {
-	children: React.ReactElement | React.ReactElement[];
+	children: React.ReactElement | React.ReactElement[] | string;
 	isChecked: boolean;
 	setIsChecked: (checked: boolean) => void;
 	error?: string;

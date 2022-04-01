@@ -1768,10 +1768,10 @@
     "@svgr/plugin-svgo" "^5.5.0"
     loader-utils "^2.0.0"
 
-"@synonymdev/blocktank-client@^0.0.43":
-  version "0.0.43"
-  resolved "https://registry.yarnpkg.com/@synonymdev/blocktank-client/-/blocktank-client-0.0.43.tgz#618929d3115c8f6ead69d4e86b6ae472f71ee2c9"
-  integrity sha512-A1Cs0Jzi+ujPaLncC6ym0fJl8fYbtTErx8Lr4n4tY99wnPzd9pYihbxKid2xV46VXJOTj+NWreDLMUapf6FXsA==
+"@synonymdev/blocktank-client@^0.0.44":
+  version "0.0.44"
+  resolved "https://registry.yarnpkg.com/@synonymdev/blocktank-client/-/blocktank-client-0.0.44.tgz#7ec49846751a31382c7033c1cf36548487022438"
+  integrity sha512-eehJaOzIhILqv/zbj8ImKbqQD+tEnbgHQeYeQrtGNnwMUDLXDb9zTA/9MzC/CTyJ32C9iNaS1LHmUHKu4GkTeQ==
   dependencies:
     cross-fetch "^3.1.4"
     node-fetch "3.1.1"
