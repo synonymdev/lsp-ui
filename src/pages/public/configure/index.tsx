@@ -12,6 +12,7 @@ import Heading from '../../../components/heading';
 import { TooltipProps } from '../../../components/tooltip';
 import ErrorPage from '../error';
 import Error from '../../../components/inline-error';
+import { numberWithSpaces } from '../../../utils/helpers';
 
 export type IFormErrors = {
 	[key: string]: string;
@@ -126,13 +127,17 @@ function ConfigurePage(): JSX.Element {
 		}
 
 		if (Number(remoteBalance) > product.max_channel_size) {
-			errors.remoteBalance = `Max channel size must be smaller than ${product.max_channel_size}`;
+			errors.remoteBalance = `Max receiving capacity is ${numberWithSpaces(product.max_channel_size)} sats`;
 		} else if (Number(remoteBalance) < product.min_channel_size) {
-			errors.remoteBalance = `Min channel size must be greater than ${product.min_channel_size}`;
+			errors.remoteBalance = `Minimum receiving capacity is ${numberWithSpaces(product.min_channel_size)} sats`;
 		}
 
 		if (Number(localBalance) !== 0 && Number(localBalance) < product.min_channel_size) {
-			errors.localBalance = `Local balance needs to be greater than ${product.min_channel_size}`;
+			errors.localBalance = `Minimum spending balance is ${numberWithSpaces(product.min_channel_size)} sats`;
+		}
+
+		if (Number(localBalance) !== 0 && Number(localBalance) > product.max_channel_size) {
+			errors.localBalance = `Max spending balance is ${numberWithSpaces(product.max_channel_size)} sats`;
 		}
 
 		setFormErrors(errors);

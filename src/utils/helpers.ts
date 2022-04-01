@@ -41,3 +41,7 @@ export const clipCenter = (str: string, maxLength: number): string => {
 export const orderExpiryFormat = (timestamp: number): string => {
 	return timeAgo.format(new Date(timestamp)).toString();
 };
+
+export const numberWithSpaces = (num: number): string => {
+	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+};
