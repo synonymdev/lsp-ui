@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, ReactElement } from 'react';
+import React, { ChangeEventHandler, ReactElement, useState } from 'react';
 import NumberFormat from 'react-number-format';
 import { ReactComponent as SatsIcon } from '../../icons/lightning-active.svg';
 import { ReactComponent as WeeksIcon } from '../../icons/weeks.svg';
@@ -61,6 +61,17 @@ export default ({
 	tooltip?: TooltipProps;
 }): JSX.Element => {
 	const fiat = useDisplayValues(Number(value));
+	const [displayedPlaceholder, setDisplayedPlaceholder] = useState(placeholder);
+
+	const customOnFocus: ChangeEventHandler = (e) => {
+		onFocus?.(e);
+		setDisplayedPlaceholder('');
+	};
+
+	const customOnBlur: ChangeEventHandler = (e) => {
+		onBlur?.(e);
+		setDisplayedPlaceholder(placeholder);
+	};
 
 	return (
 		<div className='custom-input-group-container'>
@@ -83,22 +94,22 @@ export default ({
 						className={'custom-input'}
 						thousandSeparator={' '}
 						id={id}
-						placeholder={placeholder}
+						placeholder={displayedPlaceholder}
 						value={value}
 						onValueChange={(values, sourceInfo) => onChange(values.value)}
-						onFocus={onFocus}
-						onBlur={onBlur}
+						onFocus={customOnFocus}
+						onBlur={customOnBlur}
 					/>
 				) : (
 					<input
 						className={'custom-input'}
 						id={id}
 						type={type}
-						placeholder={placeholder}
+						placeholder={displayedPlaceholder}
 						value={value}
 						onChange={(e) => onChange(e.target.value)}
-						onFocus={onFocus}
-						onBlur={onBlur}
+						onFocus={customOnFocus}
+						onBlur={customOnBlur}
 					/>
 				)}
 

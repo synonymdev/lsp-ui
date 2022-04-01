@@ -55,9 +55,8 @@
 
   .claim-channel-manual-action-buttons-container {
     display: flex;
-    flex-direction: column;
-    justify-content: left;
-    align-items: flex-start;
+    justify-content: space-between;
+    margin-top: 20px;
   }
 
   .claim-channel-middle {

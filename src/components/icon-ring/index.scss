@@ -16,8 +16,10 @@
 
 .icon-ring-error {
   @extend .icon-ring;
-  background: linear-gradient(90deg, rgba(228, 103, 53, 0.2) 0%, rgba(201, 50, 80, 0.2) 70.83%, rgba(202, 72, 140, 0.2) 100%);
+  mix-blend-mode: normal;
   box-shadow: 0px 1px 10px rgba(223, 100, 53, 0.6), 0px 4px 116px rgba(199, 70, 136, 0.4);
+  background: linear-gradient(90deg, rgba(228, 103, 53, 0.2) 0%, rgba(201, 50, 80, 0.2) 70.83%, rgba(202, 72, 140, 0.2) 100%);
+  border: rgba(201, 50, 80, 0.98) 2px solid;
 }
 
 .icon-ring-pending {

@@ -11,6 +11,7 @@ import Divider from '../../../components/divider';
 import './index.scss';
 import Heading from '../../../components/heading';
 import Tooltip from '../../../components/tooltip';
+import Checkbox from '../../../components/checkbox';
 import { clipCenter } from '../../../utils/helpers';
 import ActionButton from '../../../components/action-button';
 import { ReactComponent as LightningIconActive } from '../../../icons/lightning-active.svg';
@@ -25,6 +26,7 @@ const qrSize = 200;
 
 function ClaimPage(): JSX.Element {
 	const [showManual, setShowManual] = useState(false);
+	const [isPrivate, setIsPrivate] = useState(false);
 	const [nodeUri, setNodeUri] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const dispatch = useAppDispatch();
@@ -51,7 +53,8 @@ function ClaimPage(): JSX.Element {
 		try {
 			await bt.finalizeChannel({
 				order_id: _id,
-				node_uri: nodeUri
+				node_uri: nodeUri,
+				private: isPrivate
 			});
 
 			await dispatch(refreshOrder(_id));
@@ -110,6 +113,9 @@ function ClaimPage(): JSX.Element {
 					body: 'Paste your node ID, IP, and port information here to initiate the channel connection manually.'
 				}}
 			/>
+			<Checkbox isChecked={isPrivate} setIsChecked={setIsPrivate}>
+				Private channel
+			</Checkbox>
 			<div className={'claim-channel-manual-action-buttons-container'}>
 				<ActionButton onClick={claimChannel} Icon={LightningIcon}>
 					{isSubmitting ? 'Opening channel...' : 'Open channel'}
@@ -147,7 +153,7 @@ function ClaimPage(): JSX.Element {
 						</div>
 						<span className={'claim-channel-middle-value'}>
 							<LightningIconActive className={'claim-channel-middle-value-icon'} />
-							{local_balance}
+							{inboundDisplay.bitcoinFormatted}
 						</span>
 					</div>
 					<div className={'claim-channel-middle-col'}>
@@ -163,7 +169,7 @@ function ClaimPage(): JSX.Element {
 						</div>
 						<span className={'claim-channel-middle-value'}>
 							<LightningIconActive className={'claim-channel-middle-value-icon'} />
-							{remote_balance}
+							{myBalanceDisplay.bitcoinFormatted}
 						</span>
 					</div>
 				</div>
