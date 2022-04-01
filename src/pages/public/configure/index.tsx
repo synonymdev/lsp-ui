@@ -11,6 +11,7 @@ import InputGroup from '../../../components/input-group';
 import Heading from '../../../components/heading';
 import { TooltipProps } from '../../../components/tooltip';
 import ErrorPage from '../error';
+import Error from '../../../components/inline-error';
 
 export type IFormErrors = {
 	[key: string]: string;
@@ -38,10 +39,11 @@ function ConfigurePage(): JSX.Element {
 	const [isLoading, setIsLoading] = useState(true);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [product, setProduct] = useState<IService | undefined>(undefined);
-	const [channelExpiry, setChannelExpiry] = useState<string>('1');
-	const [localBalance, setLocalBalance] = useState<string>('0');
+	const [channelExpiry, setChannelExpiry] = useState<string>('');
+	const [localBalance, setLocalBalance] = useState<string>('');
 	const [remoteBalance, setRemoteBalance] = useState<string>('0');
 	const [formErrors, setFormErrors] = useState<IFormErrors>({});
+	const [generalError, setGeneralError] = useState('');
 
 	useEffect(() => {
 		if (services.length > 0) {
@@ -57,16 +59,12 @@ function ConfigurePage(): JSX.Element {
 			if (localBalance === '0') {
 				// setLocalBalance(`${service.min_channel_size}`);
 			}
-
-			if (channelExpiry === '1') {
-				setChannelExpiry(`${service.max_chan_expiry}`);
-			}
 		}
 	}, [services]);
 
 	useEffect(() => {
 		dispatch(refreshInfo())
-			.catch((e) => alert(e))
+			.catch((e) => setGeneralError(e.toString()))
 			.finally(() => setIsLoading(false));
 	}, []);
 
@@ -83,11 +81,13 @@ function ConfigurePage(): JSX.Element {
 
 		setIsSubmitting(true);
 
+		const { max_chan_expiry } = product;
+
 		const req: IBuyChannelRequest = {
 			product_id: product.product_id,
-			channel_expiry: Number(channelExpiry),
+			channel_expiry: channelExpiry ? Number(channelExpiry) : max_chan_expiry,
 			local_balance: Number(remoteBalance), // Switched around for context
-			remote_balance: Number(localBalance)
+			remote_balance: localBalance ? Number(localBalance) : 0
 		};
 
 		try {
@@ -101,7 +101,7 @@ function ConfigurePage(): JSX.Element {
 			if (error.toString().indexOf('GEO_BLOCKED') > -1) {
 				dispatch(navigate({ page: 'geoblocked' }));
 			} else {
-				alert(error);
+				setGeneralError(error.toString());
 			}
 		}
 	};
@@ -117,7 +117,7 @@ function ConfigurePage(): JSX.Element {
 
 		// TODO check channel balance
 
-		if (Number(channelExpiry) < 1) {
+		if (channelExpiry !== '' && Number(channelExpiry) < 1) {
 			errors.channelExpiry = `Minimum channel expiry is ${product.min_chan_expiry} week${
 				product.min_chan_expiry !== 1 ? 's' : ''
 			}`;
@@ -171,7 +171,7 @@ function ConfigurePage(): JSX.Element {
 		return <div />;
 	}
 
-	const { available } = product;
+	const { available, max_chan_expiry } = product;
 
 	if (!available) {
 		return <ErrorPage type={'unavailable'} />;
@@ -191,14 +191,14 @@ function ConfigurePage(): JSX.Element {
 		>
 			<Form className={'form-content'}>
 				<div className={'form-fields'}>
-					<Heading>Configure</Heading>
+					<Heading>My channel</Heading>
 
 					<InputGroup
 						type='number'
 						value={remoteBalance}
 						onChange={(str) => onSetInput(str, setRemoteBalance)}
 						id={'remote-balance'}
-						label={'My inbound capacity'}
+						label={'My receiving capacity'}
 						append={'sats'}
 						showFiatFromSatsValue
 						error={formErrors.remoteBalance}
@@ -209,6 +209,7 @@ function ConfigurePage(): JSX.Element {
 					<InputGroup
 						type='number'
 						value={localBalance}
+						placeholder={'0'}
 						onChange={(str) => onSetInput(str, setLocalBalance)}
 						id={'local-balance'}
 						label={'My spending balance'}
@@ -222,6 +223,7 @@ function ConfigurePage(): JSX.Element {
 					<InputGroup
 						type='number'
 						value={channelExpiry}
+						placeholder={`${max_chan_expiry}`}
 						onChange={(str) => onSetInput(str, setChannelExpiry)}
 						id={'channel-expiry'}
 						label={'Keep my channel open for at least'}
@@ -230,6 +232,8 @@ function ConfigurePage(): JSX.Element {
 						onBlur={onBlur}
 						tooltip={durationTip}
 					/>
+
+					<Error>{generalError}</Error>
 				</div>
 
 				<div className={'button-container'}>

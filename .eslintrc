@@ -26,7 +26,7 @@
       "tab",
       { "SwitchCase": 1, "ignoredNodes": ["ConditionalExpression"] }
     ],
-    "no-alert": "off",
+    "no-alert": "warn",
     "@typescript-eslint/ban-types": ["warn", { "types": { "null": null } }],
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-non-null-assertion": "warn",

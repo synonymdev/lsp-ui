@@ -48,6 +48,10 @@
       flex: 3;
     }
 
+    ::placeholder {
+      color: rgba(142, 142, 147, 1);
+    }
+
     .custom-input-append-container {
       text-align: right;
       display: flex;
