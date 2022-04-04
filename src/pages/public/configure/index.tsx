@@ -20,7 +20,7 @@ export type IFormErrors = {
 
 const inboundTip: TooltipProps = {
 	title: 'My receiving capacity',
-	body: 'This is the amount of sats you will be able to receive in payments. The amount must be at least double that of your \\‘spending balance\\’. Maximum receiving capacity is 50 000 000 sats.'
+	body: 'This is the amount of sats you will be able to receive in payments. The amount must be at least double that of your ‘spending balance’. Maximum receiving capacity is 50 000 000 sats.'
 };
 
 const spendingTip: TooltipProps = {
@@ -35,7 +35,6 @@ const durationTip: TooltipProps = {
 
 function ConfigurePage(): JSX.Element {
 	const { services } = useAppSelector(selectInfo);
-	const infoState = useAppSelector(selectInfoState);
 	const dispatch = useAppDispatch();
 	const [isLoading, setIsLoading] = useState(true);
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -127,17 +126,25 @@ function ConfigurePage(): JSX.Element {
 		}
 
 		if (Number(remoteBalance) > product.max_channel_size) {
-			errors.remoteBalance = `Max receiving capacity is ${numberWithSpaces(product.max_channel_size)} sats`;
+			errors.remoteBalance = `Max receiving capacity is ${numberWithSpaces(
+				product.max_channel_size
+			)} sats`;
 		} else if (Number(remoteBalance) < product.min_channel_size) {
-			errors.remoteBalance = `Minimum receiving capacity is ${numberWithSpaces(product.min_channel_size)} sats`;
+			errors.remoteBalance = `Minimum receiving capacity is ${numberWithSpaces(
+				product.min_channel_size
+			)} sats`;
 		}
 
 		if (Number(localBalance) !== 0 && Number(localBalance) < product.min_channel_size) {
-			errors.localBalance = `Minimum spending balance is ${numberWithSpaces(product.min_channel_size)} sats`;
+			errors.localBalance = `Minimum spending balance is ${numberWithSpaces(
+				product.min_channel_size
+			)} sats`;
 		}
 
 		if (Number(localBalance) !== 0 && Number(localBalance) > product.max_channel_size) {
-			errors.localBalance = `Max spending balance is ${numberWithSpaces(product.max_channel_size)} sats`;
+			errors.localBalance = `Max spending balance is ${numberWithSpaces(
+				product.max_channel_size
+			)} sats`;
 		}
 
 		setFormErrors(errors);
