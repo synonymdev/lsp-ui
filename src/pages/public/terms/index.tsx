@@ -17,7 +17,9 @@ const format = (rawHtml: string): string => {
 		.replaceAll('Arial', font)
 		.replaceAll('Times New Roman', font)
 		.replaceAll('c13', '') // Removes white highlighted text
-		.replaceAll('c5', ''); // Removes white highlighted text
+		.replaceAll('c5', '') // Removes white highlighted text
+		.replaceAll('<h3', '<p')
+		.replaceAll('h3>', 'p>');
 };
 
 function TermsPage({ showFullPage }: { showFullPage?: boolean }): JSX.Element {

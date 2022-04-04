@@ -1,33 +1,8 @@
 // @see https://stackoverflow.com/questions/11002820/why-should-we-include-ttf-eot-woff-svg-in-a-font-face
 
-@font-face {
-  font-family: 'Neue Haas Grotesk Display Pro';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 200;
-  src: url('/style/fonts/NeueHaasDisplay-Thin.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Neue Haas Grotesk Display Pro';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 400;
-  src: url('/style/fonts/NeueHaasDisplay-Roman.woff2') format('woff2');
-}
-
-@font-face {
-  font-family: 'Neue Haas Grotesk Display Pro';
-  font-style: normal;
-  font-display: swap;
-  font-weight: 600;
-  src: url('/style/fonts/NeueHaasDisplay-Medium.woff2') format('woff2');
-}
-
 @import './style/variables';
 @import "~bootstrap/scss/bootstrap";
 @import './style/bootswatch';
-
 
 input:focus,
 select:focus,
