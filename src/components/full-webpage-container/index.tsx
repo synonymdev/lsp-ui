@@ -30,7 +30,7 @@ export default ({ children }): ReactElement => (
 			<Row className={'full-webpage-row1'}>
 				<Col xl={6} lg={5} md={12} sm={12} className={'info-col'}>
 					<div className={'info-col-content'}>
-						<img src={'/icons/logo.svg'} alt={'Blocktank'} />
+						<img src={'/images/logo.svg'} alt={'Blocktank'} />
 						<h1 className={'webpage-heading'}>Your full-service Lightning Service Provider (LSP)</h1>
 
 						<h4 className={'webpage-subheading'}>Lightning Network connections and liquidity at any size, any time.</h4>
