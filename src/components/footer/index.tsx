@@ -1,6 +1,4 @@
 import React from 'react';
-import { ReactComponent as Logo } from '../../icons/footer.svg';
-
 import './index.scss';
 import PageIndicator, { TPageIndicator } from '../page-indicator';
 import Divider from '../divider';
@@ -12,7 +10,8 @@ export default ({ pageIndicator }: { pageIndicator?: TPageIndicator }): JSX.Elem
 			<Divider />
 
 			<div className={'footer-container'}>
-				<Logo />
+				<img className={'footer-logo'} src={'/images/logo.svg'} alt={'Blocktank'} />
+				<span className={'footer-text'}>by Synonym</span>
 			</div>
 		</>
 	);
