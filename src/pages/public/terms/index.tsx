@@ -6,7 +6,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 import './index.scss';
 
 const fetchContent = async(): Promise<string> => {
-	const res = await fetch('/terms-and-conditions.html');
+	const res = await fetch('/terms-and-conditions-raw.html');
 	return await (await res.blob()).text();
 };
 
