@@ -162,17 +162,13 @@ function ConfigurePage(): JSX.Element {
 		const lBalance = Number(localBalance);
 
 		if (rBalance < lBalance + product.min_channel_size) {
-			setRemoteBalance(`${lBalance + product.min_channel_size}`);
+			setRemoteBalance(`${lBalance + product.min_channel_size}`); // TODO use new min field
 		}
 	}, [localBalance]);
 
 	const onSetInput = (str: string, set: Function): void => {
 		// Block negative numbers
-		if (str && Number(str) < 0) {
-			return;
-		}
-
-		set(str);
+		set(str.replaceAll('-', ''));
 	};
 
 	if (isLoading) {
@@ -190,6 +186,11 @@ function ConfigurePage(): JSX.Element {
 	}
 
 	const onBlur = (): void => {
+		// Remove decimal places
+		setRemoteBalance(Math.trunc(Number(remoteBalance)).toString());
+		setLocalBalance(Math.trunc(Number(localBalance)).toString());
+		setChannelExpiry(Math.trunc(Number(channelExpiry)).toString());
+
 		isValid()
 			.then()
 			.catch((e) => console.error(e));
@@ -251,7 +252,7 @@ function ConfigurePage(): JSX.Element {
 				<div className={'button-container'}>
 					<div>
 						<Button className={'form-button'} onClick={onBuy} type='submit' disabled={isSubmitting}>
-							Create my Channel
+							Create my channel
 						</Button>
 					</div>
 				</div>
