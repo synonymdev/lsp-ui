@@ -187,9 +187,17 @@ function ConfigurePage(): JSX.Element {
 
 	const onBlur = (): void => {
 		// Remove decimal places
-		setRemoteBalance(Math.trunc(Number(remoteBalance)).toString());
-		setLocalBalance(Math.trunc(Number(localBalance)).toString());
-		setChannelExpiry(Math.trunc(Number(channelExpiry)).toString());
+		if (remoteBalance) {
+			setRemoteBalance(Math.trunc(Number(remoteBalance)).toString());
+		}
+
+		if (localBalance) {
+			setLocalBalance(Math.trunc(Number(localBalance)).toString());
+		}
+
+		if (channelExpiry) {
+			setChannelExpiry(Math.trunc(Number(channelExpiry)).toString());
+		}
 
 		isValid()
 			.then()
