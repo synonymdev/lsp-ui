@@ -4,13 +4,16 @@ import { ReactComponent as CopyIcon } from '../../icons/copy.svg';
 
 import './index.scss';
 
+export type TActionButtonSize = 'sm' | 'lg' | undefined;
+
 export default ({
 	children,
 	copyText,
 	onClick,
 	href,
 	Icon,
-	disabled
+	disabled,
+	size
 }: {
 	children: string;
 	copyText?: string;
@@ -18,6 +21,7 @@ export default ({
 	href?: string;
 	Icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement> & { title?: string }>;
 	disabled?: boolean;
+	size?: TActionButtonSize;
 }): JSX.Element => {
 	const [isCopied, setIsCopied] = useState(false);
 
@@ -34,10 +38,21 @@ export default ({
 		ButtonIcon = CopyIcon;
 	}
 
+	// TODO use size
+
+	let containerClass = 'action-button-container ';
+	let buttonTextClass = 'action-button-text '
+	if (size) {
+		containerClass += `action-button-container-${size}`
+		buttonTextClass += `action-button-text-${size}`;
+	}
+
 	const button = (
-		<div className={'action-button-container'} onClick={!disabled ? onClick : undefined}>
+		<div className={containerClass} onClick={!disabled ? onClick : undefined}>
 			{ButtonIcon ? <ButtonIcon className={'action-button-icon'} /> : null}
-			<span className={'action-button-text'}>{isCopied ? 'Copied!' : children}</span>
+			<span className={buttonTextClass}>
+				{isCopied ? 'Copied!' : children}
+			</span>
 		</div>
 	);
 

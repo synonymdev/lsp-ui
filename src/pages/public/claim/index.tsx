@@ -180,7 +180,8 @@ function ClaimPage(): JSX.Element {
 						{channel_expiry} week
 						{channel_expiry !== 1 ? 's' : ''}
 					</span>
-					.
+					<br />
+					Order ID: {order._id}
 				</p>
 			</div>
 		</FormCard>

@@ -149,13 +149,16 @@ function OrderPage(): JSX.Element {
 				<p className={'order-state-message'}>{headerMessage}</p>
 				<IconRing icon={icon} type={iconState} showCross={showIconCross} />
 
-				<div className={'order-state-support-button-container'}>
-					<SupportButton orderId={order._id} />
-					<span className={'order-state-support-button-spacer'} />
-					<ActionButton onClick={() => dispatch(navigate({ page: 'configure' }))}>
-						New channel
-					</ActionButton>
-				</div>
+				{showSupportButtons ? (
+					<div className={'order-state-support-button-container'}>
+						<SupportButton orderId={order._id} size={'sm'} />
+						<span className={'order-state-support-button-spacer'} />
+						<ActionButton onClick={() => dispatch(navigate({ page: 'configure' }))} size={'sm'}>
+							New channel
+						</ActionButton>
+					</div>
+				) : null}
+
 				<Divider />
 				<div className={'value-group-row'}>
 					<ValueGroup
