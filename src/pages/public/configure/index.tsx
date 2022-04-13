@@ -3,7 +3,13 @@ import { Button, Form } from 'react-bootstrap';
 import bt, { IBuyChannelRequest, IService } from '@synonymdev/blocktank-client';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { refreshInfo, selectInfo, selectInfoState, navigate } from '../../../store/public-store';
+import {
+	refreshInfo,
+	selectInfo,
+	selectInfoState,
+	navigate,
+	refreshOrder
+} from '../../../store/public-store';
 import Spinner from '../../../components/spinner';
 import FormCard from '../../../components/form-card';
 import './index.scss';
@@ -94,7 +100,11 @@ function ConfigurePage(): JSX.Element {
 			const buyRes = await bt.buyChannel(req);
 			const { order_id } = buyRes;
 
-			dispatch(navigate({ page: 'confirm', orderId: order_id }));
+			dispatch(refreshOrder(order_id))
+				.then(() => {
+					dispatch(navigate({ page: 'confirm', orderId: order_id }));
+				})
+				.catch((refreshError) => alert(refreshError));
 		} catch (error) {
 			setIsSubmitting(false);
 			console.log(error);
@@ -187,9 +197,17 @@ function ConfigurePage(): JSX.Element {
 
 	const onBlur = (): void => {
 		// Remove decimal places
-		setRemoteBalance(Math.trunc(Number(remoteBalance)).toString());
-		setLocalBalance(Math.trunc(Number(localBalance)).toString());
-		setChannelExpiry(Math.trunc(Number(channelExpiry)).toString());
+		if (remoteBalance) {
+			setRemoteBalance(Math.trunc(Number(remoteBalance)).toString());
+		}
+
+		if (localBalance) {
+			setLocalBalance(Math.trunc(Number(localBalance)).toString());
+		}
+
+		if (channelExpiry) {
+			setChannelExpiry(Math.trunc(Number(channelExpiry)).toString());
+		}
 
 		isValid()
 			.then()

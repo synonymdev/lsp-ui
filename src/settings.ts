@@ -1,6 +1,6 @@
 import bt, { btAdmin } from '@synonymdev/blocktank-client';
 
-export const supportEmail = 'suport@synonym.to';
+export const supportEmail = 'support@synonym.to';
 
 export const supportSubject = (orderId?: string): string => {
 	return `BlockTank support${orderId ? ` (Order ID ${orderId})` : ''}`;

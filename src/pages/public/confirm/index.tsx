@@ -99,7 +99,7 @@ function ConfirmationPage(): JSX.Element {
 				>
 					<span>I accept the </span>
 					<a target={'_blank'} className={'link'} href={'/terms-and-conditions'}>
-						terms and conditions
+						terms of service
 					</a>
 				</Checkbox>
 			</div>

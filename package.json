@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.1",
-    "@synonymdev/blocktank-client": "^0.0.44",
+    "@synonymdev/blocktank-client": "^0.0.45",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -57,7 +57,8 @@
     "build:testnet": "REACT_APP_MAINNET=false yarn build",
     "build:mainnet": "REACT_APP_MAINNET=true yarn build",
     "deploy:testnet": "yarn build:testnet && surge ./build http://cr-98375983893.surge.sh",
-    "deploy:mainnet": "yarn build:mainnet && surge ./build http://bt-mainnet.surge.sh"
+    "deploy:mainnet": "yarn build:mainnet && surge ./build http://bt-mainnet.surge.sh",
+    "deploy": "yarn deploy:testnet && yarn deploy:mainnet"
   },
   "eslintConfig": {
     "extends": [
