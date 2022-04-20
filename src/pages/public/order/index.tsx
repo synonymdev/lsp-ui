@@ -79,8 +79,8 @@ function OrderPage(): JSX.Element {
 			heading = 'Opening channel';
 			headerMessage = (
 				<span>
-					You successfully claimed your channel. Your channel will be ready to use in ± 10 - 30
-					minutes. Feel free to come back later.
+					You successfully claimed your channel. Your channel will be ready to use in 10 - 30
+					minutes or so. Feel free to come back later.
 				</span>
 			);
 			footerMessage = (
@@ -94,7 +94,7 @@ function OrderPage(): JSX.Element {
 			);
 			break;
 		case 400: // Given up
-			icon = 'thumb-down-3d';
+			icon = 'lightning-3d';
 			iconState = 'error';
 			heading = 'Channel failed';
 			headerMessage = (
@@ -106,7 +106,7 @@ function OrderPage(): JSX.Element {
 			showSupportButtons = true;
 			break;
 		case 410: // Order expired
-			icon = 'coins-3d';
+			icon = 'stopwatch-3d';
 			iconState = 'error';
 			heading = 'Order expired';
 			headerMessage = (
@@ -122,7 +122,7 @@ function OrderPage(): JSX.Element {
 			iconState = 'neutral';
 			showIconCross = true;
 			heading = 'Channel closed';
-			headerMessage = <span>This Lightning channel has expired.</span>;
+			headerMessage = <span>This Lightning channel has expired or has closed.</span>;
 			break;
 		case 500: // Channel open
 			iconState = 'success';
@@ -186,7 +186,12 @@ function OrderPage(): JSX.Element {
 					<ValueGroup label={'My balance'} value={remote_balance} showFiat />
 				</div>
 
-				{footerMessage ? <p className={'order-state-message'}>{footerMessage}</p> : null}
+				{footerMessage ? (
+					<p className={'order-state-message'}>
+						{footerMessage} <br />
+						Order ID: {order._id}
+					</p>
+				) : null}
 			</div>
 		</FormCard>
 	);
