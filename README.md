@@ -1,5 +1,7 @@
 # blocktank-ui
 
+The Blocktank Widget (standalone or embeddable) allows users to quickly configure and purchase Lightning channels and liquidity.
+
 ## Available Scripts
 
 In the project directory, you can run:
