@@ -92,6 +92,7 @@ export default ({
 			<div className={'custom-input-container'}>
 				{type === 'number' ? (
 					<NumberFormat
+						inputMode='numeric'
 						className={'custom-input'}
 						thousandSeparator={' '}
 						id={id}
