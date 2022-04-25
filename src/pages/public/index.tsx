@@ -8,6 +8,7 @@ import PaymentPage from './payment';
 import ClaimPage from './claim';
 import TermsPage from './terms';
 import MenuPage from './menu';
+import SettingsPage from './settings';
 import ErrorPage from './error';
 import FullWebpageContainer from '../../components/full-webpage-container';
 import { useAppSelector } from '../../store/hooks';
@@ -40,6 +41,9 @@ export const Widget = (): JSX.Element => {
 		}
 		case 'terms': {
 			return <TermsPage />;
+		}
+		case 'settings': {
+			return <SettingsPage />;
 		}
 		case 'geoblocked': {
 			return <ErrorPage type={'geoblocked'} />;

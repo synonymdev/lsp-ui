@@ -144,7 +144,8 @@ function ClaimPage(): JSX.Element {
 						<div className={'claim-channel-title-container'}>
 							<span className={'claim-channel-title'}>Inbound capacity</span>
 							<span className={'channel-claim-fiat-conversion'}>
-								${inboundDisplay.fiatWhole}
+								{inboundDisplay.fiatSymbol}
+								{inboundDisplay.fiatWhole}
 								<span className={'decimal'}>
 									{inboundDisplay.fiatDecimal}
 									{inboundDisplay.fiatDecimalValue}
@@ -160,7 +161,8 @@ function ClaimPage(): JSX.Element {
 						<div className={'claim-channel-title-container'}>
 							<span className={'claim-channel-title'}>My balance</span>
 							<span className={'channel-claim-fiat-conversion'}>
-								${myBalanceDisplay.fiatWhole}
+								{myBalanceDisplay.fiatSymbol}
+								{myBalanceDisplay.fiatWhole}
 								<span className={'decimal'}>
 									{myBalanceDisplay.fiatDecimal}
 									{myBalanceDisplay.fiatDecimalValue}

@@ -44,6 +44,7 @@ function MenuPage(): JSX.Element {
 	const options: TMenuItem[] = [
 		{ title: 'New channel', page: 'configure' },
 		{ title: 'My orders', page: 'orders' },
+		{ title: 'Settings', page: 'settings' },
 		{ title: 'Support', href: supportHref() } // TODO
 	];
 

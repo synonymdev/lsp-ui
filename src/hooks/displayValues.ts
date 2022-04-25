@@ -6,7 +6,11 @@ import {
 	TBitcoinUnit
 } from '../utils/exchange-rates';
 import { useAppSelector } from '../store/hooks';
-import { selectExchangeRates, selectExchangeRateState } from '../store/public-store';
+import {
+	selectCurrency,
+	selectExchangeRates,
+	selectExchangeRateState
+} from '../store/public-store';
 
 export default function useDisplayValues(sats: number): IDisplayValues {
 	const exchangeRates = useAppSelector(selectExchangeRates);
@@ -15,7 +19,7 @@ export default function useDisplayValues(sats: number): IDisplayValues {
 
 	// TODO allow these to be set
 	const bitcoinUnit: TBitcoinUnit = 'satoshi';
-	const selectedCurrency = 'USD';
+	const selectedCurrency = useAppSelector(selectCurrency);
 
 	useEffect((): void => {
 		// Exchange rates haven't loaded yet
