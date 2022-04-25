@@ -123,9 +123,11 @@ function ConfigurePage(): JSX.Element {
 			return true;
 		}
 
-		const errors: IFormErrors = {};
+		const { max_chan_receiving, max_chan_spending } = product;
+		const max_chan_receiving_usd = Math.floor(product.max_chan_receiving_usd);
+		const max_chan_spending_usd = Math.floor(product.max_chan_spending_usd);
 
-		// TODO check channel balance
+		const errors: IFormErrors = {};
 
 		if (channelExpiry !== '' && Number(channelExpiry) < 1) {
 			errors.channelExpiry = `Minimum channel expiry is ${product.min_chan_expiry} week${
@@ -135,26 +137,27 @@ function ConfigurePage(): JSX.Element {
 			errors.channelExpiry = `Maximum channel expiry is ${product.max_chan_expiry} weeks`;
 		}
 
-		if (Number(remoteBalance) > product.max_channel_size) {
+		if (Number(remoteBalance) > max_chan_receiving) {
 			errors.remoteBalance = `Max receiving capacity is ${numberWithSpaces(
-				product.max_channel_size
-			)} sats`;
+				max_chan_receiving
+			)} sats ($${numberWithSpaces(max_chan_receiving_usd)})`;
 		} else if (Number(remoteBalance) < product.min_channel_size) {
 			errors.remoteBalance = `Minimum receiving capacity is ${numberWithSpaces(
 				product.min_channel_size
 			)} sats`;
 		}
 
-		if (Number(localBalance) !== 0 && Number(localBalance) < product.min_channel_size) {
-			errors.localBalance = `Minimum spending balance is ${numberWithSpaces(
-				product.min_channel_size
-			)} sats`;
-		}
-
-		if (Number(localBalance) !== 0 && Number(localBalance) > product.max_channel_size) {
-			errors.localBalance = `Max spending balance is ${numberWithSpaces(
-				product.max_channel_size
-			)} sats`;
+		if (Number(localBalance) !== 0) {
+			if (Number(localBalance) > max_chan_spending) {
+				errors.localBalance = `Max spending balance is ${numberWithSpaces(
+					max_chan_spending
+				)} sats ($${max_chan_spending_usd})`;
+			} else if (Number(localBalance) < product.min_channel_size) {
+				// TODO remove this check if the min spending cap check is removed from API
+				errors.localBalance = `Minimum spending capacity is ${numberWithSpaces(
+					product.min_channel_size
+				)} sats`;
+			}
 		}
 
 		setFormErrors(errors);
@@ -171,9 +174,9 @@ function ConfigurePage(): JSX.Element {
 		const rBalance = Number(remoteBalance);
 		const lBalance = Number(localBalance);
 
-		if (rBalance < lBalance + product.min_channel_size) {
-			setRemoteBalance(`${lBalance + product.min_channel_size}`); // TODO use new min field
-		}
+		// if (rBalance < lBalance + product.min_channel_size) {
+		// 	setRemoteBalance(`${lBalance + product.min_channel_size}`); // TODO use new min field
+		// }
 	}, [localBalance]);
 
 	const onSetInput = (str: string, set: Function): void => {
@@ -208,6 +211,8 @@ function ConfigurePage(): JSX.Element {
 		if (channelExpiry) {
 			setChannelExpiry(Math.trunc(Number(channelExpiry)).toString());
 		}
+
+		setGeneralError('');
 
 		isValid()
 			.then()
