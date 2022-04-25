@@ -79,7 +79,8 @@ export default ({
 				<span className={'custom-input-label'}>{label}</span>
 				{showFiatFromSatsValue ? (
 					<span className={'custom-input-fiat-conversion'}>
-						${fiat.fiatWhole}
+						{fiat.fiatSymbol}
+						{fiat.fiatWhole}
 						<span className={'decimal'}>
 							{fiat.fiatDecimal}
 							{fiat.fiatDecimalValue}

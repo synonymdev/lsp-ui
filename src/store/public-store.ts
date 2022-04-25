@@ -6,6 +6,7 @@ import bt, {
 	IGetInfoResponse,
 	IGetOrderResponse
 } from '@synonymdev/blocktank-client';
+import { TFiatCurrency } from '../utils/exchange-rates';
 
 export type RequestState = 'idle' | 'loading' | 'error';
 
@@ -16,16 +17,23 @@ export type TPublicPage =
 	| 'claim'
 	| 'order'
 	| 'orders'
+	| 'settings'
 	| 'terms'
 	| 'geoblocked';
+
 export type TNavigationState = {
 	page: TPublicPage;
 	orderId?: string;
 	showMenu?: boolean;
 };
 
+export type TSettingsState = {
+	currency: TFiatCurrency;
+};
+
 export type TState = {
 	navigation: TNavigationState;
+	settings: TSettingsState;
 	info: {
 		state: RequestState;
 		value: IGetInfoResponse;
@@ -44,6 +52,9 @@ export const initialState: TState = {
 	navigation: {
 		page: 'configure',
 		showMenu: false
+	},
+	settings: {
+		currency: 'USD'
 	},
 	info: {
 		state: 'idle',
@@ -97,9 +108,12 @@ export const publicStore = createSlice({
 		setShowMenu: (state, action: PayloadAction<boolean>) => {
 			state.navigation.showMenu = action.payload;
 		},
+		setCurrency: (state, action: PayloadAction<TFiatCurrency>) => {
+			state.settings.currency = action.payload;
+		},
 		setOrderId: (state, action: PayloadAction<string>) => {
 			state.navigation.orderId = action.payload;
-		},
+		}
 	},
 	extraReducers: (builder) => {
 		builder
@@ -157,13 +171,14 @@ export const publicStore = createSlice({
 	}
 });
 
-export const { navigate, setShowMenu, setOrderId } = publicStore.actions;
+export const { navigate, setShowMenu, setCurrency, setOrderId } = publicStore.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state: RootState) => state.counter.value)`
 export const selectCurrentPage = (state: RootState): TPublicPage => state.bt.navigation.page;
 export const selectShowMenu = (state: RootState): boolean => !!state.bt.navigation.showMenu;
+export const selectCurrency = (state: RootState): TFiatCurrency => state.bt.settings.currency;
 export const selectCurrentOrderId = (state: RootState): string => state.bt.navigation.orderId ?? '';
 
 export const selectInfo = (state: RootState): IGetInfoResponse => state.bt.info.value;

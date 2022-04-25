@@ -1,6 +1,13 @@
 import bitcoinUnits from 'bitcoin-units';
 
-export const supportedExchangeTickers = ['USD', 'EUR', 'JPY', 'GBP'];
+export type TFiatCurrency = 'USD' | 'EUR' | 'JPY' | 'GBP';
+export const supportedFiatTickers: TFiatCurrency[] = ['USD', 'EUR', 'JPY', 'GBP'];
+export const fiatDetails: { [key: string]: { symbol: string; name: string } } = {
+	USD: { name: 'United States Dollar', symbol: '$' },
+	EUR: { name: 'Euro', symbol: '€' },
+	JPY: { name: 'Japanese Yen', symbol: '¥' },
+	GBP: { name: 'Great British Pound', symbol: '£' }
+};
 
 export type TBitcoinUnit = 'satoshi' | 'BTC' | 'mBTC' | 'μBTC';
 
@@ -10,7 +17,7 @@ export type IDisplayValues = {
 	fiatDecimal: string; // Decimal point "." or ","
 	fiatDecimalValue: string; // Value after decimal point
 	fiatSymbol: string; // $,€,£
-	fiatTicker: string; // USD, EUR
+	fiatTicker: TFiatCurrency; // USD, EUR
 	bitcoinFormatted: string;
 	bitcoinSymbol: string; // ₿, m₿, μ₿, ⚡,
 	bitcoinTicker: string; // BTC, mBTC, μBTC, Sats
@@ -26,7 +33,7 @@ export const defaultDisplayValues: IDisplayValues = {
 	fiatDecimal: '',
 	fiatDecimalValue: '',
 	fiatSymbol: '',
-	fiatTicker: '',
+	fiatTicker: 'USD',
 	bitcoinFormatted: '-',
 	bitcoinSymbol: '',
 	bitcoinTicker: '',
@@ -49,7 +56,7 @@ export const getDisplayValues = ({
 }: {
 	satoshis: number;
 	exchangeRate?: number;
-	currency: string;
+	currency: TFiatCurrency;
 	bitcoinUnit: TBitcoinUnit;
 	locale?: string;
 }): IDisplayValues => {

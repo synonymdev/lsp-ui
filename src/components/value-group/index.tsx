@@ -33,7 +33,8 @@ export default ({
 				{showFiat ? (
 					<span className={'value-group-convert'}>
 						{' '}
-						${displayValues.fiatWhole}
+						{displayValues.fiatSymbol}
+						{displayValues.fiatWhole}
 						<span className={'decimal'}>
 							{displayValues.fiatDecimal}
 							{displayValues.fiatDecimalValue}

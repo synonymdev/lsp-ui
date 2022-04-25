@@ -1,0 +1,49 @@
+.settings-container {
+  .settings-heading {
+    color: #FF6600;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 22px;
+  }
+
+  .settings-subheading {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 21px;
+    line-height: 24px;
+    color: #FFFFFF;
+  }
+
+  .currency-box {
+    cursor: pointer;
+    background: rgba(255, 174, 0, 0.08);
+    box-sizing: border-box;
+    border-radius: 8px;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+
+    .currency-name {
+      font-style: normal;
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: -0.4px;
+      color: #FFFFFF;
+    }
+
+    .currency-symbol {
+      font-style: normal;
+      font-weight: 700;
+      font-size: 34px;
+      text-align: center;
+      color: #FFFFFF;
+    }
+  }
+
+  .currency-box-active {
+    border: 1px solid #FFAE00;
+  }
+}
