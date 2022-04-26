@@ -152,6 +152,10 @@ function ConfigurePage(): JSX.Element {
 				errors.localBalance = `Max spending balance is ${numberWithSpaces(
 					max_chan_spending
 				)} sats ($${max_chan_spending_usd})`;
+			} else if (Number(localBalance) + Number(remoteBalance) > product.max_channel_size) {
+				errors.localBalance = `Total channel capacity is ${numberWithSpaces(
+					product.max_channel_size
+				)} sats`;
 			} else if (Number(localBalance) < product.min_channel_size) {
 				// TODO remove this check if the min spending cap check is removed from API
 				errors.localBalance = `Minimum spending capacity is ${numberWithSpaces(
