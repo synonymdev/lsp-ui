@@ -93,6 +93,7 @@ export default ({
 				{type === 'number' ? (
 					<NumberFormat
 						inputMode='numeric'
+						data-lpignore='true'
 						className={'custom-input'}
 						thousandSeparator={' '}
 						id={id}
