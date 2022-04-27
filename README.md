@@ -1,6 +1,16 @@
 # blocktank-ui
 
-The Blocktank Widget (standalone or embeddable) allows users to quickly configure and purchase Lightning channels and liquidity.
+### [blocktank.synonym.to](https://blocktank.synonym.to/)
+
+Blocktank is an LSP that allows businesses, apps, or online platforms to integrate, automate, and monetize services from your Lightning node. This includes channel configuration, channel purchases, channel info and more.
+
+The Blocktank Widget ([standalone](https://blocktank.synonym.to/) or [embeddable](https://widget.synonym.to/)) allows users to quickly configure and purchase Lightning channels with specific balances.
+
+## Embed on any site
+
+```html
+<iframe style='margin: auto; min-width: 450px; min-height: 850px;' id="widget" src="https://widget.synonym.to/" seamless></iframe>
+```
 
 ## Available Scripts
 
