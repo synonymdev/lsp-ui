@@ -35,3 +35,10 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
+
+
+## Dockerise for Umbrel etc
+
+`docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t <TARGET>:<VERSION> --push .`
+
+
