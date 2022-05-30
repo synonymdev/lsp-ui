@@ -41,18 +41,16 @@ export default ({
 	// TODO use size
 
 	let containerClass = 'action-button-container ';
-	let buttonTextClass = 'action-button-text '
+	let buttonTextClass = 'action-button-text ';
 	if (size) {
-		containerClass += `action-button-container-${size}`
+		containerClass += `action-button-container-${size}`;
 		buttonTextClass += `action-button-text-${size}`;
 	}
 
 	const button = (
 		<div className={containerClass} onClick={!disabled ? onClick : undefined}>
 			{ButtonIcon ? <ButtonIcon className={'action-button-icon'} /> : null}
-			<span className={buttonTextClass}>
-				{isCopied ? 'Copied!' : children}
-			</span>
+			<span className={buttonTextClass}>{isCopied ? 'Copied!' : children}</span>
 		</div>
 	);
 

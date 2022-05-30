@@ -31,9 +31,13 @@ export default ({ children }): ReactElement => (
 				<Col xl={6} lg={5} md={12} sm={12} className={'info-col'}>
 					<div className={'info-col-content'}>
 						<img src={'/images/logo.svg'} alt={'Blocktank'} />
-						<h1 className={'webpage-heading'}>Your full-service Lightning Service Provider (LSP)</h1>
+						<h1 className={'webpage-heading'}>
+							Your full-service Lightning Service Provider (LSP)
+						</h1>
 
-						<h4 className={'webpage-subheading'}>Lightning Network connections and liquidity at any size, any time.</h4>
+						<h4 className={'webpage-subheading'}>
+							Lightning Network connections and liquidity at any size, any time.
+						</h4>
 
 						<p>
 							Blocktank allows you to open a connection to the Lightning Network and receive or send

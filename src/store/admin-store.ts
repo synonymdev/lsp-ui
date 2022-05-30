@@ -50,12 +50,12 @@ export const initialState: TAdminState = {
 
 export const login = createAsyncThunk(
 	'btAdmin/login',
-	async(req: IAdminLoginRequest): Promise<IAdminLoginResponse> => {
+	async (req: IAdminLoginRequest): Promise<IAdminLoginResponse> => {
 		return await btAdmin.login(req);
 	}
 );
 
-export const refreshOrders = createAsyncThunk('btAdmin/refreshOrders', async() => {
+export const refreshOrders = createAsyncThunk('btAdmin/refreshOrders', async () => {
 	if (!btAdmin.getSessionKey()) {
 		throw new Error('Missing session key');
 	}

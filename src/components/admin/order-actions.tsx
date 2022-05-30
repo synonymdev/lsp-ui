@@ -36,7 +36,7 @@ export default ({ orderId }: { orderId: string }): JSX.Element => {
 		default:
 	}
 
-	const onSubmit = async(): Promise<void> => {
+	const onSubmit = async (): Promise<void> => {
 		setIsSubmitting(true);
 		try {
 			switch (showActionModalType) {
