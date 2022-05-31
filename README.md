@@ -8,8 +8,18 @@ The Blocktank Widget ([standalone](https://blocktank.synonym.to/) or [embeddable
 
 ## Embed on any site
 
+Recommended resolution for your embedded widget:
+
+- width - `480px`
+- height - `800px`
+
 ```html
-<iframe style='margin: auto; min-width: 450px; min-height: 850px;' id="widget" src="https://widget.synonym.to/" seamless></iframe>
+<iframe
+	style="margin: auto; min-width: 480px; min-height: 800px;"
+	id="widget"
+	src="https://widget.synonym.to/"
+	seamless
+></iframe>
 ```
 
 ## Available Scripts
