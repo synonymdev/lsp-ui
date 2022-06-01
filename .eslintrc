@@ -1,50 +1,41 @@
 {
-  "root": true,
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": [
-      "./tsconfig.json"
-    ]
-  },
-  "plugins": [
-    "@typescript-eslint",
-    "prettier"
-  ],
-  "extends": [
-    "recommended/esnext",
-    "standard-with-typescript",
-    "prettier",
-    "prettier/@typescript-eslint",
-    "prettier/standard"
-  ],
-  "rules": {
-    "no-param-reassign": "warn",
-    "no-shadow": "error",
-    "prettier/prettier": "warn",
-    "indent": [
-      2,
-      "tab",
-      { "SwitchCase": 1, "ignoredNodes": ["ConditionalExpression"] }
-    ],
-    "no-alert": "warn",
-    "@typescript-eslint/ban-types": ["warn", { "types": { "null": null } }],
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-non-null-assertion": "warn",
-    "@typescript-eslint/ban-ts-comment": "error",
-    "@typescript-eslint/switch-exhaustiveness-check": "error",
-    "@typescript-eslint/consistent-type-definitions": ["error", "type"],
-    "@typescript-eslint/space-before-function-paren": ["warn", "never"],
-    "@typescript-eslint/no-unused-vars": "warn",
-    "@typescript-eslint/strict-boolean-expressions": "off",
-    "@typescript-eslint/naming-convention": "off",
-    "@typescript-eslint/restrict-template-expressions": "off",
-    "@typescript-eslint/no-floating-promises": "off"
-  },
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
-    }
-  }
+	"root": true,
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"project": ["./tsconfig.json"]
+	},
+	"plugins": ["@typescript-eslint", "prettier"],
+	"extends": [
+		"recommended/esnext",
+		"standard-with-typescript",
+		"prettier",
+		"prettier/@typescript-eslint",
+		"prettier/standard"
+	],
+	"rules": {
+		"no-param-reassign": "warn",
+		"no-shadow": "error",
+		"prettier/prettier": "warn",
+		"indent": "off",
+		"no-alert": "off",
+		"@typescript-eslint/ban-types": ["off", { "types": { "null": null } }],
+		"@typescript-eslint/no-explicit-any": "off",
+		"@typescript-eslint/no-non-null-assertion": "warn",
+		"@typescript-eslint/ban-ts-comment": "error",
+		"@typescript-eslint/switch-exhaustiveness-check": "error",
+		"@typescript-eslint/consistent-type-definitions": ["error", "type"],
+		"@typescript-eslint/space-before-function-paren": "off",
+		"@typescript-eslint/no-unused-vars": "off",
+		"@typescript-eslint/strict-boolean-expressions": "off",
+		"@typescript-eslint/naming-convention": "off",
+		"@typescript-eslint/restrict-template-expressions": "off",
+		"@typescript-eslint/no-floating-promises": "off"
+	},
+	"settings": {
+		"import/resolver": {
+			"node": {
+				"extensions": [".js", ".jsx", ".ts", ".tsx"]
+			}
+		}
+	}
 }

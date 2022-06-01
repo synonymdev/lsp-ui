@@ -105,9 +105,9 @@ function OrderPage(): JSX.Element {
 
 							{onchain_payments
 								? onchain_payments.map((payment) => (
-									<Card.Text key={payment.hash}>
+										<Card.Text key={payment.hash}>
 											&bull; {payment.amount_base} (fee {payment.fee_base}) {txLink(payment.hash)}
-									</Card.Text>
+										</Card.Text>
 								  ))
 								: null}
 						</Card.Body>

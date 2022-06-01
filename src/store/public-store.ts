@@ -74,23 +74,23 @@ export const initialState: TState = {
 	}
 };
 
-export const refreshInfo = createAsyncThunk('bt/refreshInfo', async() => {
+export const refreshInfo = createAsyncThunk('bt/refreshInfo', async () => {
 	const response = await bt.getInfo();
 	// The value we return becomes the `fulfilled` action payload
 	return response;
 });
 
-export const refreshOrder = createAsyncThunk('bt/refreshOrder', async(orderId: string) => {
+export const refreshOrder = createAsyncThunk('bt/refreshOrder', async (orderId: string) => {
 	const response = await bt.getOrder(orderId);
 	return response;
 });
 
-export const placeOrder = createAsyncThunk('bt/placeOrder', async(req: IBuyChannelRequest) => {
+export const placeOrder = createAsyncThunk('bt/placeOrder', async (req: IBuyChannelRequest) => {
 	const response = await bt.buyChannel(req);
 	return response;
 });
 
-export const refreshExchangeRates = createAsyncThunk('bt/refreshExchangeRates', async() => {
+export const refreshExchangeRates = createAsyncThunk('bt/refreshExchangeRates', async () => {
 	const response = await bt.getRates();
 	return response;
 });

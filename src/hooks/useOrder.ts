@@ -9,10 +9,12 @@ import {
 	selectOrdersState
 } from '../store/public-store';
 
-export default function useOrder(): {
+type UseOrder = {
 	order: IGetOrderResponse | undefined;
 	orderState: RequestState;
-	} {
+};
+
+export default function useOrder(): UseOrder {
 	const [order, setOrder] = useState<IGetOrderResponse | undefined>(undefined);
 	const orderId = useAppSelector(selectCurrentOrderId);
 	const orders = useAppSelector(selectOrders);
