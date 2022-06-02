@@ -99,8 +99,9 @@ function OrderPage(): JSX.Element {
 			heading = 'Channel failed';
 			headerMessage = (
 				<span>
-					Unfortunately, we were unable to open the channel. It could be the case that your node
-					dropped connection or is offline. Please contact {supportLink} for assistance.
+					We were unable to open the channel. Your node might not be properly configured, or it is
+					offline, or behind a firewall, or not fully synced. Please contact {supportLink} for
+					assistance.
 				</span>
 			);
 			showSupportButtons = true;
