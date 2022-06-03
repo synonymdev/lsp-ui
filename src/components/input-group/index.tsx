@@ -42,6 +42,7 @@ export default ({
 	append,
 	showFiatFromSatsValue,
 	error,
+	onErrorClick,
 	onFocus,
 	onBlur,
 	placeholder,
@@ -55,6 +56,7 @@ export default ({
 	append?: string;
 	showFiatFromSatsValue?: boolean;
 	error?: string;
+	onErrorClick?: Function | undefined;
 	onFocus?: ChangeEventHandler;
 	onBlur?: ChangeEventHandler;
 	placeholder?: string;
@@ -122,7 +124,7 @@ export default ({
 				</span>
 			</div>
 
-			<Error>{error}</Error>
+			<Error onErrorClick={onErrorClick}>{error}</Error>
 		</div>
 	);
 };

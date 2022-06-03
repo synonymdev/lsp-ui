@@ -21,7 +21,7 @@ import Error from '../../../components/inline-error';
 import { numberWithSpaces } from '../../../utils/helpers';
 
 export type IFormErrors = {
-	[key: string]: string;
+	[key: string]: any;
 };
 
 const inboundTip: TooltipProps = {
@@ -105,9 +105,8 @@ function ConfigurePage(): JSX.Element {
 					dispatch(navigate({ page: 'confirm', orderId: order_id }));
 				})
 				.catch((refreshError) => alert(refreshError));
-		} catch (error) {
+		} catch (error: any) {
 			setIsSubmitting(false);
-			console.log(error);
 			if (error.toString().indexOf('GEO_BLOCKED') > -1) {
 				dispatch(navigate({ page: 'geoblocked' }));
 			} else {
@@ -130,32 +129,47 @@ function ConfigurePage(): JSX.Element {
 		const errors: IFormErrors = {};
 
 		if (channelExpiry !== '' && Number(channelExpiry) < 1) {
-			errors.channelExpiry = `Minimum channel expiry is ${product.min_chan_expiry} week${
-				product.min_chan_expiry !== 1 ? 's' : ''
-			}`;
+			errors.channelExpiry = {
+				message: `Minimum channel expiry is ${product.min_chan_expiry} week${
+					product.min_chan_expiry !== 1 ? 's' : ''
+				}`,
+				value: product.min_chan_expiry
+			};
 		} else if (Number(channelExpiry) > product.max_chan_expiry) {
-			errors.channelExpiry = `Maximum channel expiry is ${product.max_chan_expiry} weeks`;
+			errors.channelExpiry = {
+				message: `Maximum channel expiry is ${product.max_chan_expiry} weeks`,
+				value: product.max_chan_expiry
+			};
 		}
 
 		if (Number(remoteBalance) > max_chan_receiving) {
-			errors.remoteBalance = `Max receiving capacity is ${numberWithSpaces(
-				max_chan_receiving
-			)} sats ($${numberWithSpaces(max_chan_receiving_usd)})`;
+			errors.remoteBalance = {
+				message: `Max receiving capacity is ${numberWithSpaces(
+					max_chan_receiving
+				)} sats ($${numberWithSpaces(max_chan_receiving_usd)})`,
+				value: max_chan_receiving
+			};
 		} else if (Number(remoteBalance) < product.min_channel_size) {
-			errors.remoteBalance = `Minimum receiving capacity is ${numberWithSpaces(
-				product.min_channel_size
-			)} sats`;
+			errors.remoteBalance = {
+				message: `Minimum receiving capacity is ${numberWithSpaces(product.min_channel_size)} sats`,
+				value: product.min_channel_size
+			};
 		}
 
 		if (Number(localBalance) !== 0) {
 			if (Number(localBalance) > max_chan_spending) {
-				errors.localBalance = `Max spending balance is ${numberWithSpaces(
-					max_chan_spending
-				)} sats ($${max_chan_spending_usd})`;
+				errors.localBalance = {
+					message: `Max spending balance is ${numberWithSpaces(
+						max_chan_spending
+					)} sats ($${max_chan_spending_usd})`,
+					value: max_chan_spending
+				};
 			} else if (Number(localBalance) + Number(remoteBalance) > product.max_channel_size) {
-				errors.localBalance = `Total channel capacity is ${numberWithSpaces(
-					product.max_channel_size
-				)} sats`;
+				const max_spending_balance = product.max_channel_size - Number(remoteBalance);
+				errors.localBalance = {
+					message: `Total channel capacity is ${numberWithSpaces(product.max_channel_size)} sats`,
+					value: max_spending_balance
+				};
 			}
 		}
 
@@ -236,7 +250,11 @@ function ConfigurePage(): JSX.Element {
 						label={'My receiving capacity'}
 						append={'sats'}
 						showFiatFromSatsValue
-						error={formErrors.remoteBalance}
+						error={formErrors.remoteBalance?.message}
+						onErrorClick={() => {
+							setRemoteBalance(Math.trunc(Number(formErrors.remoteBalance?.value)).toString());
+							setFormErrors({});
+						}}
 						onBlur={onBlur}
 						tooltip={inboundTip}
 					/>
@@ -250,7 +268,11 @@ function ConfigurePage(): JSX.Element {
 						label={'My spending balance'}
 						append={'sats'}
 						showFiatFromSatsValue
-						error={formErrors.localBalance}
+						error={formErrors.localBalance?.message}
+						onErrorClick={() => {
+							setLocalBalance(Math.trunc(Number(formErrors.localBalance?.value) - 1).toString());
+							setFormErrors({});
+						}}
 						onBlur={onBlur}
 						tooltip={spendingTip}
 					/>
@@ -263,7 +285,11 @@ function ConfigurePage(): JSX.Element {
 						id={'channel-expiry'}
 						label={'Keep my channel open for at least'}
 						append={'weeks'}
-						error={formErrors.channelExpiry}
+						error={formErrors.channelExpiry?.message}
+						onErrorClick={() => {
+							setChannelExpiry(Math.trunc(Number(formErrors.channelExpiry?.value)).toString());
+							setFormErrors({});
+						}}
 						onBlur={onBlur}
 						tooltip={durationTip}
 					/>

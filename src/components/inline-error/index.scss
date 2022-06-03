@@ -1,20 +1,26 @@
 .custom-error-container {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  background-color: rgba(233, 81, 100, 0.1);
-  border: 2px solid #E95164;
-  box-sizing: border-box;
-  border-radius: 10px;
-  padding: 8px 18px 8px 18px;
-  color: #E95164;
-  font-weight: 600;
-  font-size: 15px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	background-color: rgba(233, 81, 100, 0.1);
+	border: 2px solid #e95164;
+	box-sizing: border-box;
+	border-radius: 10px;
+	padding: 8px 18px 8px 18px;
+	color: #e95164;
+	font-weight: 600;
+	font-size: 15px;
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 
-  .custom-error-icon {
-    margin-left: 6px;
-  }
+	.custom-error-icon {
+		margin-left: 6px;
+	}
+}
+.error-cursor-mouseover {
+	cursor: pointer;
+	&:hover {
+		cursor: pointer;
+	}
 }
