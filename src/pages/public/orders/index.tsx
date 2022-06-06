@@ -21,7 +21,7 @@ import { ReactComponent as LightningRed } from '../../../icons/lightning-red.svg
 import './index.scss';
 
 const ListItem = ({
-	key,
+	id,
 	Icon,
 	title,
 	subHeading,
@@ -30,7 +30,7 @@ const ListItem = ({
 	buttonText,
 	hasScrollBar
 }: {
-	key: string;
+	id: string;
 	Icon: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 	title: string;
 	subHeading: string;
@@ -39,8 +39,12 @@ const ListItem = ({
 	buttonText: string;
 	hasScrollBar: boolean;
 }): JSX.Element => {
+	const randomStringId = Math.random().toString(36).substring(7);
 	return (
-		<div key={key} className={`order-list-item ${hasScrollBar ? 'with-scrollbar' : ''}`}>
+		<div
+			key={`${id}-${randomStringId}`}
+			className={`order-list-item ${hasScrollBar ? 'with-scrollbar' : ''}`}
+		>
 			<p className={'order-list-item-date'}>{title}</p>
 			<div className={'order-list-content'}>
 				<div className={'order-list-details'}>
@@ -86,6 +90,7 @@ function OrdersPage(): JSX.Element {
 				{orders.length === 0 ? (
 					<ListItem
 						key={'no-order'}
+						id={'no-order'}
 						Icon={LightningActive}
 						title={'No orders yet'}
 						subHeading={'New channel'}
@@ -134,6 +139,7 @@ function OrdersPage(): JSX.Element {
 					return (
 						<ListItem
 							key={_id}
+							id={_id}
 							Icon={Icon}
 							onClick={() => dispatch(navigate({ page, orderId: _id }))}
 							title={date.toLocaleString('en-US', {
