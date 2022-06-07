@@ -24,9 +24,9 @@ Recommended resolution for your embedded widget:
 
 ## Environment Variables
 
-Create the file `.env` at the root folder.
+Create `.env` file at the root folder.
 
-Get information from `blocktank client` mainnet(true) or testnet (false):
+Get information from `blocktank-client` mainnet **(true)** or testnet **(false)**:
 
 ```
 REACT_APP_MAINNET=true
