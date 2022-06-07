@@ -22,6 +22,16 @@ Recommended resolution for your embedded widget:
 ></iframe>
 ```
 
+## Environment Variables
+
+Create the file `.env` at the root folder.
+
+Get information from `blocktank client` mainnet(true) or testnet (false):
+
+```
+REACT_APP_MAINNET=true
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
