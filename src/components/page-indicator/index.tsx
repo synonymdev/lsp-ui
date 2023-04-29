@@ -10,7 +10,7 @@ export default ({ values }: { values: TPageIndicator }): JSX.Element => {
 	const { total, active } = values;
 	const dots: ReactElement[] = [];
 	for (let index = 0; index < total; index++) {
-		dots.push(<div className={`page-indicator ${index === active ? 'active' : ''}`} />);
+		dots.push(<div key={index} className={`page-indicator ${index === active ? 'active' : ''}`} />);
 	}
 
 	return <div className={'page-indicator-container'}>{dots}</div>;
