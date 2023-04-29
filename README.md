@@ -1,10 +1,12 @@
-# blocktank-ui
+<p align="center">
+  <img width="320" height="125" src="public/images/logo.svg" alt="Logo">
+</p>
 
-### [blocktank.synonym.to](https://blocktank.synonym.to/)
+# Blocktank UI
 
-Blocktank is an LSP that allows businesses, apps, or online platforms to integrate, automate, and monetize services from your Lightning node. This includes channel configuration, channel purchases, channel info and more.
+[Blocktank](https://blocktank.to/) is an LSP that allows businesses, apps, or online platforms to integrate, automate, and monetize services from your Lightning node. This includes channel configuration, channel purchases, channel info and more.
 
-The Blocktank Widget ([standalone](https://blocktank.synonym.to/) or [embeddable](https://widget.synonym.to/)) allows users to quickly configure and purchase Lightning channels with specific balances.
+The Blocktank Widget ([standalone](https://blocktank.to/#widget) or [embeddable](https://widget.synonym.to/)) allows users to quickly configure and purchase Lightning channels with specific balances.
 
 ## Embed on any site
 
@@ -22,6 +24,14 @@ Recommended resolution for your embedded widget:
 ></iframe>
 ```
 
+## Set environment variables
+
+The following environment variables are required to run the app:
+
+```bash
+REACT_APP_MAINNET=true // or false
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -36,12 +46,21 @@ You will also see any lint errors in the console.
 
 ### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
+Launches the test runner in the interactive watch mode.
 
 ### `yarn build`
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+### `yarn build:mainnet` and `yarn build:testnet`
+
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.\
+It also sets the `REACT_APP_MAINNET` environment variable to `true` or `false` respectively.
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
