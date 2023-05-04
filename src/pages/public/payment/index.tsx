@@ -12,6 +12,7 @@ import { ReactComponent as LightningIcon } from '../../../icons/lightning.svg';
 import { ReactComponent as LightningIconPurple } from '../../../icons/lightning-purple.svg';
 import { ReactComponent as BitcoinIconActive } from '../../../icons/bitcoin-active.svg';
 import { ReactComponent as BitcoinIcon } from '../../../icons/bitcoin.svg';
+import { ReactComponent as BitcoinIconActivePurple } from '../../../icons/bitcoin-active-purple.svg';
 import ErrorPage from '../error';
 import IconRing from '../../../components/icon-ring';
 import useOrder from '../../../hooks/useOrder';
@@ -129,7 +130,13 @@ function PaymentPage(): JSX.Element {
 							eventKey='onchain'
 							title='On-chain'
 							icon={<BitcoinIcon />}
-							iconActive={<BitcoinIconActive />}
+							iconActive={
+								themeParam === 'ln-dark' || themeParam === 'ln-light' ? (
+									<BitcoinIconActivePurple />
+								) : (
+									<BitcoinIconActive />
+								)
+							}
 						>
 							<PaymentRequest
 								orderId={_id}

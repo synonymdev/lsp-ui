@@ -26,7 +26,8 @@
 	}
 
 	.form-button,
-	.channel-balance-remote {
+	.channel-balance-remote,
+	::-webkit-scrollbar-thumb {
 		background: #6d28d9;
 	}
 
@@ -45,6 +46,7 @@
 
 	.custom-checkbox-container .custom-label a,
 	.menu-container .menu-terms-link-container a,
+	.order-state-container .order-state-message a,
 	.custom-tabs-container .custom-tabs-heading-container.active,
 	.settings-container .settings-heading {
 		color: #6d28d9;
