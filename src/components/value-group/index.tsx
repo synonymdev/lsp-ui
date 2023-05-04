@@ -28,7 +28,7 @@ export default ({
 	const themeParam = new URLSearchParams(window.location.search).get('theme') ?? '';
 
 	const PrependIcon =
-		Icon ?? (themeParam === 'ln-dark' || themeParam === 'ln-light') ? SatsIconPurple : SatsIcon;
+		themeParam === 'ln-dark' || themeParam === 'ln-light' ? SatsIconPurple : SatsIcon;
 
 	return (
 		<div className={'value-group-container'}>
