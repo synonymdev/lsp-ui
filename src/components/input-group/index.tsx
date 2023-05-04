@@ -1,7 +1,9 @@
 import React, { ChangeEventHandler, ReactElement, useState } from 'react';
 import NumberFormat from 'react-number-format';
 import { ReactComponent as SatsIcon } from '../../icons/lightning-active.svg';
+import { ReactComponent as SatsIconPurple } from '../../icons/lightning-purple.svg';
 import { ReactComponent as WeeksIcon } from '../../icons/weeks.svg';
+import { ReactComponent as WeeksIconPurple } from '../../icons/weeks-purple.svg';
 import Error from '../inline-error';
 import useDisplayValues from '../../hooks/displayValues';
 import Tooltip, { TooltipProps } from '../tooltip';
@@ -13,13 +15,25 @@ const AppendInput = ({ children }: { children: string | undefined }): JSX.Elemen
 		return <></>;
 	}
 
+	const themeParam = new URLSearchParams(window.location.search).get('theme') ?? '';
+
 	let icon: ReactElement | undefined;
 	switch (children.toLocaleLowerCase()) {
 		case 'sats': {
+			if (themeParam === 'ln-light' || themeParam === 'ln-dark') {
+				icon = <SatsIconPurple />;
+				break;
+			}
+
 			icon = <SatsIcon />;
 			break;
 		}
 		case 'weeks': {
+			if (themeParam === 'ln-light' || themeParam === 'ln-dark') {
+				icon = <WeeksIconPurple />;
+				break;
+			}
+
 			icon = <WeeksIcon />;
 			break;
 		}

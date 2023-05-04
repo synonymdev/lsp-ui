@@ -9,6 +9,7 @@ import PaymentRequest from '../../../components/payment-request';
 import Heading from '../../../components/heading';
 import { ReactComponent as LightningIconActive } from '../../../icons/lightning-active.svg';
 import { ReactComponent as LightningIcon } from '../../../icons/lightning.svg';
+import { ReactComponent as LightningIconPurple } from '../../../icons/lightning-purple.svg';
 import { ReactComponent as BitcoinIconActive } from '../../../icons/bitcoin-active.svg';
 import { ReactComponent as BitcoinIcon } from '../../../icons/bitcoin.svg';
 import ErrorPage from '../error';
@@ -81,6 +82,7 @@ function PaymentPage(): JSX.Element {
 			// Navigate to status view
 			dispatch(navigate({ page: 'order' }));
 	}
+	const themeParam = new URLSearchParams(window.location.search).get('theme') ?? '';
 
 	return (
 		<FormCard
@@ -106,7 +108,13 @@ function PaymentPage(): JSX.Element {
 							eventKey='lightning'
 							title='Lightning'
 							icon={<LightningIcon />}
-							iconActive={<LightningIconActive />}
+							iconActive={
+								themeParam === 'ln-dark' || themeParam === 'ln-light' ? (
+									<LightningIconPurple />
+								) : (
+									<LightningIconActive />
+								)
+							}
 						>
 							<PaymentRequest
 								orderId={_id}

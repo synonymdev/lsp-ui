@@ -55,18 +55,26 @@ export const Widget = (): JSX.Element => {
 };
 
 function PublicPages(): JSX.Element {
+	const themeParam = new URLSearchParams(window.location.search).get('theme') ?? '';
+
 	// Check url param, check global var and check host name to determine if we only serve widget card
 	if (
 		new URLSearchParams(window.location.search).get('embed') === 'true' ||
 		(window as any).embedwidget === true ||
 		window.location.hostname.includes('widget.')
 	) {
-		return <Widget />;
+		return (
+			<div className={themeParam}>
+				<Widget />
+			</div>
+		);
 	}
 
 	return (
 		<FullWebpageContainer>
-			<Widget />
+			<div className={themeParam}>
+				<Widget />
+			</div>
 		</FullWebpageContainer>
 	);
 }

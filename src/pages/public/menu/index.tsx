@@ -4,6 +4,7 @@ import { navigate, TPublicPage } from '../../../store/public-store';
 import FormCard from '../../../components/form-card';
 import Divider from '../../../components/divider';
 import { ReactComponent as RightIcon } from '../../../icons/right-arrow-white.svg';
+import { ReactComponent as RightIconPurple } from '../../../icons/right-arrow-purple.svg';
 
 import './index.scss';
 import { supportHref } from '../../../settings';
@@ -14,12 +15,17 @@ const MenuItem = ({ item }: { item: TMenuItem }): JSX.Element => {
 	const dispatch = useAppDispatch();
 
 	const { page, href, title } = item;
+	const themeParam = new URLSearchParams(window.location.search).get('theme') ?? '';
 
 	const entry = (
 		<>
 			<div className={'menu-item-line'}>
 				<span className={'menu-item-title'}>{title}</span>
-				<RightIcon />
+				{themeParam === 'ln-dark' || themeParam === 'ln-light' ? (
+					<RightIconPurple />
+				) : (
+					<RightIcon />
+				)}
 			</div>
 			<Divider />
 		</>

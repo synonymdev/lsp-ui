@@ -1,0 +1,134 @@
+// Themes Overwrites
+
+// Lightning Dark Theme
+.ln-dark {
+	.form-card {
+		background: #000000;
+	}
+	.glowy1,
+	.glowy2,
+	.glowy3 {
+		display: none;
+	}
+
+	.custom-input-group-container .custom-input-container {
+		background: #111729;
+	}
+
+	.page-heading span,
+	.menu-container .menu-list .menu-item-line .menu-item-title {
+		background: #ffffff;
+		background-clip: text;
+	}
+
+	.custom-divider {
+		border-color: transparent;
+	}
+
+	.form-button,
+	.channel-balance-remote {
+		background: #6d28d9;
+	}
+
+	.custom-input-group-container .custom-input-label-container .custom-input-label,
+	.custom-input-group-container .custom-input-label-container .custom-input-fiat-conversion,
+	.custom-input-group-container
+		.custom-input-container
+		.custom-input-append-container
+		.custom-input-append,
+	.value-group-container .value-group-row1 .value-group-label,
+	.payment-page-subheading,
+	.orders-container .order-list-item .order-list-content .order-list-details .order-status-heading,
+	.payment-request-container .payment-request-title {
+		color: #e2e8f0;
+	}
+
+	.custom-checkbox-container .custom-label a,
+	.menu-container .menu-terms-link-container a,
+	.custom-tabs-container .custom-tabs-heading-container.active,
+	.settings-container .settings-heading {
+		color: #6d28d9;
+	}
+	.settings-container .currency-box-active {
+		border: 1px solid #6d28d9;
+	}
+	.settings-container .currency-box {
+		background: #6d28d92e;
+	}
+}
+
+// Lightning Plus Light Theme
+
+.ln-light {
+	.form-card {
+		background: #ffffff;
+	}
+	.glowy1,
+	.glowy2,
+	.glowy3 {
+		display: none;
+	}
+
+	.custom-input-group-container .custom-input-container {
+		background: #e3e8ef;
+	}
+
+	.custom-input-append,
+	.action-button-text,
+	.order-state-container .order-state-message a {
+		color: #6d28d9 !important;
+	}
+
+	.page-heading span,
+	.menu-container .menu-list .menu-item-line .menu-item-title {
+		background: #6d28d9;
+		background-clip: text;
+	}
+
+	.custom-divider {
+		border-color: rgba(51, 65, 85, 0.1);
+	}
+
+	.form-button,
+	.channel-balance-remote,
+	::-webkit-scrollbar-thumb {
+		background: #6d28d9;
+	}
+
+	.header-title,
+	.custom-input-group-container .custom-input-label-container .custom-input-label,
+	.custom-input-group-container .custom-input-label-container .custom-input-fiat-conversion,
+	.custom-input-group-container
+		.custom-input-container
+		.custom-input-append-container
+		.custom-input-append,
+	.value-group-container .value-group-row1 .value-group-label,
+	.payment-page-subheading,
+	.orders-container .order-list-item .order-list-content .order-list-details .order-status-heading,
+	.payment-request-container .payment-request-title,
+	.settings-container .settings-subheading,
+	.value-group-container .value-group-row2 .value-group-sats,
+	.custom-input-group-container .custom-input-container .custom-input,
+	.orders-container .order-list-item .order-list-content .order-list-details .order-status-value,
+	.payment-request-container .payment-request-middle .payment-request-middle-value {
+		color: #334155;
+	}
+
+	.custom-tabs-container .custom-tabs-heading-container .custom-tabs-heading {
+		color: #8e8e93;
+	}
+
+	.custom-checkbox-container .custom-label a,
+	.menu-container .menu-terms-link-container a,
+	.custom-tabs-container .custom-tabs-heading-container.active,
+	.custom-tabs-container .custom-tabs-heading-container.active span,
+	.settings-container .settings-heading {
+		color: #6d28d9 !important;
+	}
+	.settings-container .currency-box-active {
+		border: 1px solid #6d28d9;
+	}
+	.settings-container .currency-box {
+		background: #6d28d92e;
+	}
+}
