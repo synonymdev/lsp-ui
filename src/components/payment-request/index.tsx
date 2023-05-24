@@ -7,7 +7,9 @@ import './index.scss';
 import { clipCenter, orderExpiryFormat } from '../../utils/helpers';
 import Tooltip from '../tooltip';
 import { ReactComponent as LightningIconActive } from '../../icons/lightning-active.svg';
+import { ReactComponent as LightningIconActivePurple } from '../../icons/lightning-purple.svg';
 import { ReactComponent as TransferIconActive } from '../../icons/transfer-active.svg';
+import { ReactComponent as TransferIconActivePurple } from '../../icons/transfer-active-purple.svg';
 import useDisplayValues from '../../hooks/displayValues';
 
 const qrSize = 200;
@@ -73,6 +75,8 @@ export default ({
 		copyButtonTitle = 'Copy invoice';
 	}
 
+	const themeParam = new URLSearchParams(window.location.search).get('theme') ?? '';
+
 	return (
 		<div className='payment-request-container'>
 			<div className='payment-request-top'>
@@ -100,14 +104,22 @@ export default ({
 				<div>
 					<h4 className={'payment-request-title'}>Total amount to pay</h4>
 					<span className={'payment-request-middle-value'}>
-						<LightningIconActive className={'payment-request-middle-value-icon'} />
+						{themeParam === 'ln-dark' || themeParam === 'ln-light' ? (
+							<LightningIconActivePurple className={'payment-request-middle-value-icon'} />
+						) : (
+							<LightningIconActive className={'payment-request-middle-value-icon'} />
+						)}
 						{orderTotalDisplay.bitcoinFormatted}
 					</span>
 				</div>
 				<div>
 					<h4 className={'payment-request-title'}>Order status</h4>
 					<span className={'payment-request-middle-value'}>
-						<TransferIconActive className={'payment-request-middle-value-icon'} />
+						{themeParam === 'ln-dark' || themeParam === 'ln-light' ? (
+							<TransferIconActivePurple className={'payment-request-middle-value-icon'} />
+						) : (
+							<TransferIconActive className={'payment-request-middle-value-icon'} />
+						)}
 						{orderStatus}
 					</span>
 				</div>

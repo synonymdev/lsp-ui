@@ -1,5 +1,6 @@
 import React from 'react';
 import { ReactComponent as SatsIcon } from '../../icons/lightning-active.svg';
+import { ReactComponent as SatsIconPurple } from '../../icons/lightning-purple.svg';
 import useDisplayValues from '../../hooks/displayValues';
 
 import './index.scss';
@@ -24,7 +25,10 @@ export default ({
 	// Display as is with no formatting if it's a string
 	const formattedValue = typeof value === 'string' ? value : displayValues.bitcoinFormatted;
 
-	const PrependIcon = Icon ?? SatsIcon;
+	const themeParam = new URLSearchParams(window.location.search).get('theme') ?? '';
+
+	const PrependIcon =
+		themeParam === 'ln-dark' || themeParam === 'ln-light' ? SatsIconPurple : SatsIcon;
 
 	return (
 		<div className={'value-group-container'}>

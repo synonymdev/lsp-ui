@@ -13,6 +13,7 @@ import Spinner from '../../../components/spinner';
 import Divider from '../../../components/divider';
 import Button from '../../../components/action-button';
 import { ReactComponent as TransferActive } from '../../../icons/transfer-active.svg';
+import { ReactComponent as TransferIconActivePurple } from '../../../icons/transfer-active-purple.svg';
 import { ReactComponent as Lightning } from '../../../icons/lightning.svg';
 import { ReactComponent as LightningActive } from '../../../icons/lightning-active.svg';
 import { ReactComponent as LightningGreen } from '../../../icons/lightning-green.svg';
@@ -110,7 +111,13 @@ function OrdersPage(): JSX.Element {
 						case 0: {
 							// Awaiting payment
 							buttonText = 'Pay now';
-							Icon = TransferActive;
+
+							const themeParam = new URLSearchParams(window.location.search).get('theme') ?? '';
+							if (themeParam === 'ln-dark' || themeParam === 'ln-light') {
+								Icon = TransferIconActivePurple;
+							} else {
+								Icon = TransferActive;
+							}
 							page = 'payment';
 							break;
 						}
