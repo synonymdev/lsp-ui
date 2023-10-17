@@ -1,63 +1,68 @@
 .form-card {
-  width: 100%;
-  max-width: 480px;
-  min-height: 800px;
-  border-radius: 15px;
-  background: rgba(16, 16, 16, 0.92);
-  background-clip: content-box;
-  overflow: hidden;
-  box-shadow: 0px 25px 50px rgba(0, 0, 0, 0.25);
+	width: 480px;
+	min-height: 800px;
+	border-radius: 15px;
+	background: rgba(16, 16, 16, 0.92);
+	background-clip: content-box;
+	overflow: hidden;
+	box-shadow: 0px 25px 50px rgba(0, 0, 0, 0.25);
 
-  .form-card-container {
-    padding: 40px 40px 0px 40px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    justify-content: space-between;
+	.form-card-container {
+		padding: 40px 40px 0px 40px;
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		justify-content: space-between;
 
-    .form-card-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-  }
+		.form-card-content {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+		}
+	}
 
-  .glowy1 {
-    position: absolute;
-    width: 257.55px;
-    height: 252.83px;
-    left: 70%;
-    top: 70%;
+	.glowy1 {
+		position: absolute;
+		width: 257.55px;
+		height: 252.83px;
+		left: 70%;
+		top: 70%;
 
-    background: rgba(87, 165, 252, 0.41);
-    opacity: 0.8;
-    filter: blur(120px);
-    transform: rotate(45deg);
-  }
+		background: rgba(87, 165, 252, 0.41);
+		opacity: 0.8;
+		filter: blur(120px);
+		transform: rotate(45deg);
+	}
 
-  .glowy2 {
-    position: absolute;
-    width: 257.55px;
-    height: 252.83px;
-    left: -40%;
-    top: 70%;
+	.glowy2 {
+		position: absolute;
+		width: 257.55px;
+		height: 252.83px;
+		left: -40%;
+		top: 70%;
 
-    background: rgba(250, 159, 97, 0.41);
-    opacity: 0.8;
-    filter: blur(120px);
-    transform: rotate(45deg);
-  }
+		background: rgba(250, 159, 97, 0.41);
+		opacity: 0.8;
+		filter: blur(120px);
+		transform: rotate(45deg);
+	}
 
-  .glowy3 {
-    position: absolute;
-    width: 257.55px;
-    height: 252.83px;
-    left: -40%;
-    top: -40%;
+	.glowy3 {
+		position: absolute;
+		width: 257.55px;
+		height: 252.83px;
+		left: -40%;
+		top: -40%;
 
-    background: rgba(243, 125, 192, 0.6);
-    opacity: 0.8;
-    filter: blur(120px);
-    transform: rotate(45deg);
-  }
+		background: rgba(243, 125, 192, 0.6);
+		opacity: 0.8;
+		filter: blur(120px);
+		transform: rotate(45deg);
+	}
+}
+
+@media (max-width: 500px) {
+	.form-card {
+		width: 100%;
+	}
 }

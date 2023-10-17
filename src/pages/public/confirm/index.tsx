@@ -36,14 +36,13 @@ function ConfirmationPage(): JSX.Element {
 		if (!termsAccepted) {
 			return setShowAcceptTermsError(true);
 		}
-
 		dispatch(navigate({ page: 'payment' }));
 	};
 
-	const { local_balance, remote_balance, channel_expiry, total_amount, state } = order;
+	const { lspBalanceSat, clientBalanceSat, channelExpiryWeeks, feeSat, state } = order;
 
 	// If order expires while waiting for payment
-	if (state === 410) {
+	if (state === 'expired') {
 		dispatch(navigate({ page: 'order' }));
 	}
 
@@ -58,30 +57,24 @@ function ConfirmationPage(): JSX.Element {
 
 			<div className={'confirmation-top-half'}>
 				<div className={'confirmation-value-groups'}>
-					<ValueGroup label={'Inbound capacity'} value={local_balance} showFiat={true} />
-					<ValueGroup label={'My balance'} value={remote_balance} showFiat={true} />
+					<ValueGroup label={'Inbound capacity'} value={lspBalanceSat} showFiat={true} />
+					<ValueGroup label={'My balance'} value={clientBalanceSat} showFiat={true} />
 				</div>
 
-				<ChannelBalanceBar local={remote_balance} remote={local_balance} />
+				<ChannelBalanceBar local={clientBalanceSat} remote={lspBalanceSat} />
 
 				<p className={'confirmation-message'}>
 					This channel may close automatically after{' '}
 					<span className={'confirmation-message-highlight'}>
-						{channel_expiry} week
-						{channel_expiry > 1 ? 's' : ''}
+						{channelExpiryWeeks} week
+						{channelExpiryWeeks > 1 ? 's' : ''}
 					</span>
 					.
 				</p>
 
 				<Divider />
 
-				<ValueGroup
-					label={'Total amount to pay'}
-					value={total_amount}
-					showFiat
-					showBitcoin
-					size={'lg'}
-				/>
+				<ValueGroup label={'Total amount to pay'} value={feeSat} showFiat showBitcoin size={'lg'} />
 
 				<p className={'confirmation-message'}>
 					This total includes a small fee for setting up the channel. It does not include the cost

@@ -62,6 +62,7 @@ export default ({
 
 				return (
 					<div
+						key={eventKey}
 						className={'custom-tab'}
 						style={{ display: eventKey === currentKey ? 'block' : 'none' }}
 					>

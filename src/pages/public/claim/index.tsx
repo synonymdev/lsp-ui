@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import bt from '@synonymdev/blocktank-client';
+
 import { useAppDispatch } from '../../../store/hooks';
 import { navigate, refreshOrder } from '../../../store/public-store';
-import bt from '@synonymdev/blocktank-client';
 import FormCard from '../../../components/form-card';
 import Spinner from '../../../components/spinner';
 import QRCode from '../../../components/qr';
@@ -31,8 +32,8 @@ function ClaimPage(): JSX.Element {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const dispatch = useAppDispatch();
 	const { order, orderState } = useOrder();
-	const inboundDisplay = useDisplayValues(Number(order?.local_balance));
-	const myBalanceDisplay = useDisplayValues(Number(order?.remote_balance));
+	const inboundDisplay = useDisplayValues(Number(order?.lspBalanceSat));
+	const myBalanceDisplay = useDisplayValues(Number(order?.clientBalanceSat));
 
 	if (!order) {
 		if (orderState === 'loading' || orderState === 'idle') {
@@ -46,18 +47,18 @@ function ClaimPage(): JSX.Element {
 		return <ErrorPage type={'orderNotFound'} />;
 	}
 
-	const { _id, lnurl_string, remote_balance, local_balance, channel_expiry } = order;
+	const { id, lnurl, channelExpiryWeeks } = order;
 
 	const claimChannel = async (): Promise<void> => {
 		setIsSubmitting(true);
 		try {
 			await bt.finalizeChannel({
-				order_id: _id,
+				order_id: id,
 				node_uri: nodeUri,
 				private: isPrivate
 			});
 
-			await dispatch(refreshOrder(_id));
+			await dispatch(refreshOrder(id));
 
 			dispatch(navigate({ page: 'order' }));
 		} catch (e) {
@@ -73,7 +74,7 @@ function ClaimPage(): JSX.Element {
 		<>
 			<div className='claim-channel-top'>
 				<div className={'claim-channel-qr'}>
-					<QRCode value={lnurl_string} size={qrSize} />
+					<QRCode value={lnurl.toLocaleLowerCase()} size={qrSize} />
 				</div>
 				<div className={'claim-channel-details'}>
 					<div className={'claim-channel-title'}>
@@ -85,9 +86,9 @@ function ClaimPage(): JSX.Element {
 							}}
 						/>
 					</div>
-					<p className={'claim-channel-address'}>{clipCenter(lnurl_string, 42)}</p>
+					<p className={'claim-channel-address'}>{clipCenter(lnurl.toLocaleLowerCase(), 42)}</p>
 					<div>
-						<ActionButton copyText={lnurl_string}>Copy claim url</ActionButton>
+						<ActionButton copyText={lnurl.toLocaleLowerCase()}>Copy claim url</ActionButton>
 						<div className={'claim-channel-button-spacer'} />
 						<ActionButton onClick={() => setShowManual(true)} Icon={ClaimIcon}>
 							Claim manually
@@ -179,11 +180,11 @@ function ClaimPage(): JSX.Element {
 				<p className={'claim-channel-bottom-message'}>
 					This channel will stay open for at least{' '}
 					<span className={'highlight'}>
-						{channel_expiry} week
-						{channel_expiry !== 1 ? 's' : ''}
+						{channelExpiryWeeks} week
+						{channelExpiryWeeks !== 1 ? 's' : ''}
 					</span>
 					<br />
-					Order ID: {order._id}
+					Order ID: {order.id}
 				</p>
 			</div>
 		</FormCard>

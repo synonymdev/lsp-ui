@@ -3,10 +3,8 @@ import { Button, Card, Col, Row } from 'react-bootstrap';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { refreshInfo, selectInfo, selectInfoState } from '../../../store/public-store';
 
-import { Link } from 'react-router-dom';
-
 function HomePage(): JSX.Element {
-	const { node_info, services, capacity } = useAppSelector(selectInfo);
+	const { nodes, options, version } = useAppSelector(selectInfo);
 	const state = useAppSelector(selectInfoState);
 	const dispatch = useAppDispatch();
 
@@ -30,56 +28,38 @@ function HomePage(): JSX.Element {
 					<Card>
 						<Card.Body>
 							<Card.Title>Node Info</Card.Title>
-							<Card.Text>Public key: {node_info.public_key}</Card.Text>
-							<Card.Text>Alias: {node_info.alias}</Card.Text>
-							<Card.Text>Active channels: {node_info.active_channels_count}</Card.Text>
+							<Card.Text>Public key: {nodes[0].pubkey}</Card.Text>
+							<Card.Text>Alias: {nodes[0].alias}</Card.Text>
+							<Card.Text>Active channels: {nodes[0].connectionStrings}</Card.Text>
 						</Card.Body>
 					</Card>
 				</Col>
 				<Col>
 					<Card>
 						<Card.Body>
-							<Card.Title>Capacity</Card.Title>
-							<Card.Text>Local balance: {capacity.local_balance}</Card.Text>
-							<Card.Text>Remote balance: {capacity.remote_balance}</Card.Text>
+							<Card.Title>version</Card.Title>
+							<Card.Text>{version}</Card.Text>
 						</Card.Body>
 					</Card>
 				</Col>
 			</Row>
 
 			<br />
-			<h2>Services:</h2>
-			{services.map((service) => {
-				const {
-					product_id,
-					description,
-					min_chan_expiry,
-					max_chan_expiry,
-					max_channel_size,
-					min_channel_size,
-					order_states,
-					available
-				} = service;
+			<h2>Options:</h2>
+			<Row>
+				<Col>
+					<Card>
+						<Card.Body>
+							<Card.Title>Capability</Card.Title>
+							<Card.Text>Max channel size: {options.maxChannelSizeSat}</Card.Text>
+							<Card.Text>Min channel size: {options.minChannelSizeSat}</Card.Text>
 
-				return (
-					<Row key={product_id}>
-						<Col>
-							<Card>
-								<Card.Body>
-									<Card.Title>
-										{description} ({available ? 'Available' : 'Unavailable'})
-									</Card.Title>
-									<Card.Text>Max channel size: {max_channel_size}</Card.Text>
-									<Card.Text>Min channel size: {min_channel_size}</Card.Text>
-
-									<Card.Text>Max channel expiry: {max_chan_expiry}</Card.Text>
-									<Card.Text>Min channel expiry: {min_chan_expiry}</Card.Text>
-								</Card.Body>
-							</Card>
-						</Col>
-					</Row>
-				);
-			})}
+							<Card.Text>Max channel expiry: {options.maxExpiryWeeks}</Card.Text>
+							<Card.Text>Min channel expiry: {options.minExpiryWeeks}</Card.Text>
+						</Card.Body>
+					</Card>
+				</Col>
+			</Row>
 		</div>
 	);
 }

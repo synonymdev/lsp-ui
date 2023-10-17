@@ -1,14 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './';
-import bt, {
-	IBuyChannelRequest,
-	IExchangeRatesResponse,
-	IGetInfoResponse,
-	IGetOrderResponse
-} from '@synonymdev/blocktank-client';
+import bt, { IExchangeRatesResponse } from '@synonymdev/blocktank-client';
+import { BlocktankClient } from '@synonymdev/blocktank-lsp-http-client';
 import { TFiatCurrency } from '../utils/exchange-rates';
+import { GetInfoResponse, GetOrderResponse } from '../utils/helpers';
 
 export type RequestState = 'idle' | 'loading' | 'error';
+
+const client = new BlocktankClient();
 
 export type TPublicPage =
 	| 'configure'
@@ -36,11 +35,11 @@ export type TState = {
 	settings: TSettingsState;
 	info: {
 		state: RequestState;
-		value: IGetInfoResponse;
+		value: GetInfoResponse;
 	};
 	orders: {
 		state: RequestState;
-		value: IGetOrderResponse[];
+		value: GetOrderResponse[];
 	};
 	exchangeRates: {
 		state: RequestState;
@@ -59,9 +58,24 @@ export const initialState: TState = {
 	info: {
 		state: 'idle',
 		value: {
-			capacity: { local_balance: 0, remote_balance: 0 },
-			services: [],
-			node_info: { active_channels_count: 0, alias: '', public_key: '', uris: [] }
+			version: 2,
+			nodes: [
+				{
+					alias: '',
+					pubkey: '',
+					connectionStrings: ['']
+				}
+			],
+			options: {
+				minChannelSizeSat: 0,
+				maxChannelSizeSat: 0,
+				minExpiryWeeks: 0,
+				maxExpiryWeeks: 0,
+				maxClientBalanceSat: 0,
+				minPaymentConfirmations: 0,
+				minHighRiskPaymentConfirmations: 0,
+				max0ConfClientBalanceSat: 0
+			}
 		}
 	},
 	orders: {
@@ -75,18 +89,13 @@ export const initialState: TState = {
 };
 
 export const refreshInfo = createAsyncThunk('bt/refreshInfo', async () => {
-	const response = await bt.getInfo();
+	const response = await client.getInfo();
 	// The value we return becomes the `fulfilled` action payload
 	return response;
 });
 
 export const refreshOrder = createAsyncThunk('bt/refreshOrder', async (orderId: string) => {
-	const response = await bt.getOrder(orderId);
-	return response;
-});
-
-export const placeOrder = createAsyncThunk('bt/placeOrder', async (req: IBuyChannelRequest) => {
-	const response = await bt.buyChannel(req);
+	const response = await client.getOrder(orderId);
 	return response;
 });
 
@@ -139,15 +148,8 @@ export const publicStore = createSlice({
 			.addCase(refreshOrder.fulfilled, (state, action) => {
 				state.orders.state = 'idle';
 
-				const updatedOrder = action.payload;
-
-				const orders = state.orders.value;
-				let existingOrderIndex = -1;
-				orders.forEach((o, index) => {
-					if (o._id === updatedOrder._id) {
-						existingOrderIndex = index;
-					}
-				});
+				const updatedOrder: GetOrderResponse = action.payload as GetOrderResponse;
+				const existingOrderIndex = state.orders.value.findIndex((o) => o.id === updatedOrder.id);
 
 				if (existingOrderIndex > -1) {
 					state.orders.value[existingOrderIndex] = updatedOrder;
@@ -155,8 +157,11 @@ export const publicStore = createSlice({
 					state.orders.value.push(updatedOrder);
 				}
 
-				state.orders.value.sort((a, b) => b.created_at - a.created_at);
+				state.orders.value.sort((a, b) => {
+					return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+				});
 			})
+
 			// Refresh info exchange rates
 			.addCase(refreshExchangeRates.pending, (state) => {
 				state.exchangeRates.state = 'loading';
@@ -181,10 +186,10 @@ export const selectShowMenu = (state: RootState): boolean => !!state.bt.navigati
 export const selectCurrency = (state: RootState): TFiatCurrency => state.bt.settings.currency;
 export const selectCurrentOrderId = (state: RootState): string => state.bt.navigation.orderId ?? '';
 
-export const selectInfo = (state: RootState): IGetInfoResponse => state.bt.info.value;
+export const selectInfo = (state: RootState): GetInfoResponse => state.bt.info.value;
 export const selectInfoState = (state: RootState): RequestState => state.bt.info.state;
 
-export const selectOrders = (state: RootState): IGetOrderResponse[] => state.bt.orders.value;
+export const selectOrders = (state: RootState): GetOrderResponse[] => state.bt.orders.value;
 export const selectOrdersState = (state: RootState): RequestState => state.bt.orders.state;
 
 export const selectExchangeRates = (state: RootState): IExchangeRatesResponse =>
