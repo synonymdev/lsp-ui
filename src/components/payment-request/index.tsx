@@ -1,4 +1,3 @@
-import React from 'react';
 import bip21 from 'bip21';
 import QRCode from '../qr';
 import ActionButton from '../action-button';
@@ -17,8 +16,8 @@ const qrSize = 200;
 type TOnchainRequest = {
 	address: string;
 	sats: number;
-	zeroConfMinFee: number | undefined;
 	receivingAmount: number | undefined; // TODO
+	transactionsOnChain: any[];
 };
 
 type TLightningRequest = {
@@ -34,7 +33,7 @@ export default ({
 	lightning
 }: {
 	orderId: string;
-	orderExpiry: number;
+	orderExpiry: string;
 	orderStatus: string;
 	orderTotal: number;
 	onchain?: TOnchainRequest;
@@ -48,7 +47,7 @@ export default ({
 	const orderTotalDisplay = useDisplayValues(orderTotal);
 
 	if (onchain) {
-		const { address, sats, zeroConfMinFee, receivingAmount } = onchain;
+		const { address, sats, receivingAmount, transactionsOnChain } = onchain;
 		qrValue = bip21.encode(address, {
 			amount: sats / 100000000,
 			label: `Blocktank #${orderId}`
@@ -64,8 +63,8 @@ export default ({
 				message =
 					'Full payment received. Please wait for your on-chain Bitcoin payment to confirm (needs at least 1 confirmation).';
 			}
-		} else if (zeroConfMinFee) {
-			message = `${message} Set your transaction fee to more than ${zeroConfMinFee} sats/byte to receive your Lightning channel instantly.`;
+		} else if (transactionsOnChain.length !== 0) {
+			message = 'Payment received, we await confirmation of the transaction';
 		}
 	} else if (lightning) {
 		const { invoice } = lightning;
@@ -74,7 +73,6 @@ export default ({
 		text = invoice;
 		copyButtonTitle = 'Copy invoice';
 	}
-
 	const themeParam = new URLSearchParams(window.location.search).get('theme') ?? '';
 
 	return (

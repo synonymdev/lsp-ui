@@ -12,6 +12,7 @@ import FormCard from '../../../components/form-card';
 import Spinner from '../../../components/spinner';
 import Divider from '../../../components/divider';
 import Button from '../../../components/action-button';
+import { statusLabels } from '../../../utils/helpers';
 import { ReactComponent as TransferActive } from '../../../icons/transfer-active.svg';
 import { ReactComponent as TransferIconActivePurple } from '../../../icons/transfer-active-purple.svg';
 import { ReactComponent as Lightning } from '../../../icons/lightning.svg';
@@ -70,7 +71,7 @@ function OrdersPage(): JSX.Element {
 
 	useEffect(() => {
 		orders.forEach((o) => {
-			dispatch(refreshOrder(o._id)).catch((e) => alert(e));
+			dispatch(refreshOrder(o.id)).catch((e) => alert(e));
 		});
 	}, []);
 
@@ -101,66 +102,84 @@ function OrdersPage(): JSX.Element {
 						hasScrollBar={hasScrollbar}
 					/>
 				) : null}
-				{orders.map(({ _id, state, stateMessage, created_at }) => {
-					const date = new Date(created_at);
-					let buttonText = 'Order details';
-					let Icon = Lightning;
-					let page: TPublicPage = 'order';
+				{orders.map(
+					({
+						id,
+						state,
+						createdAt,
+						payment: {
+							bolt11Invoice: { state: stateBoltInvoice }
+						},
+						payment: { state: statePayment },
+						payment: {
+							onchain: { transactions: transactionsOnChain }
+						},
+						payment: {
+							onchain: { confirmedSat }
+						}
+					}) => {
+						const date = new Date(createdAt);
+						let buttonText = 'Order details';
+						let Icon = Lightning;
+						let page: TPublicPage = 'order';
 
-					switch (state) {
-						case 0: {
-							// Awaiting payment
-							buttonText = 'Pay now';
-
-							const themeParam = new URLSearchParams(window.location.search).get('theme') ?? '';
-							if (themeParam === 'ln-dark' || themeParam === 'ln-light') {
-								Icon = TransferIconActivePurple;
-							} else {
-								Icon = TransferActive;
+						const getStatusLabel = (): string => {
+							if (statePayment === 'paid' && transactionsOnChain.length !== 0) {
+								if (state === 'created') return 'Claim channel';
+								else if (state === 'open') return 'Channel open';
+								else if (state === 'closed') return 'Channel closed';
 							}
-							page = 'payment';
-							break;
-						}
-						case 100: {
-							// Paid
-							buttonText = 'Claim channel';
-							page = 'claim';
-							break;
-						}
-						case 200: // URI set
-							break;
-						case 300: // Channel opening
-							Icon = LightningGreen;
-							break;
-						case 400: // Given up
-							Icon = LightningRed;
-							break;
-						case 450: // Channel closed
-							Icon = LightningRed;
-							break;
-						case 500: // Channel open
-							Icon = LightningGreen;
-							break;
-					}
 
-					return (
-						<ListItem
-							key={_id}
-							id={_id}
-							Icon={Icon}
-							onClick={() => dispatch(navigate({ page, orderId: _id }))}
-							title={date.toLocaleString('en-US', {
-								month: 'short',
-								day: 'numeric',
-								year: 'numeric'
-							})}
-							subHeading={'Order status'}
-							label={stateMessage}
-							buttonText={buttonText}
-							hasScrollBar={hasScrollbar}
-						/>
-					);
-				})}
+							if (statusLabels[state]) {
+								if (statusLabels[state][stateBoltInvoice]) {
+									return statusLabels[state][stateBoltInvoice];
+								}
+							}
+							return stateBoltInvoice;
+						};
+
+						if (state === 'created') {
+							if (statePayment === 'paid') {
+								Icon = LightningActive;
+								buttonText = 'Claim channel';
+								page = 'claim';
+							} else if (stateBoltInvoice === 'pending' || confirmedSat === 0) {
+								// Awaiting payment
+								buttonText = 'Pay now';
+
+								const themeParam = new URLSearchParams(window.location.search).get('theme') ?? '';
+								if (themeParam === 'ln-dark' || themeParam === 'ln-light') {
+									Icon = TransferIconActivePurple;
+								} else {
+									Icon = TransferActive;
+								}
+								page = 'payment';
+							}
+						} else if (state === 'open') {
+							Icon = LightningGreen;
+						} else if (state === 'closed') {
+							Icon = LightningRed;
+						}
+
+						return (
+							<ListItem
+								key={id}
+								id={id}
+								Icon={Icon}
+								onClick={() => dispatch(navigate({ page, orderId: id }))}
+								title={date.toLocaleString('en-US', {
+									month: 'short',
+									day: 'numeric',
+									year: 'numeric'
+								})}
+								subHeading={'Order status'}
+								label={getStatusLabel()}
+								buttonText={buttonText}
+								hasScrollBar={hasScrollbar}
+							/>
+						);
+					}
+				)}
 			</div>
 		</FormCard>
 	);

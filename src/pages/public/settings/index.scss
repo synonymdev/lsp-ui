@@ -1,48 +1,48 @@
 .settings-container {
-  .settings-heading {
-    color: #FF6600;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 15px;
-    line-height: 22px;
-  }
+	.settings-heading {
+		color: #ff6600;
+		font-style: normal;
+		font-weight: 600;
+		font-size: 15px;
+		line-height: 22px;
+	}
 
-  .settings-subheading {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 21px;
-    line-height: 24px;
-    color: #FFFFFF;
-  }
+	.settings-subheading {
+		font-style: normal;
+		font-weight: 400;
+		font-size: 21px;
+		line-height: 24px;
+		color: #ffffff;
+	}
 
-  .currency-box {
-    cursor: pointer;
-    background: rgba(255, 174, 0, 0.08);
-    box-sizing: border-box;
-    border-radius: 8px;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
+	.currency-box {
+		cursor: pointer;
+		background: rgba(255, 174, 0, 0.08);
+		box-sizing: border-box;
+		border-radius: 8px;
+		padding: 10px 20px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 10px;
 
-    .currency-name {
-      font-style: normal;
-      font-weight: 600;
-      font-size: 15px;
-      color: #FFFFFF;
-    }
+		.currency-name {
+			font-style: normal;
+			font-weight: 600;
+			font-size: 15px;
+			color: #ffffff;
+		}
 
-    .currency-symbol {
-      font-style: normal;
-      font-weight: 700;
-      font-size: 34px;
-      text-align: center;
-      color: #FFFFFF;
-    }
-  }
+		.currency-symbol {
+			font-style: normal;
+			font-weight: 700;
+			font-size: 34px;
+			text-align: center;
+			color: #ffffff;
+		}
+	}
 
-  .currency-box-active {
-    border: 1px solid #FFAE00;
-  }
+	.currency-box-active {
+		border: 1px solid #ffae00;
+	}
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DropdownButton, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { filterOrdersByState, refreshOrders, selectOrdersFilters } from '../../store/admin-store';
 import { selectInfo } from '../../store/public-store';
@@ -10,8 +10,7 @@ function OrderStateFilterDropdown(): JSX.Element {
 	const dispatch = useAppDispatch();
 	const nodeInfo = useAppSelector(selectInfo);
 
-	const orderStates: { [key: string]: number } =
-		nodeInfo.services.length === 1 ? nodeInfo.services[0].order_states : {};
+	const orderStates: { [key: string]: number } = nodeInfo.options ? nodeInfo.options : {};
 
 	useEffect(() => {
 		const { state } = orderFilters;

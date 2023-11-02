@@ -15,7 +15,7 @@
 	"rules": {
 		"no-param-reassign": "warn",
 		"no-shadow": "error",
-		"prettier/prettier": "warn",
+		"prettier/prettier": 0,
 		"indent": "off",
 		"no-alert": "off",
 		"@typescript-eslint/ban-types": ["off", { "types": { "null": null } }],

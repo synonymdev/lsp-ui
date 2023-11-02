@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import bt, { IBuyChannelRequest, IService } from '@synonymdev/blocktank-client';
+import { BlocktankClient } from '@synonymdev/blocktank-lsp-http-client';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
 	refreshInfo,
 	selectInfo,
-	selectInfoState,
 	navigate,
-	refreshOrder
+	refreshOrder,
+	selectExchangeRates,
+	selectCurrency
 } from '../../../store/public-store';
 import Spinner from '../../../components/spinner';
 import FormCard from '../../../components/form-card';
@@ -16,9 +17,8 @@ import './index.scss';
 import InputGroup from '../../../components/input-group';
 import Heading from '../../../components/heading';
 import { TooltipProps } from '../../../components/tooltip';
-import ErrorPage from '../error';
 import Error from '../../../components/inline-error';
-import { numberWithSpaces } from '../../../utils/helpers';
+import { numberWithSpaces, currencySymbols } from '../../../utils/helpers';
 
 export type IFormErrors = {
 	[key: string]: any;
@@ -40,33 +40,40 @@ const durationTip: TooltipProps = {
 };
 
 function ConfigurePage(): JSX.Element {
-	const { services } = useAppSelector(selectInfo);
+	const { options } = useAppSelector(selectInfo);
 	const dispatch = useAppDispatch();
+	const exchangeRates = useAppSelector(selectExchangeRates);
+	const selectedCurrency = useAppSelector(selectCurrency);
+	const client = new BlocktankClient();
 	const [isLoading, setIsLoading] = useState(true);
 	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [product, setProduct] = useState<IService | undefined>(undefined);
+	const [product, setProduct] = useState<{} | undefined>(undefined);
 	const [channelExpiry, setChannelExpiry] = useState<string>('');
 	const [localBalance, setLocalBalance] = useState<string>('');
 	const [remoteBalance, setRemoteBalance] = useState<string>('0');
+	const [couponCode, setCouponCode] = useState<string>('');
 	const [formErrors, setFormErrors] = useState<IFormErrors>({});
 	const [generalError, setGeneralError] = useState('');
+	const initChannelSize = 21000;
 
 	useEffect(() => {
-		if (services.length > 0) {
-			const service = services[0];
-
-			setProduct(service);
+		if (options) {
+			setProduct(options);
 			setIsLoading(false);
 
 			if (remoteBalance === '0') {
-				setRemoteBalance(`${service.min_channel_size}`);
+				if (options.minChannelSizeSat < initChannelSize) {
+					setRemoteBalance('30000');
+				} else {
+					setRemoteBalance(`${options.minChannelSizeSat}`);
+				}
 			}
 
 			if (localBalance === '0') {
 				// setLocalBalance(`${service.min_channel_size}`);
 			}
 		}
-	}, [services]);
+	}, [options]);
 
 	useEffect(() => {
 		dispatch(refreshInfo())
@@ -87,18 +94,19 @@ function ConfigurePage(): JSX.Element {
 
 		setIsSubmitting(true);
 
-		const { max_chan_expiry } = product;
+		const max_chan_expiry = options.maxExpiryWeeks;
 
-		const req: IBuyChannelRequest = {
-			product_id: product.product_id,
-			channel_expiry: channelExpiry ? Number(channelExpiry) : max_chan_expiry,
-			local_balance: Number(remoteBalance), // Switched around for context
-			remote_balance: localBalance ? Number(localBalance) : 0
-		};
+		const channel_expiry = channelExpiry ? Number(channelExpiry) : max_chan_expiry;
+		const local_balance = Number(remoteBalance);
+		const remote_balance = localBalance ? Number(localBalance) : 0;
+		const coupon_code = couponCode ? String(couponCode) : '';
 
 		try {
-			const buyRes = await bt.buyChannel(req);
-			const { order_id } = buyRes;
+			const order = await client.createOrder(local_balance, channel_expiry, {
+				clientBalanceSat: remote_balance,
+				couponCode: coupon_code
+			});
+			const order_id = order.id;
 
 			dispatch(refreshOrder(order_id))
 				.then(() => {
@@ -122,23 +130,31 @@ function ConfigurePage(): JSX.Element {
 			return true;
 		}
 
-		const { max_chan_receiving, max_chan_spending } = product;
-		const max_chan_receiving_usd = Math.floor(product.max_chan_receiving_usd);
-		const max_chan_spending_usd = Math.floor(product.max_chan_spending_usd);
+		const max_chan_receiving = options.maxChannelSizeSat;
+		const min_chan_receiving = options.minChannelSizeSat;
+		const max_chan_spending = options.maxClientBalanceSat;
+
+		const bitcoinPrice = exchangeRates[selectedCurrency];
+		const symbolCurrency = currencySymbols[selectedCurrency];
+
+		const max_chan_receiving_cur = Math.floor((max_chan_receiving / 100000000) * bitcoinPrice);
+		const min_chan_receiving_cur = Math.floor((min_chan_receiving / 100000000) * bitcoinPrice);
+		const initChannelSize_cur = Math.floor((initChannelSize / 100000000) * bitcoinPrice);
+		const max_chan_spending_cur = Math.floor((max_chan_spending / 100000000) * bitcoinPrice);
 
 		const errors: IFormErrors = {};
 
 		if (channelExpiry !== '' && Number(channelExpiry) < 1) {
 			errors.channelExpiry = {
-				message: `Minimum channel expiry is ${product.min_chan_expiry} week${
-					product.min_chan_expiry !== 1 ? 's' : ''
+				message: `Minimum channel expiry is ${options.minExpiryWeeks} week${
+					options.minExpiryWeeks !== 1 ? 's' : ''
 				}`,
-				value: product.min_chan_expiry
+				value: options.minExpiryWeeks
 			};
-		} else if (Number(channelExpiry) > product.max_chan_expiry) {
+		} else if (Number(channelExpiry) > options.maxExpiryWeeks) {
 			errors.channelExpiry = {
-				message: `Maximum channel expiry is ${product.max_chan_expiry} weeks`,
-				value: product.max_chan_expiry
+				message: `Maximum channel expiry is ${options.maxExpiryWeeks} weeks`,
+				value: options.maxExpiryWeeks
 			};
 		}
 
@@ -146,14 +162,25 @@ function ConfigurePage(): JSX.Element {
 			errors.remoteBalance = {
 				message: `Max receiving capacity is ${numberWithSpaces(
 					max_chan_receiving
-				)} sats ($${numberWithSpaces(max_chan_receiving_usd)})`,
+				)} sats (${symbolCurrency}${numberWithSpaces(max_chan_receiving_cur)})`,
 				value: max_chan_receiving
 			};
-		} else if (Number(remoteBalance) < product.min_channel_size) {
-			errors.remoteBalance = {
-				message: `Minimum receiving capacity is ${numberWithSpaces(product.min_channel_size)} sats`,
-				value: product.min_channel_size
-			};
+		} else if (min_chan_receiving < initChannelSize) {
+			if (Number(remoteBalance) < initChannelSize) {
+				errors.remoteBalance = {
+					message: `Minimum receiving capacity is ${initChannelSize} sats (${symbolCurrency}${initChannelSize_cur})`,
+					value: initChannelSize
+				};
+			}
+		} else if (min_chan_receiving >= initChannelSize) {
+			if (Number(remoteBalance) <= min_chan_receiving) {
+				errors.remoteBalance = {
+					message: `Minimum receiving capacity is ${numberWithSpaces(
+						min_chan_receiving
+					)} sats (${symbolCurrency}${min_chan_receiving_cur})`,
+					value: min_chan_receiving
+				};
+			}
 		}
 
 		if (Number(localBalance) !== 0) {
@@ -161,16 +188,24 @@ function ConfigurePage(): JSX.Element {
 				errors.localBalance = {
 					message: `Max spending balance is ${numberWithSpaces(
 						max_chan_spending
-					)} sats ($${max_chan_spending_usd})`,
+					)} sats (${symbolCurrency}${max_chan_spending_cur})`,
 					value: max_chan_spending
 				};
-			} else if (Number(localBalance) + Number(remoteBalance) > product.max_channel_size) {
-				const max_spending_balance = product.max_channel_size - Number(remoteBalance);
+			} else if (Number(localBalance) + Number(remoteBalance) > max_chan_receiving) {
+				const max_spending_balance = max_chan_receiving - Number(remoteBalance);
 				errors.localBalance = {
-					message: `Total channel capacity is ${numberWithSpaces(product.max_channel_size)} sats`,
+					message: `Total channel capacity is ${numberWithSpaces(
+						max_chan_receiving
+					)} sats (${symbolCurrency}${max_chan_receiving_cur})`,
 					value: max_spending_balance
 				};
 			}
+		}
+
+		if (couponCode && couponCode !== '') {
+			errors.couponCode = {
+				message: 'Coupon is expired or invalid'
+			};
 		}
 
 		setFormErrors(errors);
@@ -203,12 +238,6 @@ function ConfigurePage(): JSX.Element {
 
 	if (!product) {
 		return <div />;
-	}
-
-	const { available, max_chan_expiry } = product;
-
-	if (!available) {
-		return <ErrorPage type={'unavailable'} />;
 	}
 
 	const onBlur = (): void => {
@@ -280,7 +309,7 @@ function ConfigurePage(): JSX.Element {
 					<InputGroup
 						type='number'
 						value={channelExpiry}
-						placeholder={`${max_chan_expiry}`}
+						placeholder={`${options.maxExpiryWeeks}`}
 						onChange={(str) => onSetInput(str, setChannelExpiry)}
 						id={'channel-expiry'}
 						label={'Keep my channel open for at least'}
@@ -292,6 +321,20 @@ function ConfigurePage(): JSX.Element {
 						}}
 						onBlur={onBlur}
 						tooltip={durationTip}
+					/>
+
+					<InputGroup
+						type='text'
+						value={couponCode}
+						placeholder={`bitkit20`}
+						onChange={(str) => onSetInput(str, setCouponCode)}
+						id={'coupon-code'}
+						label={'My coupon code'}
+						error={formErrors.couponCode?.message}
+						onErrorClick={() => {
+							setCouponCode(formErrors.couponCode?.value);
+							setFormErrors({});
+						}}
 					/>
 
 					<Error>{generalError}</Error>

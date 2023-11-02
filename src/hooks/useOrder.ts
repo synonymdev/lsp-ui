@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import {
 	refreshOrder,
 	RequestState,
@@ -8,21 +7,17 @@ import {
 	selectOrders,
 	selectOrdersState
 } from '../store/public-store';
-
-type UseOrder = {
-	order: IGetOrderResponse | undefined;
-	orderState: RequestState;
-};
+import { UseOrder, UseOrderResponse } from '../utils/helpers';
 
 export default function useOrder(): UseOrder {
-	const [order, setOrder] = useState<IGetOrderResponse | undefined>(undefined);
+	const [order, setOrder] = useState<UseOrderResponse | undefined>(undefined);
 	const orderId = useAppSelector(selectCurrentOrderId);
 	const orders = useAppSelector(selectOrders);
 	const orderState = useAppSelector(selectOrdersState);
 	const dispatch = useAppDispatch();
 
 	useEffect((): void => {
-		const newOrder = orders.find((o) => o._id === orderId);
+		const newOrder = orders.find((o) => o.id === orderId);
 		if (newOrder) {
 			setOrder(newOrder);
 		}
@@ -34,7 +29,7 @@ export default function useOrder(): UseOrder {
 
 	useEffect(() => {
 		const intervalId = setInterval(() => {
-			if (order?.state === 500) {
+			if (order?.state === 'open') {
 				// Once channel is open stop refreshing, no more state updates required
 				return;
 			}

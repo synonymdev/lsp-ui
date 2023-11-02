@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch } from '../../../store/hooks';
 import { navigate } from '../../../store/public-store';
 import FormCard from '../../../components/form-card';
@@ -20,13 +20,14 @@ import useOrder from '../../../hooks/useOrder';
 function PaymentPage(): JSX.Element {
 	const dispatch = useAppDispatch();
 	const { order, orderState } = useOrder();
+	const initStatePayment = order?.payment.state;
 
 	// Once we've received the payment show the success view for 3 seconds before navigating to claim frame
 	useEffect(() => {
-		if (order?.state === 100) {
+		if (initStatePayment === 'paid') {
 			setTimeout(() => dispatch(navigate({ page: 'claim' })), 3000);
 		}
-	}, [order]);
+	}, [initStatePayment]);
 
 	if (!order) {
 		if (orderState === 'loading' || orderState === 'idle') {
@@ -36,53 +37,44 @@ function PaymentPage(): JSX.Element {
 				</FormCard>
 			);
 		}
-
 		return <ErrorPage type={'orderNotFound'} />;
 	}
 
 	const {
-		_id,
-		total_amount,
-		btc_address,
-		zero_conf_satvbyte,
-		purchase_invoice,
-		onchain_payments,
-		order_expiry,
+		id,
+		feeSat,
+		payment: {
+			onchain: { address: btc_address }
+		},
+		payment: {
+			bolt11Invoice: { request: purchase_invoice }
+		},
+		payment: { state: statePayment },
+		orderExpiresAt,
 		state,
-		stateMessage
+		payment: {
+			bolt11Invoice: { state: stateBoltInvoice }
+		},
+		payment: {
+			onchain: { confirmedSat: confirmedSatsIncoming }
+		},
+		payment: {
+			onchain: { transactions: transactionsOnChain }
+		}
 	} = order;
 
-	let orderStatus = stateMessage;
-	let unconfirmedIncoming = 0;
+	let orderStatus = stateBoltInvoice;
 
-	switch (state) {
-		case 0: {
-			onchain_payments.forEach((p) => {
-				unconfirmedIncoming += p.amount_base;
-			});
-
-			if (unconfirmedIncoming === 0) {
-				orderStatus = 'Awaiting payment';
-			} else if (unconfirmedIncoming < total_amount) {
-				orderStatus = 'Partial payment';
-			} else {
-				orderStatus = 'Unconfirmed payment';
-			}
-
-			break;
+	if (state === 'created') {
+		if (orderStatus === 'pending') {
+			orderStatus = 'Awaiting payment';
+		} else if (transactionsOnChain.length !== 0) {
+			orderStatus = 'Received, waiting...';
 		}
-		case 100: {
-			// Shows a success view for 3 secs
-			break;
-		}
-		case 400: // Given up
-		case 410: // Expired
-		case 500: // Channel open
-		case 300: // Channel opening
-		case 450: // Channel closed
-			// Navigate to status view
-			dispatch(navigate({ page: 'order' }));
+	} else {
+		dispatch(navigate({ page: 'order' }));
 	}
+
 	const themeParam = new URLSearchParams(window.location.search).get('theme') ?? '';
 
 	return (
@@ -92,7 +84,7 @@ function PaymentPage(): JSX.Element {
 			pageIndicator={{ total: 4, active: 2 }}
 			showLightningIcon
 		>
-			{state === 100 ? (
+			{statePayment === 'paid' ? (
 				<>
 					<Heading>Payment received</Heading>
 					<p>Your Lightning channel is ready to claim.</p>
@@ -118,10 +110,10 @@ function PaymentPage(): JSX.Element {
 							}
 						>
 							<PaymentRequest
-								orderId={_id}
+								orderId={id}
 								orderStatus={orderStatus}
-								orderExpiry={order_expiry}
-								orderTotal={total_amount}
+								orderExpiry={orderExpiresAt}
+								orderTotal={feeSat}
 								lightning={{ invoice: purchase_invoice }}
 							/>
 						</Tab>
@@ -139,15 +131,15 @@ function PaymentPage(): JSX.Element {
 							}
 						>
 							<PaymentRequest
-								orderId={_id}
+								orderId={id}
 								orderStatus={orderStatus}
-								orderExpiry={order_expiry}
-								orderTotal={total_amount}
+								orderExpiry={orderExpiresAt}
+								orderTotal={feeSat}
 								onchain={{
 									address: btc_address,
-									sats: total_amount,
-									zeroConfMinFee: zero_conf_satvbyte,
-									receivingAmount: unconfirmedIncoming
+									sats: feeSat,
+									receivingAmount: confirmedSatsIncoming,
+									transactionsOnChain
 								}}
 							/>
 						</Tab>

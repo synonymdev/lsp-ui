@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Accordion, Card, Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import {
@@ -8,22 +8,21 @@ import {
 	selectOrdersState
 } from '../../../store/public-store';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { IGetOrderResponse } from '@synonymdev/blocktank-client';
 import { addressLink, txLink, nodePubKeyLink } from '../../../utils/links';
 import { Widget } from '../../public';
 import OrderActions from '../../../components/admin/order-actions';
+import { UseOrderResponse } from '../../../utils/helpers';
 
 function OrderPage(): JSX.Element {
 	const { orderId } = useParams();
-
-	const [order, setOrder] = useState<IGetOrderResponse | undefined>(undefined);
+	const [order, setOrder] = useState<UseOrderResponse | undefined>(undefined);
 
 	const orders = useAppSelector(selectOrders);
 	const ordersState = useAppSelector(selectOrdersState);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
-		const newOrder = orders.find((o) => o._id === orderId);
+		const newOrder = orders.find((o) => o.id === orderId);
 		if (newOrder) {
 			setOrder(newOrder);
 		}
@@ -47,28 +46,31 @@ function OrderPage(): JSX.Element {
 
 	const {
 		state,
-		amount_received,
-		onchain_payments,
-		created_at,
-		order_expiry,
-		local_balance,
-		remote_balance,
-		price,
-		stateMessage,
-		btc_address,
-		remote_node_src,
-		channel_expiry,
-		channel_open_tx,
-		remote_node_uri,
-		total_amount,
-		zero_conf_satvbyte
+		payment: { paidSat: amount_received },
+		payment: {
+			onchain: { transactions: onchain_payments }
+		},
+		createdAt,
+		orderExpiresAt,
+		lspBalanceSat,
+		clientBalanceSat,
+		feeSat,
+		payment: {
+			bolt11Invoice: { state: stateBoltInvoice }
+		},
+		payment: {
+			onchain: { address: btc_address }
+		},
+		lspNode: { alias: remote_node_src },
+		channelExpiresAt,
+		lspNode: { pubkey: remote_node_uri }
 	} = order;
 
 	return (
 		<div>
 			<Row>
 				<Col lg={7}>
-					<h2>{new Date(created_at).toLocaleString()}</h2>
+					<h2>{new Date(createdAt).toLocaleString()}</h2>
 
 					<OrderActions orderId={orderId} />
 
@@ -78,12 +80,12 @@ function OrderPage(): JSX.Element {
 					<Card>
 						<Card.Body>
 							<Card.Title>
-								State: {stateMessage} ({state})
+								State: {stateBoltInvoice} ({state})
 							</Card.Title>
-							<Card.Text>Price: {price}</Card.Text>
-							<Card.Text>Local balance: {local_balance}</Card.Text>
-							<Card.Text>Remote balance: {remote_balance}</Card.Text>
-							<Card.Text>Order expiry: {new Date(order_expiry).toLocaleDateString()}</Card.Text>
+							<Card.Text>Price: {feeSat}</Card.Text>
+							<Card.Text>Local balance: {lspBalanceSat}</Card.Text>
+							<Card.Text>Remote balance: {clientBalanceSat}</Card.Text>
+							<Card.Text>Order expiry: {new Date(orderExpiresAt).toLocaleDateString()}</Card.Text>
 							{/* <Card.Text>Active channels: {node_info.active_channels_count}</Card.Text> */}
 						</Card.Body>
 					</Card>
@@ -94,12 +96,8 @@ function OrderPage(): JSX.Element {
 						<Card.Body>
 							<Card.Title>Payment</Card.Title>
 							<Card.Text>
-								Total amount received: {amount_received} of {total_amount}
+								Total amount received: {amount_received} of xxxsats{}
 							</Card.Text>
-
-							{zero_conf_satvbyte ? (
-								<Card.Text>Zero conf payment min fee: {zero_conf_satvbyte} sat/vbyte</Card.Text>
-							) : null}
 
 							<Card.Text>BTC address: {addressLink(btc_address)}</Card.Text>
 
@@ -120,13 +118,7 @@ function OrderPage(): JSX.Element {
 							<Card.Title>Channel details</Card.Title>
 							<Card.Text>Remote node source: {remote_node_src}</Card.Text>
 							<Card.Text>Remote node URI: {nodePubKeyLink(remote_node_uri)}</Card.Text>
-							<Card.Text>Channel expiry: {channel_expiry}</Card.Text>
-							{channel_open_tx ? (
-								<Card.Text>
-									Channel open tx: {txLink(channel_open_tx.transaction_id)}:
-									{channel_open_tx.transaction_vout}
-								</Card.Text>
-							) : null}
+							<Card.Text>Channel expiry: {channelExpiresAt}</Card.Text>
 						</Card.Body>
 					</Card>
 

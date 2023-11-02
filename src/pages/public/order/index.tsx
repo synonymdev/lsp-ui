@@ -1,4 +1,3 @@
-import React from 'react';
 import { useAppDispatch } from '../../../store/hooks';
 import { navigate } from '../../../store/public-store';
 import FormCard from '../../../components/form-card';
@@ -32,48 +31,35 @@ function OrderPage(): JSX.Element {
 		return <ErrorPage type={'orderNotFound'} />;
 	}
 
-	const { state, local_balance, remote_balance, stateMessage, channel_expiry, created_at } = order;
+	const {
+		state,
+		lspBalanceSat,
+		clientBalanceSat,
+		channelExpiryWeeks,
+		createdAt,
+		payment: {
+			bolt11Invoice: { state: stateBoltInvoice }
+		},
+		payment: { state: statePayment },
+		payment: {
+			onchain: { confirmedSat }
+		}
+	} = order;
 
 	let heading = '';
 	let icon: TIcon = 'lightning-3d';
 	let iconState: TIconRingType = 'pending';
-	let headerMessage = <span>{stateMessage}</span>;
+	let headerMessage = <span>{stateBoltInvoice}</span>;
 	let footerMessage = <></>;
 	let showIconCross = false;
 	let showSupportButtons = false;
 
-	const supportLink = <a href={supportHref(order._id)}>{supportEmail}</a>;
+	const supportLink = <a href={supportHref(order.id)}>{supportEmail}</a>;
 
-	switch (state) {
-		case 0: {
-			dispatch(navigate({ page: 'payment' }));
-			break;
-		}
-		case 100: {
-			dispatch(navigate({ page: 'claim' }));
-			break;
-		}
-		case 200: // URI set
-			icon = 'hourglass-3d';
-			iconState = 'pending';
-			heading = 'Opening channel';
-			headerMessage = (
-				<span>
-					Ready to connect and establish your channel. Please ensure your node or wallet app is
-					online and active.
-				</span>
-			);
-			footerMessage = (
-				<>
-					This channel will stay open for at least{' '}
-					<span className={'highlight'}>
-						{channel_expiry} week{channel_expiry === 1 ? '' : 's'}
-					</span>
-					.
-				</>
-			);
-			break;
-		case 300: // Channel opening
+	if (state === 'created') {
+		if (stateBoltInvoice === 'pending') dispatch(navigate({ page: 'payment' }));
+		else if (statePayment === 'paid') dispatch(navigate({ page: 'claim' }));
+		else if (stateBoltInvoice === 'paid' || confirmedSat !== 0) {
 			icon = 'hourglass-3d';
 			iconState = 'pending';
 			heading = 'Opening channel';
@@ -87,13 +73,43 @@ function OrderPage(): JSX.Element {
 				<>
 					This channel will stay open for at least{' '}
 					<span className={'highlight'}>
-						{channel_expiry} week{channel_expiry === 1 ? '' : 's'}
+						{channelExpiryWeeks} week{channelExpiryWeeks === 1 ? '' : 's'}
 					</span>
 					.
 				</>
 			);
-			break;
-		case 400: // Given up
+		}
+	} else if (state === 'open') {
+		iconState = 'success';
+		heading = 'Channel live';
+		headerMessage = <span>Your Lightning channel is currently open and is ready for use.</span>;
+		footerMessage = (
+			<>
+				This channel will stay open for at least{' '}
+				<span className={'highlight'}>
+					{channelExpiryWeeks} week{channelExpiryWeeks === 1 ? '' : 's'}
+				</span>
+				.
+			</>
+		);
+	} else if (state === 'expired') {
+		icon = 'stopwatch-3d';
+		iconState = 'error';
+		heading = 'Order expired';
+		headerMessage = (
+			<span>
+				Orders expire if they remain unpaid for too long. If your payment was sent after this
+				expiration, and you did not receive your channel, please contact {supportLink} for a refund.
+			</span>
+		);
+		showSupportButtons = true;
+	} else if (state === 'closed') {
+		if (statePayment === 'paid') {
+			iconState = 'neutral';
+			showIconCross = true;
+			heading = 'Channel closed';
+			headerMessage = <span>This Lightning channel has expired or has closed.</span>;
+		} else {
 			icon = 'lightning-3d';
 			iconState = 'error';
 			heading = 'Channel failed';
@@ -105,43 +121,10 @@ function OrderPage(): JSX.Element {
 				</span>
 			);
 			showSupportButtons = true;
-			break;
-		case 410: // Order expired
-			icon = 'stopwatch-3d';
-			iconState = 'error';
-			heading = 'Order expired';
-			headerMessage = (
-				<span>
-					Orders expire if they remain unpaid for too long. If your payment was sent after this
-					expiration, and you did not receive your channel, please contact {supportLink} for a
-					refund.
-				</span>
-			);
-			showSupportButtons = true;
-			break;
-		case 450: // Channel closed
-			iconState = 'neutral';
-			showIconCross = true;
-			heading = 'Channel closed';
-			headerMessage = <span>This Lightning channel has expired or has closed.</span>;
-			break;
-		case 500: // Channel open
-			iconState = 'success';
-			heading = 'Channel live';
-			headerMessage = <span>Your Lightning channel is currently open and is ready for use.</span>;
-			footerMessage = (
-				<>
-					This channel will stay open for at least{' '}
-					<span className={'highlight'}>
-						{channel_expiry} week{channel_expiry === 1 ? '' : 's'}
-					</span>
-					.
-				</>
-			);
-			break;
+		}
 	}
 
-	const date = new Date(created_at);
+	const date = new Date(createdAt);
 
 	return (
 		<FormCard title={'New Lightning Channel'} showLightningIcon>
@@ -152,7 +135,7 @@ function OrderPage(): JSX.Element {
 
 				{showSupportButtons ? (
 					<div className={'order-state-support-button-container'}>
-						<SupportButton orderId={order._id} size={'sm'} />
+						<SupportButton orderId={order.id} size={'sm'} />
 						<span className={'order-state-support-button-spacer'} />
 						<ActionButton onClick={() => dispatch(navigate({ page: 'configure' }))} size={'sm'}>
 							New channel
@@ -183,14 +166,14 @@ function OrderPage(): JSX.Element {
 				</div>
 
 				<div className={'value-group-row'}>
-					<ValueGroup label={'Inbound capacity'} value={local_balance} showFiat />
-					<ValueGroup label={'My balance'} value={remote_balance} showFiat />
+					<ValueGroup label={'Inbound capacity'} value={lspBalanceSat} showFiat />
+					<ValueGroup label={'My balance'} value={clientBalanceSat} showFiat />
 				</div>
 
 				{footerMessage ? (
 					<p className={'order-state-message'}>
 						{footerMessage} <br />
-						Order ID: {order._id}
+						Order ID: {order.id}
 					</p>
 				) : null}
 			</div>

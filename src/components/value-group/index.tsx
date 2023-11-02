@@ -60,7 +60,11 @@ export default ({
 			</div>
 
 			<div className={'value-group-row2'}>
-				<PrependIcon className={`value-group-icon-${size}`} />
+				{Icon ? (
+					<Icon className={`value-group-icon-${size}`} />
+				) : (
+					<PrependIcon className={`value-group-icon-${size}`} />
+				)}
 				<span className={`value-group-sats ${size}`}>{formattedValue}</span>
 			</div>
 		</div>
