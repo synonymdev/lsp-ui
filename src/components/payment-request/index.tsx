@@ -75,11 +75,29 @@ export default ({
 	}
 	const themeParam = new URLSearchParams(window.location.search).get('theme') ?? '';
 
+	const payWithWebln = async (): Promise<void> => {
+		if (typeof window.webln !== 'undefined' && lightning) {
+			try {
+				await window.webln.enable();
+
+				await window.webln.sendPayment(lightning.invoice);
+			} catch (error) {
+				alert('An error occurred during the payment.');
+			}
+		}
+	};
+
 	return (
 		<div className='payment-request-container'>
 			<div className='payment-request-top'>
 				<div className={'payment-request-qr'}>
-					<QRCode value={qrValue} size={qrSize} />
+					{lightning ? (
+						<a href={qrValue}>
+							<QRCode value={qrValue} size={qrSize} />
+						</a>
+					) : (
+						<QRCode value={qrValue} size={qrSize} />
+					)}
 				</div>
 				<div className={'payment-request-details'}>
 					<div className={'payment-request-title'}>
@@ -92,7 +110,11 @@ export default ({
 						/>
 					</div>
 					<p className={'payment-request-address'}>{clipCenter(text, 42)}</p>
-					<ActionButton copyText={text}>{copyButtonTitle}</ActionButton>
+					<div className={'text-center'}>
+						<ActionButton onClick={payWithWebln}>Pay Now</ActionButton>
+						<span>or</span>
+						<ActionButton copyText={text}>{copyButtonTitle}</ActionButton>
+					</div>
 				</div>
 			</div>
 

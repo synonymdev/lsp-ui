@@ -14,6 +14,7 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-redux": "^7.1.18",
+    "@webbtc/webln-types": "^3.0.0",
     "bip21": "^2.0.3",
     "bitcoin-units": "^0.3.0",
     "bootstrap": "^5.1.3",

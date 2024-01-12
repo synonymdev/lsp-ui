@@ -1,56 +1,59 @@
 .payment-request-container {
+	.payment-request-title {
+		display: flex;
+		justify-content: space-between;
+		font-weight: 600;
+		font-size: 15px;
+		color: #f75c1a;
+		margin-bottom: 10px;
+	}
 
-  .payment-request-title {
-    display: flex;
-    justify-content: space-between;
-    font-weight: 600;
-    font-size: 15px;
-    color: #F75C1A;
-    margin-bottom: 10px;
-  }
+	.payment-request-top {
+		display: flex;
 
-  .payment-request-top {
-    display: flex;
+		@media (max-width: 480px) {
+			flex-direction: column;
+		}
 
-    @media (max-width:480px)  {
-      flex-direction: column;
-    }
+		.payment-request-qr {
+			@media (max-width: 480px) {
+				margin-bottom: 10px;
+			}
+		}
 
-    .payment-request-qr {
-      @media (max-width:480px)  {
-        margin-bottom: 10px;
-      }
-    }
+		.payment-request-details {
+			padding-left: 20px;
+			overflow: hidden;
 
-    .payment-request-details {
-      padding-left: 20px;
-      overflow: hidden;
+			.payment-request-address {
+				font-size: 15px;
+				color: #8e8e93;
+			}
+		}
+	}
 
-      .payment-request-address {
-        font-size: 15px;
-        color: #8E8E93;
-      }
-    }
-  }
+	.payment-request-middle {
+		margin-top: 20px;
+		display: flex;
+		justify-content: space-between;
 
-  .payment-request-middle {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
+		.payment-request-middle-value {
+			font-size: 21px;
+			color: #ffffff;
 
-    .payment-request-middle-value {
-      font-size: 21px;
-      color: #FFFFFF;
+			.payment-request-middle-value-icon {
+				margin-right: 13px;
+			}
+		}
+	}
 
-      .payment-request-middle-value-icon {
-        margin-right: 13px;
-      }
-    }
-  }
+	.payment-request-bottom-message {
+		font-size: 15px;
+		color: #8e8e93;
+		margin-top: 20px;
+	}
 
-  .payment-request-bottom-message {
-    font-size: 15px;
-    color: #8E8E93;
-    margin-top: 20px;
-  }
+	.text-center {
+		text-align: center;
+	}
 }
