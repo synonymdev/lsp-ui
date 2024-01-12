@@ -54,7 +54,7 @@ function ConfigurePage(): JSX.Element {
 	const [couponCode, setCouponCode] = useState<string>('');
 	const [formErrors, setFormErrors] = useState<IFormErrors>({});
 	const [generalError, setGeneralError] = useState('');
-	const initChannelSize = 21000;
+	const initChannelSize = 1000000;
 
 	useEffect(() => {
 		if (options) {
@@ -63,7 +63,7 @@ function ConfigurePage(): JSX.Element {
 
 			if (remoteBalance === '0') {
 				if (options.minChannelSizeSat < initChannelSize) {
-					setRemoteBalance('30000');
+					setRemoteBalance('1000000');
 				} else {
 					setRemoteBalance(`${options.minChannelSizeSat}`);
 				}
@@ -173,7 +173,7 @@ function ConfigurePage(): JSX.Element {
 				};
 			}
 		} else if (min_chan_receiving >= initChannelSize) {
-			if (Number(remoteBalance) <= min_chan_receiving) {
+			if (Number(remoteBalance) < min_chan_receiving) {
 				errors.remoteBalance = {
 					message: `Minimum receiving capacity is ${numberWithSpaces(
 						min_chan_receiving
