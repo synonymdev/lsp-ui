@@ -34,6 +34,8 @@ REACT_APP_MAINNET=true // or false
 
 ## Available Scripts
 
+⚠️ Switch to the Node.js version defined in `.node-version`. You can visit [.node-version File Usage](https://github.com/shadowspawn/node-version-usage) and use one of these methods to change the node version you need.
+
 In the project directory, you can run:
 
 ### `yarn start`
