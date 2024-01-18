@@ -111,8 +111,13 @@ export default ({
 					</div>
 					<p className={'payment-request-address'}>{clipCenter(text, 42)}</p>
 					<div className={'text-center'}>
-						<ActionButton onClick={payWithWebln}>Pay Now</ActionButton>
-						<span>or</span>
+						{typeof window.webln !== 'undefined' && lightning && (
+							<>
+								<ActionButton onClick={payWithWebln}>Pay Now</ActionButton>
+								<span>or</span>
+							</>
+						)}
+
 						<ActionButton copyText={text}>{copyButtonTitle}</ActionButton>
 					</div>
 				</div>
