@@ -107,13 +107,8 @@ function OrdersPage(): JSX.Element {
 						id,
 						state,
 						createdAt,
-						payment: {
-							bolt11Invoice: { state: stateBoltInvoice }
-						},
 						payment: { state: statePayment },
-						payment: {
-							onchain: { transactions: transactionsOnChain }
-						},
+						payment: { state2: statePayment2 },
 						payment: {
 							onchain: { confirmedSat }
 						}
@@ -124,18 +119,12 @@ function OrdersPage(): JSX.Element {
 						let page: TPublicPage = 'order';
 
 						const getStatusLabel = (): string => {
-							if (statePayment === 'paid' && transactionsOnChain.length !== 0) {
-								if (state === 'created') return 'Claim channel';
-								else if (state === 'open') return 'Channel open';
-								else if (state === 'closed') return 'Channel closed';
-							}
-
 							if (statusLabels[state]) {
-								if (statusLabels[state][stateBoltInvoice]) {
-									return statusLabels[state][stateBoltInvoice];
+								if (statusLabels[state][statePayment2]) {
+									return statusLabels[state][statePayment2];
 								}
 							}
-							return stateBoltInvoice;
+							return statePayment2;
 						};
 
 						if (state === 'created') {
@@ -143,7 +132,7 @@ function OrdersPage(): JSX.Element {
 								Icon = LightningActive;
 								buttonText = 'Claim channel';
 								page = 'claim';
-							} else if (stateBoltInvoice === 'pending' || confirmedSat === 0) {
+							} else if (statePayment2 === 'created' && confirmedSat === 0) {
 								// Awaiting payment
 								buttonText = 'Pay now';
 

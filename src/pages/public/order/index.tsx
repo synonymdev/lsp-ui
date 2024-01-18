@@ -37,9 +37,7 @@ function OrderPage(): JSX.Element {
 		clientBalanceSat,
 		channelExpiryWeeks,
 		createdAt,
-		payment: {
-			bolt11Invoice: { state: stateBoltInvoice }
-		},
+		payment: { state2: statePayment2 },
 		payment: { state: statePayment },
 		payment: {
 			onchain: { confirmedSat }
@@ -49,7 +47,7 @@ function OrderPage(): JSX.Element {
 	let heading = '';
 	let icon: TIcon = 'lightning-3d';
 	let iconState: TIconRingType = 'pending';
-	let headerMessage = <span>{stateBoltInvoice}</span>;
+	let headerMessage = <span>{statePayment2}</span>;
 	let footerMessage = <></>;
 	let showIconCross = false;
 	let showSupportButtons = false;
@@ -57,9 +55,9 @@ function OrderPage(): JSX.Element {
 	const supportLink = <a href={supportHref(order.id)}>{supportEmail}</a>;
 
 	if (state === 'created') {
-		if (stateBoltInvoice === 'pending') dispatch(navigate({ page: 'payment' }));
+		if (statePayment2 === 'created') dispatch(navigate({ page: 'payment' }));
 		else if (statePayment === 'paid') dispatch(navigate({ page: 'claim' }));
-		else if (stateBoltInvoice === 'paid' || confirmedSat !== 0) {
+		else if (statePayment2 === 'paid' || confirmedSat !== 0) {
 			icon = 'hourglass-3d';
 			iconState = 'pending';
 			heading = 'Opening channel';
@@ -78,6 +76,11 @@ function OrderPage(): JSX.Element {
 					.
 				</>
 			);
+		} else if (statePayment2 === 'canceled') {
+			iconState = 'neutral';
+			showIconCross = true;
+			heading = 'Channel cancelled';
+			headerMessage = <span>This Lightning channel has cancelled.</span>;
 		}
 	} else if (state === 'open') {
 		iconState = 'success';

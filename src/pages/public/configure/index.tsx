@@ -44,7 +44,8 @@ function ConfigurePage(): JSX.Element {
 	const dispatch = useAppDispatch();
 	const exchangeRates = useAppSelector(selectExchangeRates);
 	const selectedCurrency = useAppSelector(selectCurrency);
-	const client = new BlocktankClient();
+	const API_URL = process.env.API_URL;
+	const client = new BlocktankClient(API_URL);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [product, setProduct] = useState<{} | undefined>(undefined);

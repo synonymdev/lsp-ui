@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import bt from '@synonymdev/blocktank-client';
+import { BlocktankClient } from '@synonymdev/blocktank-lsp-http-client';
 
 import { useAppDispatch } from '../../../store/hooks';
 import { navigate, refreshOrder } from '../../../store/public-store';
@@ -31,6 +31,8 @@ function ClaimPage(): JSX.Element {
 	const [nodeUri, setNodeUri] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const dispatch = useAppDispatch();
+	const API_URL = process.env.API_URL;
+	const client = new BlocktankClient(API_URL);
 	const { order, orderState } = useOrder();
 	const inboundDisplay = useDisplayValues(Number(order?.lspBalanceSat));
 	const myBalanceDisplay = useDisplayValues(Number(order?.clientBalanceSat));
@@ -52,12 +54,7 @@ function ClaimPage(): JSX.Element {
 	const claimChannel = async (): Promise<void> => {
 		setIsSubmitting(true);
 		try {
-			await bt.finalizeChannel({
-				order_id: id,
-				node_uri: nodeUri,
-				private: isPrivate
-			});
-
+			await client.openChannel(id, nodeUri, !isPrivate);
 			await dispatch(refreshOrder(id));
 
 			dispatch(navigate({ page: 'order' }));
