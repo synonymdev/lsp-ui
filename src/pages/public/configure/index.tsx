@@ -51,10 +51,10 @@ function ConfigurePage(): JSX.Element {
 	const [channelExpiry, setChannelExpiry] = useState<string>('');
 	const [localBalance, setLocalBalance] = useState<string>('');
 	const [remoteBalance, setRemoteBalance] = useState<string>('0');
-	const [couponCode, setCouponCode] = useState<string>('');
 	const [formErrors, setFormErrors] = useState<IFormErrors>({});
 	const [generalError, setGeneralError] = useState('');
 	const initChannelSize = 1000000;
+	const coupon_code = 'bitkit20';
 
 	useEffect(() => {
 		if (options) {
@@ -99,7 +99,6 @@ function ConfigurePage(): JSX.Element {
 		const channel_expiry = channelExpiry ? Number(channelExpiry) : max_chan_expiry;
 		const local_balance = Number(remoteBalance);
 		const remote_balance = localBalance ? Number(localBalance) : 0;
-		const coupon_code = couponCode ? String(couponCode) : '';
 
 		try {
 			const order = await client.createOrder(local_balance, channel_expiry, {
@@ -200,12 +199,6 @@ function ConfigurePage(): JSX.Element {
 					value: max_spending_balance
 				};
 			}
-		}
-
-		if (couponCode && couponCode !== '') {
-			errors.couponCode = {
-				message: 'Coupon is expired or invalid'
-			};
 		}
 
 		setFormErrors(errors);
@@ -321,20 +314,6 @@ function ConfigurePage(): JSX.Element {
 						}}
 						onBlur={onBlur}
 						tooltip={durationTip}
-					/>
-
-					<InputGroup
-						type='text'
-						value={couponCode}
-						placeholder={`bitkit20`}
-						onChange={(str) => onSetInput(str, setCouponCode)}
-						id={'coupon-code'}
-						label={'My coupon code'}
-						error={formErrors.couponCode?.message}
-						onErrorClick={() => {
-							setCouponCode(formErrors.couponCode?.value);
-							setFormErrors({});
-						}}
 					/>
 
 					<Error>{generalError}</Error>
