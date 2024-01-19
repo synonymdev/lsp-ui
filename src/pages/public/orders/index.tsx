@@ -68,7 +68,7 @@ function OrdersPage(): JSX.Element {
 	const orders = useAppSelector(selectOrders);
 	const ordersState = useAppSelector(selectOrdersState);
 	const dispatch = useAppDispatch();
-
+	
 	useEffect(() => {
 		orders.forEach((o) => {
 			dispatch(refreshOrder(o.id)).catch((e) => alert(e));
@@ -128,7 +128,7 @@ function OrdersPage(): JSX.Element {
 						};
 
 						if (state === 'created') {
-							if (statePayment === 'paid') {
+							if (statePayment2 === 'paid') {
 								Icon = LightningActive;
 								buttonText = 'Claim channel';
 								page = 'claim';

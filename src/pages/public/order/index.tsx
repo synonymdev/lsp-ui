@@ -79,8 +79,8 @@ function OrderPage(): JSX.Element {
 		} else if (statePayment2 === 'canceled') {
 			iconState = 'neutral';
 			showIconCross = true;
-			heading = 'Channel cancelled';
-			headerMessage = <span>This Lightning channel has cancelled.</span>;
+			heading = 'Order cancelled';
+			headerMessage = <span>Order has cancelled. Contact {supportLink} for assistance.</span>;
 		}
 	} else if (state === 'open') {
 		iconState = 'success';
@@ -98,13 +98,20 @@ function OrderPage(): JSX.Element {
 	} else if (state === 'expired') {
 		icon = 'stopwatch-3d';
 		iconState = 'error';
-		heading = 'Order expired';
-		headerMessage = (
-			<span>
-				Orders expire if they remain unpaid for too long. If your payment was sent after this
-				expiration, and you did not receive your channel, please contact {supportLink} for a refund.
-			</span>
-		);
+		heading = statePayment === 'refunded' ? 'Order refunded' : 'Order expired';
+		headerMessage =
+			statePayment === 'refunded' ? (
+				<span>
+					Orders refunded if they remain unclaimed for too long. Once you have paid, make sure you
+					have claimed the channel, for assistance contact {supportLink}.
+				</span>
+			) : (
+				<span>
+					Orders expire if they remain unpaid for too long. If your payment was sent after this
+					expiration, and you did not receive your channel, please contact {supportLink} for a
+					refund.
+				</span>
+			);
 		showSupportButtons = true;
 	} else if (state === 'closed') {
 		if (statePayment === 'paid') {

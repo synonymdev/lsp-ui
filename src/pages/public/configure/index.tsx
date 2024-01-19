@@ -55,7 +55,7 @@ function ConfigurePage(): JSX.Element {
 	const [formErrors, setFormErrors] = useState<IFormErrors>({});
 	const [generalError, setGeneralError] = useState('');
 	const initChannelSize = 1000000;
-	const coupon_code = 'bitkit20';
+	const coupon_code = 'blocktank-widget';
 
 	useEffect(() => {
 		if (options) {

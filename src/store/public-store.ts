@@ -8,7 +8,6 @@ import { GetInfoResponse, GetOrderResponse } from '../utils/helpers';
 export type RequestState = 'idle' | 'loading' | 'error';
 
 const API_URL = process.env.API_URL;
-
 const client = new BlocktankClient(API_URL);
 
 export type TPublicPage =
