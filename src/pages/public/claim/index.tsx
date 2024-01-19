@@ -55,8 +55,8 @@ function ClaimPage(): JSX.Element {
 				await window.webln.enable();
 
 				await window.webln.lnurl(lnurl);
-			} catch (error) {
-				alert('An error occurred during the payment.');
+			} catch (e) {
+				alert(`An error occurred during the payment: ${e}`);
 			}
 		}
 	};

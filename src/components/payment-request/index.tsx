@@ -81,8 +81,8 @@ export default ({
 				await window.webln.enable();
 
 				await window.webln.sendPayment(lightning.invoice);
-			} catch (error) {
-				alert('An error occurred during the payment.');
+			} catch (e) {
+				alert(`An error occurred during the payment: ${e}`);
 			}
 		}
 	};
