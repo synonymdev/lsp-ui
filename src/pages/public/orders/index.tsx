@@ -107,7 +107,6 @@ function OrdersPage(): JSX.Element {
 						id,
 						state,
 						createdAt,
-						payment: { state: statePayment },
 						payment: { state2: statePayment2 },
 						payment: {
 							onchain: { confirmedSat }
