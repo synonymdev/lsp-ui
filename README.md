@@ -32,6 +32,12 @@ The following environment variables are required to run the app:
 REACT_APP_MAINNET=true // or false
 ```
 
+Set this environment variable if you want to test in regtest:
+
+```bash
+API_URL="https://api.stag.blocktank.to/blocktank/api/v2/"
+```
+
 ## Available Scripts
 
 ⚠️ Switch to the Node.js version defined in `.node-version`. You can visit [.node-version File Usage](https://github.com/shadowspawn/node-version-usage) and use one of these methods to change the node version you need.

@@ -96,6 +96,7 @@ export type GetOrderResponse = {
 	lnurl: string;
 	payment: {
 		state: string;
+		state2: string;
 		paidSat: number;
 		bolt11Invoice: {
 			request: string;
@@ -139,6 +140,7 @@ export type UseOrderResponse = {
 	lnurl: string;
 	payment: {
 		state: string;
+		state2: string;
 		paidSat: number;
 		bolt11Invoice: {
 			request: string;
@@ -161,16 +163,19 @@ export type UseOrderResponse = {
 
 export const statusLabels = {
 	created: {
-		pending: 'Awaiting payment',
-		holding: 'Claim channel'
+		paid: 'Claim channel',
+		canceled: 'Channel cancelled',
+		created: "Awaiting payment"
 	},
 	expired: {
 		pending: 'Order expired',
-		canceled: 'Order expired'
+		canceled: 'Order expired',
+		refundAvailable: "Order refunded"
 	},
-	close: {
+	closed: {
 		pending: 'Channel closed',
-		cancelled: 'Channel closed'
+		canceled: 'Channel closed',
+		paid: 'Channel closed'
 	},
 	open: {
 		paid: 'Channel open'

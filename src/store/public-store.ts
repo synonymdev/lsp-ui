@@ -7,7 +7,8 @@ import { GetInfoResponse, GetOrderResponse } from '../utils/helpers';
 
 export type RequestState = 'idle' | 'loading' | 'error';
 
-const client = new BlocktankClient();
+const API_URL = process.env.API_URL;
+const client = new BlocktankClient(API_URL);
 
 export type TPublicPage =
 	| 'configure'
@@ -148,7 +149,7 @@ export const publicStore = createSlice({
 			.addCase(refreshOrder.fulfilled, (state, action) => {
 				state.orders.state = 'idle';
 
-				const updatedOrder: GetOrderResponse = action.payload as GetOrderResponse;
+				const updatedOrder: GetOrderResponse = action.payload as unknown as GetOrderResponse;
 				const existingOrderIndex = state.orders.value.findIndex((o) => o.id === updatedOrder.id);
 
 				if (existingOrderIndex > -1) {
