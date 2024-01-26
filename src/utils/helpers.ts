@@ -170,7 +170,8 @@ export const statusLabels = {
 	expired: {
 		pending: 'Order expired',
 		canceled: 'Order expired',
-		refundAvailable: "Order refunded"
+		refundAvailable: "Refund Available",
+		refunded: "Order refunded"
 	},
 	closed: {
 		pending: 'Channel closed',
