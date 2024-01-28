@@ -130,9 +130,9 @@ function ConfigurePage(): JSX.Element {
 			return true;
 		}
 
-		const max_chan_receiving = options.maxChannelSizeSat;
-		const min_chan_receiving = options.minChannelSizeSat;
-		const max_chan_spending = options.maxClientBalanceSat;
+		const max_chan_receiving = Math.floor(options.maxChannelSizeSat);
+		const min_chan_receiving = Math.floor(options.minChannelSizeSat);
+		const max_chan_spending = Math.floor(options.maxClientBalanceSat);
 
 		const bitcoinPrice = exchangeRates[selectedCurrency];
 		const symbolCurrency = currencySymbols[selectedCurrency];
