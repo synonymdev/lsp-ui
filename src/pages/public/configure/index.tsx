@@ -130,9 +130,9 @@ function ConfigurePage(): JSX.Element {
 			return true;
 		}
 
-		const max_chan_receiving = options.maxChannelSizeSat;
-		const min_chan_receiving = options.minChannelSizeSat;
-		const max_chan_spending = options.maxClientBalanceSat;
+		const max_chan_receiving = Math.floor(options.maxChannelSizeSat);
+		const min_chan_receiving = Math.floor(options.minChannelSizeSat);
+		const max_chan_spending = Math.floor(options.maxClientBalanceSat);
 
 		const bitcoinPrice = exchangeRates[selectedCurrency];
 		const symbolCurrency = currencySymbols[selectedCurrency];
@@ -160,24 +160,26 @@ function ConfigurePage(): JSX.Element {
 
 		if (Number(remoteBalance) > max_chan_receiving) {
 			errors.remoteBalance = {
-				message: `Max receiving capacity is ${numberWithSpaces(
-					max_chan_receiving
-				)} sats (${symbolCurrency}${numberWithSpaces(max_chan_receiving_cur)})`,
+				message: `Max receiving capacity is ${numberWithSpaces(max_chan_receiving)} sats ${
+					!isNaN(max_chan_receiving_cur) ? `(${symbolCurrency}${max_chan_receiving_cur})` : ``
+				}`,
 				value: max_chan_receiving
 			};
 		} else if (min_chan_receiving < initChannelSize) {
 			if (Number(remoteBalance) < initChannelSize) {
 				errors.remoteBalance = {
-					message: `Minimum receiving capacity is ${initChannelSize} sats (${symbolCurrency}${initChannelSize_cur})`,
+					message: `Minimum receiving capacity is ${initChannelSize} sats ${
+						!isNaN(initChannelSize_cur) ? `(${symbolCurrency}${initChannelSize_cur})` : ``
+					}`,
 					value: initChannelSize
 				};
 			}
 		} else if (min_chan_receiving >= initChannelSize) {
 			if (Number(remoteBalance) < min_chan_receiving) {
 				errors.remoteBalance = {
-					message: `Minimum receiving capacity is ${numberWithSpaces(
-						min_chan_receiving
-					)} sats (${symbolCurrency}${min_chan_receiving_cur})`,
+					message: `Minimum receiving capacity is ${numberWithSpaces(min_chan_receiving)} sats ${
+						!isNaN(min_chan_receiving_cur) ? `(${symbolCurrency}${min_chan_receiving_cur})` : ``
+					}`,
 					value: min_chan_receiving
 				};
 			}
@@ -186,17 +188,17 @@ function ConfigurePage(): JSX.Element {
 		if (Number(localBalance) !== 0) {
 			if (Number(localBalance) > max_chan_spending) {
 				errors.localBalance = {
-					message: `Max spending balance is ${numberWithSpaces(
-						max_chan_spending
-					)} sats (${symbolCurrency}${max_chan_spending_cur})`,
+					message: `Max spending balance is ${numberWithSpaces(max_chan_spending)} sats ${
+						!isNaN(max_chan_spending_cur) ? `(${symbolCurrency}${max_chan_spending_cur})` : ``
+					}`,
 					value: max_chan_spending
 				};
 			} else if (Number(localBalance) + Number(remoteBalance) > max_chan_receiving) {
 				const max_spending_balance = max_chan_receiving - Number(remoteBalance);
 				errors.localBalance = {
-					message: `Total channel capacity is ${numberWithSpaces(
-						max_chan_receiving
-					)} sats (${symbolCurrency}${max_chan_receiving_cur})`,
+					message: `Total channel capacity is ${numberWithSpaces(max_chan_receiving)} sats ${
+						!isNaN(max_chan_receiving_cur) ? `(${symbolCurrency}${max_chan_receiving_cur})` : ``
+					}`,
 					value: max_spending_balance
 				};
 			}

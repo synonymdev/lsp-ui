@@ -98,12 +98,22 @@ function OrderPage(): JSX.Element {
 	} else if (state === 'expired') {
 		icon = 'stopwatch-3d';
 		iconState = 'error';
-		heading = statePayment === 'refunded' ? 'Order refunded' : 'Order expired';
+		heading =
+			statePayment2 === 'refunded'
+				? 'Order refunded'
+				: statePayment2 === 'refundAvailable'
+				? 'Refund available'
+				: 'Order expired';
 		headerMessage =
-			statePayment === 'refunded' ? (
+			statePayment2 === 'refunded' ? (
 				<span>
 					Orders refunded if they remain unclaimed for too long. Once you have paid, make sure you
 					have claimed the channel, for assistance contact {supportLink}.
+				</span>
+			) : statePayment2 === 'refundAvailable' ? (
+				<span>
+					Refund available. Please contact {supportLink} to receive a refund, be sure to share an
+					address to receive it.
 				</span>
 			) : (
 				<span>
