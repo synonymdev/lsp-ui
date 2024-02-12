@@ -31,8 +31,7 @@ function ClaimPage(): JSX.Element {
 	const [nodeUri, setNodeUri] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const dispatch = useAppDispatch();
-	const API_URL = process.env.API_URL;
-	const client = new BlocktankClient(API_URL);
+	const client = new BlocktankClient(process.env.REACT_APP_API_URL);
 	const { order, orderState } = useOrder();
 	const inboundDisplay = useDisplayValues(Number(order?.lspBalanceSat));
 	const myBalanceDisplay = useDisplayValues(Number(order?.clientBalanceSat));
