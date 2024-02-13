@@ -101,7 +101,10 @@ function ClaimPage(): JSX.Element {
 					<p className={'claim-channel-address'}>{clipCenter(lnurl.toLocaleLowerCase(), 42)}</p>
 					<div>
 						{typeof window.webln !== 'undefined' && window.webln.lnurl && (
-							<ActionButton onClick={() => ClaimWithWebln}>Claim Now</ActionButton>
+							<>
+								<ActionButton onClick={ClaimWithWebln}>Claim Now</ActionButton>
+								<div className={'claim-channel-button-spacer'} />
+							</>
 						)}
 						<ActionButton copyText={lnurl.toLocaleLowerCase()}>Copy claim url</ActionButton>
 						<div className={'claim-channel-button-spacer'} />
