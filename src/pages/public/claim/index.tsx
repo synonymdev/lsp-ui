@@ -86,7 +86,9 @@ function ClaimPage(): JSX.Element {
 		<>
 			<div className='claim-channel-top'>
 				<div className={'claim-channel-qr'}>
-					<QRCode value={lnurl.toLocaleLowerCase()} size={qrSize} />
+					<a href={`lightning:${lnurl.toLocaleLowerCase()}`}>
+						<QRCode value={lnurl.toLocaleLowerCase()} size={qrSize} />
+					</a>
 				</div>
 				<div className={'claim-channel-details'}>
 					<div className={'claim-channel-title'}>
