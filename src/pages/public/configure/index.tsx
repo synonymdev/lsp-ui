@@ -25,12 +25,12 @@ export type IFormErrors = {
 };
 
 const inboundTip: TooltipProps = {
-	title: 'Receiving capacity',
+	title: 'Receiving Capacity',
 	body: 'This is the amount of sats you will be able to receive in payments. The amount must be at least double that of your ‘spending balance’. Maximum receiving capacity is 50 000 000 sats.'
 };
 
 const spendingTip: TooltipProps = {
-	title: 'Spending balance',
+	title: 'Spending Balance',
 	body: 'This is the amount of sats you can spend when you first open this channel. The maximum is the current equivalent of $9999.'
 };
 
@@ -273,7 +273,7 @@ function ConfigurePage(): JSX.Element {
 						value={remoteBalance}
 						onChange={(str) => onSetInput(str, setRemoteBalance)}
 						id={'remote-balance'}
-						label={'Receiving capacity'}
+						label={'Receiving Capacity'}
 						append={'sats'}
 						showFiatFromSatsValue
 						error={formErrors.remoteBalance?.message}
@@ -291,7 +291,7 @@ function ConfigurePage(): JSX.Element {
 						placeholder={'0'}
 						onChange={(str) => onSetInput(str, setLocalBalance)}
 						id={'local-balance'}
-						label={'Spending balance'}
+						label={'Spending Balance'}
 						optional
 						append={'sats'}
 						showFiatFromSatsValue
