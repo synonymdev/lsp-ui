@@ -35,7 +35,7 @@ REACT_APP_MAINNET=true // or false
 Set this environment variable if you want to test in regtest:
 
 ```bash
-API_URL="https://api.stag.blocktank.to/blocktank/api/v2/"
+REACT_APP_API_URL="https://api.stag.blocktank.to/blocktank/api/v2/"
 ```
 
 ## Available Scripts
