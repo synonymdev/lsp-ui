@@ -25,12 +25,12 @@ export type IFormErrors = {
 };
 
 const inboundTip: TooltipProps = {
-	title: 'My receiving capacity',
+	title: 'Receiving Capacity',
 	body: 'This is the amount of sats you will be able to receive in payments. The amount must be at least double that of your ‘spending balance’. Maximum receiving capacity is 50 000 000 sats.'
 };
 
 const spendingTip: TooltipProps = {
-	title: 'My spending balance',
+	title: 'Spending Balance',
 	body: 'This is the amount of sats you can spend when you first open this channel. The maximum is the current equivalent of $9999.'
 };
 
@@ -99,9 +99,10 @@ function ConfigurePage(): JSX.Element {
 		const channel_expiry = channelExpiry ? Number(channelExpiry) : max_chan_expiry;
 		const local_balance = Number(remoteBalance);
 		const remote_balance = localBalance ? Number(localBalance) : 0;
+		const default_channel_expiry = 12;
 
 		try {
-			const order = await client.createOrder(local_balance, channel_expiry, {
+			const order = await client.createOrder(local_balance, default_channel_expiry, {
 				clientBalanceSat: remote_balance,
 				couponCode: coupon_code
 			});
@@ -271,7 +272,7 @@ function ConfigurePage(): JSX.Element {
 						value={remoteBalance}
 						onChange={(str) => onSetInput(str, setRemoteBalance)}
 						id={'remote-balance'}
-						label={'My receiving capacity'}
+						label={'Receiving Capacity'}
 						append={'sats'}
 						showFiatFromSatsValue
 						error={formErrors.remoteBalance?.message}
@@ -289,7 +290,8 @@ function ConfigurePage(): JSX.Element {
 						placeholder={'0'}
 						onChange={(str) => onSetInput(str, setLocalBalance)}
 						id={'local-balance'}
-						label={'My spending balance'}
+						label={'Spending Balance'}
+						optional
 						append={'sats'}
 						showFiatFromSatsValue
 						error={formErrors.localBalance?.message}
@@ -301,7 +303,7 @@ function ConfigurePage(): JSX.Element {
 						tooltip={spendingTip}
 					/>
 
-					<InputGroup
+					{/** <InputGroup
 						type='number'
 						value={channelExpiry}
 						placeholder={`${options.maxExpiryWeeks}`}
@@ -316,7 +318,7 @@ function ConfigurePage(): JSX.Element {
 						}}
 						onBlur={onBlur}
 						tooltip={durationTip}
-					/>
+					/> */}
 
 					<Error>{generalError}</Error>
 				</div>

@@ -51,6 +51,7 @@ export default ({
 	value,
 	onChange,
 	label,
+	optional,
 	id,
 	type,
 	append,
@@ -65,6 +66,7 @@ export default ({
 	value: string;
 	onChange: (string) => void;
 	label: string;
+	optional?: boolean;
 	id: string;
 	type: 'number' | 'text';
 	append?: string;
@@ -92,7 +94,10 @@ export default ({
 	return (
 		<div className='custom-input-group-container'>
 			<div className={'custom-input-label-container'}>
-				<span className={'custom-input-label'}>{label}</span>
+				<div>
+					<span className={'custom-input-label'}>{label}</span>
+					<span className={'custom-input-optional'}>{optional && '(optional)'}</span>
+				</div>
 				{showFiatFromSatsValue ? (
 					<span className={'custom-input-fiat-conversion'}>
 						{fiat.fiatSymbol}
