@@ -1,14 +1,4 @@
-<p align="center">
-  <img width="320" height="125" src="public/images/logo.svg" alt="Logo">
-</p>
-
-# Blocktank UI
-
-[Blocktank](https://blocktank.to/) is an LSP that allows businesses, apps, or online platforms to integrate, automate, and monetize services from your Lightning node. This includes channel configuration, channel purchases, channel info and more.
-
-The Blocktank Widget ([standalone](https://blocktank.to/#widget) or [embeddable](https://widget.synonym.to/)) allows users to quickly configure and purchase Lightning channels with specific balances.
-
-## Embed on any site
+# LSP UI
 
 Recommended resolution for your embedded widget:
 
