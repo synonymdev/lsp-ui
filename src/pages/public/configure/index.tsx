@@ -25,12 +25,12 @@ export type IFormErrors = {
 };
 
 const inboundTip: TooltipProps = {
-	title: 'My receiving capacity',
+	title: 'Receiving Capacity',
 	body: 'This is the amount of sats you will be able to receive in payments. The amount must be at least double that of your ‘spending balance’. Maximum receiving capacity is 50 000 000 sats.'
 };
 
 const spendingTip: TooltipProps = {
-	title: 'My spending balance',
+	title: 'Spending Balance',
 	body: 'This is the amount of sats you can spend when you first open this channel. The maximum is the current equivalent of $9999.'
 };
 
@@ -44,17 +44,17 @@ function ConfigurePage(): JSX.Element {
 	const dispatch = useAppDispatch();
 	const exchangeRates = useAppSelector(selectExchangeRates);
 	const selectedCurrency = useAppSelector(selectCurrency);
-	const client = new BlocktankClient();
+	const client = new BlocktankClient(process.env.REACT_APP_API_URL);
 	const [isLoading, setIsLoading] = useState(true);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const [product, setProduct] = useState<{} | undefined>(undefined);
 	const [channelExpiry, setChannelExpiry] = useState<string>('');
 	const [localBalance, setLocalBalance] = useState<string>('');
 	const [remoteBalance, setRemoteBalance] = useState<string>('0');
-	const [couponCode, setCouponCode] = useState<string>('');
 	const [formErrors, setFormErrors] = useState<IFormErrors>({});
 	const [generalError, setGeneralError] = useState('');
-	const initChannelSize = 21000;
+	const initChannelSize = 1000000;
+	const coupon_code = 'blocktank-widget';
 
 	useEffect(() => {
 		if (options) {
@@ -63,7 +63,7 @@ function ConfigurePage(): JSX.Element {
 
 			if (remoteBalance === '0') {
 				if (options.minChannelSizeSat < initChannelSize) {
-					setRemoteBalance('30000');
+					setRemoteBalance('1000000');
 				} else {
 					setRemoteBalance(`${options.minChannelSizeSat}`);
 				}
@@ -99,10 +99,10 @@ function ConfigurePage(): JSX.Element {
 		const channel_expiry = channelExpiry ? Number(channelExpiry) : max_chan_expiry;
 		const local_balance = Number(remoteBalance);
 		const remote_balance = localBalance ? Number(localBalance) : 0;
-		const coupon_code = couponCode ? String(couponCode) : '';
+		const default_channel_expiry = 12;
 
 		try {
-			const order = await client.createOrder(local_balance, channel_expiry, {
+			const order = await client.createOrder(local_balance, default_channel_expiry, {
 				clientBalanceSat: remote_balance,
 				couponCode: coupon_code
 			});
@@ -130,9 +130,9 @@ function ConfigurePage(): JSX.Element {
 			return true;
 		}
 
-		const max_chan_receiving = options.maxChannelSizeSat;
-		const min_chan_receiving = options.minChannelSizeSat;
-		const max_chan_spending = options.maxClientBalanceSat;
+		const max_chan_receiving = Math.floor(options.maxChannelSizeSat);
+		const min_chan_receiving = Math.floor(options.minChannelSizeSat);
+		const max_chan_spending = Math.floor(options.maxClientBalanceSat);
 
 		const bitcoinPrice = exchangeRates[selectedCurrency];
 		const symbolCurrency = currencySymbols[selectedCurrency];
@@ -160,24 +160,26 @@ function ConfigurePage(): JSX.Element {
 
 		if (Number(remoteBalance) > max_chan_receiving) {
 			errors.remoteBalance = {
-				message: `Max receiving capacity is ${numberWithSpaces(
-					max_chan_receiving
-				)} sats (${symbolCurrency}${numberWithSpaces(max_chan_receiving_cur)})`,
+				message: `Max receiving capacity is ${numberWithSpaces(max_chan_receiving)} sats ${
+					!isNaN(max_chan_receiving_cur) ? `(${symbolCurrency}${max_chan_receiving_cur})` : ``
+				}`,
 				value: max_chan_receiving
 			};
 		} else if (min_chan_receiving < initChannelSize) {
 			if (Number(remoteBalance) < initChannelSize) {
 				errors.remoteBalance = {
-					message: `Minimum receiving capacity is ${initChannelSize} sats (${symbolCurrency}${initChannelSize_cur})`,
+					message: `Minimum receiving capacity is ${initChannelSize} sats ${
+						!isNaN(initChannelSize_cur) ? `(${symbolCurrency}${initChannelSize_cur})` : ``
+					}`,
 					value: initChannelSize
 				};
 			}
 		} else if (min_chan_receiving >= initChannelSize) {
-			if (Number(remoteBalance) <= min_chan_receiving) {
+			if (Number(remoteBalance) < min_chan_receiving) {
 				errors.remoteBalance = {
-					message: `Minimum receiving capacity is ${numberWithSpaces(
-						min_chan_receiving
-					)} sats (${symbolCurrency}${min_chan_receiving_cur})`,
+					message: `Minimum receiving capacity is ${numberWithSpaces(min_chan_receiving)} sats ${
+						!isNaN(min_chan_receiving_cur) ? `(${symbolCurrency}${min_chan_receiving_cur})` : ``
+					}`,
 					value: min_chan_receiving
 				};
 			}
@@ -186,26 +188,20 @@ function ConfigurePage(): JSX.Element {
 		if (Number(localBalance) !== 0) {
 			if (Number(localBalance) > max_chan_spending) {
 				errors.localBalance = {
-					message: `Max spending balance is ${numberWithSpaces(
-						max_chan_spending
-					)} sats (${symbolCurrency}${max_chan_spending_cur})`,
+					message: `Max spending balance is ${numberWithSpaces(max_chan_spending)} sats ${
+						!isNaN(max_chan_spending_cur) ? `(${symbolCurrency}${max_chan_spending_cur})` : ``
+					}`,
 					value: max_chan_spending
 				};
 			} else if (Number(localBalance) + Number(remoteBalance) > max_chan_receiving) {
 				const max_spending_balance = max_chan_receiving - Number(remoteBalance);
 				errors.localBalance = {
-					message: `Total channel capacity is ${numberWithSpaces(
-						max_chan_receiving
-					)} sats (${symbolCurrency}${max_chan_receiving_cur})`,
+					message: `Total channel capacity is ${numberWithSpaces(max_chan_receiving)} sats ${
+						!isNaN(max_chan_receiving_cur) ? `(${symbolCurrency}${max_chan_receiving_cur})` : ``
+					}`,
 					value: max_spending_balance
 				};
 			}
-		}
-
-		if (couponCode && couponCode !== '') {
-			errors.couponCode = {
-				message: 'Coupon is expired or invalid'
-			};
 		}
 
 		setFormErrors(errors);
@@ -276,7 +272,7 @@ function ConfigurePage(): JSX.Element {
 						value={remoteBalance}
 						onChange={(str) => onSetInput(str, setRemoteBalance)}
 						id={'remote-balance'}
-						label={'My receiving capacity'}
+						label={'Receiving Capacity'}
 						append={'sats'}
 						showFiatFromSatsValue
 						error={formErrors.remoteBalance?.message}
@@ -294,7 +290,8 @@ function ConfigurePage(): JSX.Element {
 						placeholder={'0'}
 						onChange={(str) => onSetInput(str, setLocalBalance)}
 						id={'local-balance'}
-						label={'My spending balance'}
+						label={'Spending Balance'}
+						optional
 						append={'sats'}
 						showFiatFromSatsValue
 						error={formErrors.localBalance?.message}
@@ -306,7 +303,7 @@ function ConfigurePage(): JSX.Element {
 						tooltip={spendingTip}
 					/>
 
-					<InputGroup
+					{/** <InputGroup
 						type='number'
 						value={channelExpiry}
 						placeholder={`${options.maxExpiryWeeks}`}
@@ -321,21 +318,7 @@ function ConfigurePage(): JSX.Element {
 						}}
 						onBlur={onBlur}
 						tooltip={durationTip}
-					/>
-
-					<InputGroup
-						type='text'
-						value={couponCode}
-						placeholder={`bitkit20`}
-						onChange={(str) => onSetInput(str, setCouponCode)}
-						id={'coupon-code'}
-						label={'My coupon code'}
-						error={formErrors.couponCode?.message}
-						onErrorClick={() => {
-							setCouponCode(formErrors.couponCode?.value);
-							setFormErrors({});
-						}}
-					/>
+					/> */}
 
 					<Error>{generalError}</Error>
 				</div>

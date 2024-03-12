@@ -21,10 +21,6 @@ export default ({
 }): JSX.Element => {
 	return (
 		<Card className={'form-card'}>
-			<div className={'glowy1'} />
-			<div className={'glowy2'} />
-			<div className={'glowy3'} />
-
 			<div className={'form-card-container'}>
 				{title ? (
 					<Header backPage={backPage} showLightningIcon={showLightningIcon}>

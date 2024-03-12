@@ -55,9 +55,7 @@ function OrderPage(): JSX.Element {
 		lspBalanceSat,
 		clientBalanceSat,
 		feeSat,
-		payment: {
-			bolt11Invoice: { state: stateBoltInvoice }
-		},
+		payment: { state2: statePayment2 },
 		payment: {
 			onchain: { address: btc_address }
 		},
@@ -80,7 +78,7 @@ function OrderPage(): JSX.Element {
 					<Card>
 						<Card.Body>
 							<Card.Title>
-								State: {stateBoltInvoice} ({state})
+								State: {statePayment2} ({state})
 							</Card.Title>
 							<Card.Text>Price: {feeSat}</Card.Text>
 							<Card.Text>Local balance: {lspBalanceSat}</Card.Text>

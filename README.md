@@ -1,14 +1,4 @@
-<p align="center">
-  <img width="320" height="125" src="public/images/logo.svg" alt="Logo">
-</p>
-
-# Blocktank UI
-
-[Blocktank](https://blocktank.to/) is an LSP that allows businesses, apps, or online platforms to integrate, automate, and monetize services from your Lightning node. This includes channel configuration, channel purchases, channel info and more.
-
-The Blocktank Widget ([standalone](https://blocktank.to/#widget) or [embeddable](https://widget.synonym.to/)) allows users to quickly configure and purchase Lightning channels with specific balances.
-
-## Embed on any site
+# LSP UI
 
 Recommended resolution for your embedded widget:
 
@@ -32,7 +22,15 @@ The following environment variables are required to run the app:
 REACT_APP_MAINNET=true // or false
 ```
 
+Set this environment variable if you want to test in regtest:
+
+```bash
+REACT_APP_API_URL="https://api.stag.blocktank.to/blocktank/api/v2/"
+```
+
 ## Available Scripts
+
+⚠️ Switch to the Node.js version defined in `.node-version`. You can visit [.node-version File Usage](https://github.com/shadowspawn/node-version-usage) and use one of these methods to change the node version you need.
 
 In the project directory, you can run:
 

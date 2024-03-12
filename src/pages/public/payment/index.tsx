@@ -50,11 +50,9 @@ function PaymentPage(): JSX.Element {
 			bolt11Invoice: { request: purchase_invoice }
 		},
 		payment: { state: statePayment },
+		payment: { state2: statePayment2 },
 		orderExpiresAt,
 		state,
-		payment: {
-			bolt11Invoice: { state: stateBoltInvoice }
-		},
 		payment: {
 			onchain: { confirmedSat: confirmedSatsIncoming }
 		},
@@ -63,10 +61,10 @@ function PaymentPage(): JSX.Element {
 		}
 	} = order;
 
-	let orderStatus = stateBoltInvoice;
+	let orderStatus = statePayment2;
 
 	if (state === 'created') {
-		if (orderStatus === 'pending') {
+		if (orderStatus === 'created') {
 			orderStatus = 'Awaiting payment';
 		} else if (transactionsOnChain.length !== 0) {
 			orderStatus = 'Received, waiting...';
