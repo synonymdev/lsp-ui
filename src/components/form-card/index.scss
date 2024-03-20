@@ -1,6 +1,6 @@
 .form-card {
 	width: 480px;
-	min-height: 649px;
+	min-height: 800px;
 	border-radius: 15px;
 	background: rgba(16, 16, 16, 0.92);
 	background-clip: content-box;
@@ -12,7 +12,7 @@
 		display: flex;
 		flex-direction: column;
 		flex: 1;
-		border: 1px solid #FFFFFF1A;
+		border: 1px solid #ffffff1a;
 		justify-content: space-between;
 
 		.form-card-content {
