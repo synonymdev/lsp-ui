@@ -66,6 +66,9 @@ function MenuPage(): JSX.Element {
 					<a href={'/terms-and-conditions'} target={'_blank'}>
 						Terms of service
 					</a>
+					<a href={'https://blocktank.to/fees'} target={'_blank'}>
+						Fees
+					</a>
 				</div>
 			</div>
 		</FormCard>
