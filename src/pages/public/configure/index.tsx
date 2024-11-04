@@ -3,6 +3,7 @@ import { Button, Form } from 'react-bootstrap';
 import { BlocktankClient } from '@synonymdev/blocktank-lsp-http-client';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import Checkbox from '../../../components/checkbox';
 import {
 	refreshInfo,
 	selectInfo,
@@ -53,6 +54,7 @@ function ConfigurePage(): JSX.Element {
 	const [remoteBalance, setRemoteBalance] = useState<string>('0');
 	const [formErrors, setFormErrors] = useState<IFormErrors>({});
 	const [generalError, setGeneralError] = useState('');
+	const [isPrivate, setIsPrivate] = useState(false);
 	const initChannelSize = 1000000;
 	const coupon_code = 'blocktank-widget';
 
@@ -104,7 +106,8 @@ function ConfigurePage(): JSX.Element {
 		try {
 			const order = await client.createOrder(local_balance, channel_expiry, {
 				clientBalanceSat: remote_balance,
-				couponCode: coupon_code
+				couponCode: coupon_code,
+                announceChannel: !isPrivate
 			});
 			const order_id = order.id;
 
@@ -319,6 +322,10 @@ function ConfigurePage(): JSX.Element {
 						onBlur={onBlur}
 						tooltip={durationTip}
 					/>
+
+                    <Checkbox isChecked={isPrivate} setIsChecked={setIsPrivate}>
+                        Private channel
+                    </Checkbox>
 
 					<Error>{generalError}</Error>
 				</div>

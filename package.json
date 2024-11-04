@@ -5,7 +5,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.1",
     "@synonymdev/blocktank-client": "0.0.46",
-    "@synonymdev/blocktank-lsp-http-client": "1.4.0",
+    "@synonymdev/blocktank-lsp-http-client": "2.0.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",

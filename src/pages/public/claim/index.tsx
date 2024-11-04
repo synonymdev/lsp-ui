@@ -12,7 +12,6 @@ import Divider from '../../../components/divider';
 import './index.scss';
 import Heading from '../../../components/heading';
 import Tooltip from '../../../components/tooltip';
-import Checkbox from '../../../components/checkbox';
 import { clipCenter } from '../../../utils/helpers';
 import ActionButton from '../../../components/action-button';
 import { ReactComponent as LightningIconActive } from '../../../icons/lightning-active.svg';
@@ -27,7 +26,6 @@ const qrSize = 200;
 
 function ClaimPage(): JSX.Element {
 	const [showManual, setShowManual] = useState(false);
-	const [isPrivate, setIsPrivate] = useState(false);
 	const [nodeUri, setNodeUri] = useState('');
 	const [isSubmitting, setIsSubmitting] = useState(false);
 	const dispatch = useAppDispatch();
@@ -53,7 +51,7 @@ function ClaimPage(): JSX.Element {
 	const claimChannel = async (): Promise<void> => {
 		setIsSubmitting(true);
 		try {
-			await client.openChannel(id, nodeUri, !isPrivate);
+			await client.openChannel(id, nodeUri);
 			await dispatch(refreshOrder(id));
 
 			dispatch(navigate({ page: 'order' }));
@@ -110,9 +108,6 @@ function ClaimPage(): JSX.Element {
 					body: 'Paste your node ID, IP, and port information here to initiate the channel connection manually.'
 				}}
 			/>
-			<Checkbox isChecked={isPrivate} setIsChecked={setIsPrivate}>
-				Private channel
-			</Checkbox>
 			<div className={'claim-channel-manual-action-buttons-container'}>
 				<ActionButton onClick={claimChannel} Icon={LightningIcon}>
 					{isSubmitting ? 'Opening channel...' : 'Open channel'}
