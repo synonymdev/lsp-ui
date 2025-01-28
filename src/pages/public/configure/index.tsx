@@ -55,7 +55,7 @@ function ConfigurePage(): JSX.Element {
 	const [formErrors, setFormErrors] = useState<IFormErrors>({});
 	const [generalError, setGeneralError] = useState('');
 	const [isPrivate, setIsPrivate] = useState(false);
-	const initChannelSize = 100000;
+	const initChannelSize = 100_000;
 	const coupon_code = 'blocktank-widget';
 
 	useEffect(() => {
