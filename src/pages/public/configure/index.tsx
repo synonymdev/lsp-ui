@@ -137,7 +137,7 @@ function ConfigurePage(): JSX.Element {
 
 		const max_chan_receiving = Math.floor(options.maxChannelSizeSat);
 		const min_chan_receiving = Math.floor(options.minChannelSizeSat);
-		const max_chan_spending = Math.floor(options.maxClientBalanceSat);
+		const max_chan_spending = Math.floor(options.maxClientBalanceSat - Number(remoteBalance));
 
 		const selectedPair = `BTC${selectedCurrency}`;
 		const bitcoinPrice = exchangeRates[selectedPair];
