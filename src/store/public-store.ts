@@ -100,8 +100,15 @@ export const refreshOrder = createAsyncThunk('bt/refreshOrder', async (orderId: 
 });
 
 export const refreshExchangeRates = createAsyncThunk('bt/refreshExchangeRates', async () => {
-	const response = await bt.getRates();
-	return response;
+	const response = await fetch('https://blocktank.synonym.to/api/v1/rate');
+	const data = await response.json();
+	const exchangeRates: IExchangeRatesResponse = {};
+	data.tickers.forEach((ticker) => {
+		const symbol = ticker.symbol;
+		const lastPrice = parseFloat(ticker.lastPrice);
+		exchangeRates[symbol] = lastPrice;
+	});
+	return exchangeRates;
 });
 
 export const publicStore = createSlice({

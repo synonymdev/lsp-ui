@@ -55,7 +55,7 @@ function ConfigurePage(): JSX.Element {
 	const [formErrors, setFormErrors] = useState<IFormErrors>({});
 	const [generalError, setGeneralError] = useState('');
 	const [isPrivate, setIsPrivate] = useState(false);
-	const initChannelSize = 1000000;
+	const initChannelSize = 100000;
 	const coupon_code = 'blocktank-widget';
 
 	useEffect(() => {
@@ -64,15 +64,17 @@ function ConfigurePage(): JSX.Element {
 			setIsLoading(false);
 
 			if (remoteBalance === '0') {
-				if (options.minChannelSizeSat < initChannelSize) {
-					setRemoteBalance('1000000');
-				} else {
-					setRemoteBalance(`${options.minChannelSizeSat}`);
-				}
-			}
+				let defaultRemoteBalance = Math.floor(options.maxChannelSizeSat * 0.8);
+				defaultRemoteBalance = Math.floor(defaultRemoteBalance / 1000) * 1000;
 
-			if (localBalance === '0') {
-				// setLocalBalance(`${service.min_channel_size}`);
+				if (
+					defaultRemoteBalance >= options.minChannelSizeSat &&
+					defaultRemoteBalance <= options.maxChannelSizeSat
+				) {
+					setRemoteBalance(`${defaultRemoteBalance}`);
+				} else {
+					setRemoteBalance(`${options.minChannelSizeSat || initChannelSize}`);
+				}
 			}
 		}
 	}, [options]);
@@ -107,7 +109,7 @@ function ConfigurePage(): JSX.Element {
 			const order = await client.createOrder(local_balance, channel_expiry, {
 				clientBalanceSat: remote_balance,
 				couponCode: coupon_code,
-                announceChannel: !isPrivate
+				announceChannel: !isPrivate
 			});
 			const order_id = order.id;
 
@@ -137,7 +139,8 @@ function ConfigurePage(): JSX.Element {
 		const min_chan_receiving = Math.floor(options.minChannelSizeSat);
 		const max_chan_spending = Math.floor(options.maxClientBalanceSat);
 
-		const bitcoinPrice = exchangeRates[selectedCurrency];
+		const selectedPair = `BTC${selectedCurrency}`;
+		const bitcoinPrice = exchangeRates[selectedPair];
 		const symbolCurrency = currencySymbols[selectedCurrency];
 
 		const max_chan_receiving_cur = Math.floor((max_chan_receiving / 100000000) * bitcoinPrice);
@@ -323,9 +326,9 @@ function ConfigurePage(): JSX.Element {
 						tooltip={durationTip}
 					/>
 
-                    <Checkbox isChecked={isPrivate} setIsChecked={setIsPrivate}>
-                        Private channel
-                    </Checkbox>
+					<Checkbox isChecked={isPrivate} setIsChecked={setIsPrivate}>
+						Private channel
+					</Checkbox>
 
 					<Error>{generalError}</Error>
 				</div>
