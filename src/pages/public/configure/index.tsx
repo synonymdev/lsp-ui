@@ -10,7 +10,8 @@ import {
 	navigate,
 	refreshOrder,
 	selectExchangeRates,
-	selectCurrency
+	selectCurrency,
+	getBlocked
 } from '../../../store/public-store';
 import Spinner from '../../../components/spinner';
 import FormCard from '../../../components/form-card';
@@ -120,7 +121,8 @@ function ConfigurePage(): JSX.Element {
 				.catch((refreshError) => alert(refreshError));
 		} catch (error: any) {
 			setIsSubmitting(false);
-			if (error.toString().indexOf('GEO_BLOCKED') > -1) {
+			const geoBlocked = await getBlocked();
+			if (error.toString().indexOf('GEO_BLOCKED') > -1 || geoBlocked) {
 				dispatch(navigate({ page: 'geoblocked' }));
 			} else {
 				setGeneralError(error.toString());
