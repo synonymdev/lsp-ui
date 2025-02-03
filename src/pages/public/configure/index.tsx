@@ -10,7 +10,8 @@ import {
 	navigate,
 	refreshOrder,
 	selectExchangeRates,
-	selectCurrency
+	selectCurrency,
+	checkGeoLock
 } from '../../../store/public-store';
 import Spinner from '../../../components/spinner';
 import FormCard from '../../../components/form-card';
@@ -106,6 +107,7 @@ function ConfigurePage(): JSX.Element {
 		// const default_channel_expiry = 12;
 
 		try {
+			await checkGeoLock();
 			const order = await client.createOrder(local_balance, channel_expiry, {
 				clientBalanceSat: remote_balance,
 				couponCode: coupon_code,

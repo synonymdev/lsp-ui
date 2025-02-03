@@ -111,6 +111,17 @@ export const refreshExchangeRates = createAsyncThunk('bt/refreshExchangeRates', 
 	return exchangeRates;
 });
 
+export const checkGeoLock = async (): Promise<void> => {
+	try {
+		const response = await fetch('https://api1.blocktank.to/api/geocheck')
+		if (!response.ok) {
+			throw new Error('GEO_BLOCKED');
+		}
+	} catch (error) {
+		throw new Error('GEO_BLOCKED');
+	}
+};
+
 export const publicStore = createSlice({
 	name: 'bt',
 	initialState,
