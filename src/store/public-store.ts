@@ -113,7 +113,13 @@ export const refreshExchangeRates = createAsyncThunk('bt/refreshExchangeRates', 
 
 export const getBlocked = async (): Promise<boolean> => {
 	try {
-		const response = await fetch('https://api1.blocktank.to/api/geocheck');
+		const response = await fetch('https://api1.blocktank.to/api/geocheck', {
+			method: 'OPTIONS',
+			headers: {
+				'Access-Control-Request-Method': 'POST',
+				'Access-Control-Request-Headers': 'Content-Type'
+			}
+		});
 		if (!response.ok) {
 			throw new Error('Geo-block check failed');
 		}
